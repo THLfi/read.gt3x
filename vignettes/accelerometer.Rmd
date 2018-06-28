@@ -1,0 +1,64 @@
+---
+title: "Getting started with accelerometer"
+author: "Tuomo Nieminen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To access the accelerometer package, use:
+
+```{r}
+library(accelerometer)
+```
+
+The package includes two sample .gt3x files in a single directory. Here we get the path to the first one.
+
+```{r}
+gt3xfile <- gt3x_datapath(1)
+```
+
+
+### Method 1: Temporary unzip and read
+
+```{r}
+X <- readGT3X(gt3xfile)
+```
+
+```{r}
+head(X)
+```
+
+### Method 2: permanent unzip, then read
+
+.gt3x files are actually zip archives which contain two files: log.bin and info.txt, where log.bin is a binary file that contains the actual samples. It might make sense to store the data as unzipped folders containing these two files, because the readGT3X() function will have to unzip each .gt3x archive every time otherwise. The unzipGT3X() function unzips all .gt3x files in a given directory. By default, a .gt3x file named "subject001.gt3x" creates a folder named "subject001", which contains the files info.txt and log.bin. 
+
+unzipGT3X returns a vector of paths to each of the unzipped gt3x folders. The location argument can be used to choose where to locate the folders.
+
+```{r}
+datadir <- gt3x_datapath()
+gt3xfolders <- unzipGT3X(datadir, location = tempdir())
+gt3xfolder <- gt3xfolders[1]
+```
+
+The readGT3X function also accepts a path to an uzipped gt3x folder. It is naturally a bit faster if the unzip step has already been performed.
+
+```{r}
+X <- readGT3X(gt3xfolder)
+```
+
+```{r}
+head(X)
+```
+
+
