@@ -39,6 +39,13 @@ X <- readGT3X(gt3xfile)
 head(X)
 ```
 
+Internally, the data matrix is a bit smarter than it looks as it knows all the (relative) timestamps of the observations.  
+
+```{r}
+str(X)
+```
+
+
 ### Method 2: permanent unzip, then read
 
 .gt3x files are actually zip archives which contain two files: log.bin and info.txt, where log.bin is a binary file that contains the actual samples. It might make sense to store the data as unzipped folders containing these two files, because the readGT3X() function will have to unzip each .gt3x archive every time otherwise. The unzipGT3X() function unzips all .gt3x files in a given directory. By default, a .gt3x file named "subject001.gt3x" creates a folder named "subject001", which contains the files info.txt and log.bin. 

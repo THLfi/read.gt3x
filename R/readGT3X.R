@@ -193,13 +193,11 @@ readGT3X <- function(path, verbose = FALSE, ...) {
   logpath <- file.path(path, "log.bin")
   accdata <- parseGT3X(logpath, max_samples = samples, scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`, verbose = verbose, ...)
 
-  colnames(accdata) <- c( "X", "Y", "Z" , "timestamp")
   attr(accdata, "start_time") = as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01")
 
-  message("Done", " (in ",  as.integer(Sys.time() - fun_start_time), " seconds)")
+  message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
   structure(accdata,
-            sample_rate = info$`Sample Rate`,
             class = c("activity", class(accdata)))
 
 }

@@ -147,14 +147,14 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
 // Activity parsers for the two possible formats
 // ---------------------------------------------
 
-double_t createTimeStamp(uint32_t timestamp, int i, double_t sample_time, uint32_t start_time) {
+uint32_t createTimeStamp(uint32_t timestamp, int i, double_t sample_time, uint32_t start_time) {
   return round( ( (double_t)(timestamp - start_time) + (double_t)i * sample_time ) * TIMESTAMP_PRECISION) ;
 }
 
 
 // Parsea second of activity data (type 2) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
-void ParseActivity2(ifstream& stream, NumericMatrix& out, int start, int sample_size, uint32_t timestamp, double_t sample_time, uint32_t start_time, bool debug) {
+void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t timestamp, double_t sample_time, uint32_t start_time, bool debug) {
   int16_t item;
 
   if(debug)
@@ -162,16 +162,16 @@ void ParseActivity2(ifstream& stream, NumericMatrix& out, int start, int sample_
   for(int i = 0; i < sample_size; ++i) {
     for (int j = 0; j < N_ACTIVITYCOLUMNS; ++j) {
       stream.read(reinterpret_cast<char*>(&item), 2);
-      out(i + start, j) = item;
+      activity(i + start, j) = item;
     }
-    out(i + start, N_ACTIVITYCOLUMNS) = createTimeStamp(timestamp, i, sample_time, start_time);
+    timeStamps(i + start) = createTimeStamp(timestamp, i, sample_time, start_time);
   }
 }
 
 
 // Parse a second of activity data (type 1) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity.md
-void ParseActivity(ifstream& stream, NumericMatrix& out, int start, int sample_size, uint32_t timestamp, double_t sample_time, uint32_t start_time, bool debug) {
+void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t timestamp, double_t sample_time, uint32_t start_time, bool debug) {
 
   bool odd = 0;
   int current = 0;
@@ -211,10 +211,10 @@ void ParseActivity(ifstream& stream, NumericMatrix& out, int start, int sample_s
         shifter |= 0xF000;
 
       // convert to signed int
-      out(i + start, j) = (int16_t)shifter;
+      activity(i + start, j) = (int16_t)shifter;
       odd = !odd;
     }
-    out(i + start, N_ACTIVITYCOLUMNS) = createTimeStamp(timestamp, i, sample_time, start_time);
+    timeStamps(i + start) = createTimeStamp(timestamp, i, sample_time, start_time);
   }
 }
 
@@ -284,7 +284,8 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose = false, const bool debug = false) {
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
-  NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS + 1); // last column is the timestamp
+  NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
+  IntegerVector timeStamps(max_samples);
 
   const uint8_t RECORD_SEPARATOR = 30;
 
@@ -320,12 +321,12 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       }
 
       else if(type == RECORDTYPE_ACTIVITY) {
-        ParseActivity(GT3Xstream, activityMatrix, total_records, sample_size, timestamp, sample_time, start_time, debug);
+        ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, timestamp, sample_time, start_time, debug);
         total_records += sample_size;
       }
 
       else if(type == RECORDTYPE_ACTIVITY2) {
-        ParseActivity2(GT3Xstream, activityMatrix, total_records, sample_size, timestamp, sample_time, start_time, debug);
+        ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, timestamp, sample_time, start_time, debug);
         total_records += sample_size;
       }
 
@@ -349,12 +350,21 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   scaleAndRoundActivity(activityMatrix, scale_factor, total_records);
 
   if(verbose)
+    Rcout << "Removing excess rows \n";
+  NumericMatrix out =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
+
+  if(verbose)
+    Rcout << "Creating dimnames \n";
+
+  colnames(out) = CharacterVector::create("X", "Y", "Z");
+  out.attr("milliseconds") = timeStamps[Range(0, total_records - 1)];
+
+  out.attr("start_time") = start_time;
+  out.attr("sample_rate") = sample_rate;
+
+  if(verbose)
     Rcout << "CPP returning \n";
 
-  activityMatrix.attr("start_time") = start_time;
-
-  NumericMatrix out =  activityMatrix(Range(0, total_records - 1), _);
-  out.attr("start_time") = start_time;
   return out;
 
 }
