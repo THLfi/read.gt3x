@@ -47,19 +47,19 @@ head(X)
 
 ### Method 2: permanent unzip, then read
 
-.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It usually make sense to store the data as *unzipped* folders containing these two files, because otherwise the readGT3X() function will have to unzip each .gt3x archive every time you need to access the data. 
+.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as *unzipped* folders containing these two files, because otherwise the readGT3X() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data. 
 
-The unzipGT3X() function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named "subject001.gt3x" are extracted to a folder named "subject001". unzipGT3X() returns a vector of paths to each of the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.
+readGT3X() also accepts paths to unzipped gt3x folders. To demonstrate the usage, we'll unzip the sample .gt3x files in the package, and then read them. The unzipGT3X() helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named "subject001.gt3x" are extracted to a folder named "subject001". unzipGT3X() returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.
 
 ```{r}
-datadir <- gt3x_datapath()
+datadir <- gt3x_datapath() # location of .gt3x files
 gt3xfolders <- unzipGT3X(datadir, location = tempdir())
-gt3xfolder <- gt3xfolders[1]
 ```
 
-The readGT3X function also accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.
+The readGT3X() function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.
 
 ```{r}
+gt3xfolder <- gt3xfolders[1]
 X <- readGT3X(gt3xfolder)
 ```
 
@@ -69,8 +69,13 @@ head(X)
 
 ## Activity data matrix
 
-Internally, the data matrix returned by readGT3X is a bit smarter than it looks, as it knows all the (relative) timestamps of the observations.  
+Internally, the data matrix returned by readGT3X() is a bit smarter than it looks, as it knows all the (relative) timestamps of the observations.  
 
 ```{r}
 str(X)
 ```
+
+- time_index: Time passed since start
+- time_unit: Units per second. 1000 means milliseconds.
+- start_time: timestamp of first sample
+- sample_rate: Samples per second.
