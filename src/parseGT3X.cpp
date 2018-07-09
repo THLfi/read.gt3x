@@ -18,7 +18,7 @@ using namespace std;
 const int N_ACTIVITYCOLUMNS = 3; // accelometer measures in three directions: x,y,z
 const int SIGNIF_DIGITS = 3;
 
-const uint64_t TIMESTAMP_PRECISION = 1000; // milliseconds
+const uint64_t TIMESTAMP_UNIT = 1000; // milliseconds
 
 // The gt3x logrecord types.
 enum LogRecordType {
@@ -148,7 +148,7 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
 // ---------------------------------------------
 
 uint32_t createTimeStamp(uint32_t timestamp, int i, double_t sample_time, uint32_t start_time) {
-  return round( ( (double_t)(timestamp - start_time) + (double_t)i * sample_time ) * TIMESTAMP_PRECISION) ;
+  return round( ( (double_t)(timestamp - start_time) + (double_t)i * sample_time ) * TIMESTAMP_UNIT) ;
 }
 
 
@@ -357,7 +357,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     Rcout << "Creating dimnames \n";
 
   colnames(out) = CharacterVector::create("X", "Y", "Z");
-  out.attr("milliseconds") = timeStamps[Range(0, total_records - 1)];
+  out.attr("index") = timeStamps[Range(0, total_records - 1)];
+  out.attr("index_unit") = TIMESTAMP_UNIT;
 
   out.attr("start_time") = start_time;
   out.attr("sample_rate") = sample_rate;
