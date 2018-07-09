@@ -13,7 +13,10 @@ NULL
 #' @return
 #' Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.
 #'
-is_gt3x <- function(path) sapply(path, function(f) grepl("\\.gt3x$", f))
+is_gt3x <- function(path) {
+  if(length(path) == 0) return(F)
+  sapply(path, function(f) grepl("\\.gt3x$", f))
+}
 
 #' List all gt3x files in a directory
 #'
