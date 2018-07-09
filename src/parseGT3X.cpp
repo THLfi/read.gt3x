@@ -357,8 +357,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     Rcout << "Creating dimnames \n";
 
   colnames(out) = CharacterVector::create("X", "Y", "Z");
-  out.attr("index") = timeStamps[Range(0, total_records - 1)];
-  out.attr("index_unit") = TIMESTAMP_UNIT;
+  out.attr("time_index") = timeStamps[Range(0, total_records - 1)];
+  out.attr("time_unit") = TIMESTAMP_UNIT;
 
   out.attr("start_time") = start_time;
   out.attr("sample_rate") = sample_rate;
