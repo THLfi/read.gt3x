@@ -1,11 +1,11 @@
-# Accelerometer
+# read.gt3x
 
-accelerometer is an R package which implements a high performance C++ parser for actigraphs .gt3x data format. 
+read.gt3x is an R package which implements a high performance C++ parser for actigraphs .gt3x data format. 
 
 ## Installation
 
 ```
-devtools::install_github("accelerometer", "TuomoNieminen")
+devtools::install_github("read.gt3x", "TuomoNieminen")
 ```
 
 ## Actigraph accelerometers

@@ -3,6 +3,6 @@
 export(gt3x_datapath)
 export(list_gt3x)
 export(readGT3X)
-export(unzipGT3X)
+export(unzip.gt3x)
 importFrom(Rcpp,sourceCpp)
-useDynLib(accelerometer)
+useDynLib(read.gt3x)

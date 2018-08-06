@@ -15,6 +15,6 @@
 #' the last column is timestamps in seconds (including 100th of seconds) starting from 00:00:00 1970-01-01 UTC (UNIX time)
 #'
 parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE) {
-    .Call('_accelerometer_parseGT3X', PACKAGE = 'accelerometer', filename, max_samples, scale_factor, sample_rate, verbose, debug)
+    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug)
 }
 

@@ -53,7 +53,7 @@ readGT3X() also accepts paths to unzipped gt3x folders. To demonstrate the usage
 
 ```{r}
 datadir <- gt3x_datapath() # location of .gt3x files
-gt3xfolders <- unzipGT3X(datadir, location = tempdir())
+gt3xfolders <- unzip.gt3x(datadir, location = tempdir())
 ```
 
 The readGT3X() function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.

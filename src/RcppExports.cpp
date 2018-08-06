@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // parseGT3X
 NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose, const bool debug);
-RcppExport SEXP _accelerometer_parseGT3X(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP verboseSEXP, SEXP debugSEXP) {
+RcppExport SEXP _read_gt3x_parseGT3X(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP verboseSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,11 +23,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_accelerometer_parseGT3X", (DL_FUNC) &_accelerometer_parseGT3X, 6},
+    {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 6},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_accelerometer(DllInfo *dll) {
+RcppExport void R_init_read_gt3x(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
