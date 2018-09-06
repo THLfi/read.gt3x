@@ -27,10 +27,10 @@ This package makes it easier and faster to read the raw accelerometer samples in
 
 ## Basic usage
 
-The accelerometer package includes two sample .gt3x files which can be used to demonstrate reading the data. 
+The read.gt3x package includes two sample .gt3x files which can be used to demonstrate reading the data. 
 
 ```{r}
-library(accelerometer)
+library(read.gt3x)
 ```
 
 First we need the path to a single gt3x file.

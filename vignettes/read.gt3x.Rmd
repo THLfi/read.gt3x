@@ -16,16 +16,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-To access the accelerometer package, use:
+To access the read.gt3x package, use:
 
 ```{r}
-library(accelerometer)
+library(read.gt3x)
 ```
 
 
 ## Reading .gt3x data into R
 
-The accelerometer package includes two sample .gt3x files which I'll use to demonstrate reading the data. First we need the path to a single gt3x file.
+The read.gt3x package includes two sample .gt3x files which I'll use to demonstrate reading the data. First we need the path to a single gt3x file.
 
 ```{r}
 gt3xfile <- gt3x_datapath(1)
@@ -76,6 +76,15 @@ str(X)
 ```
 
 - time_index: Time passed since start
-- time_unit: Units per second. 1000 means milliseconds.
 - start_time: timestamp of first sample
 - sample_rate: Samples per second.
+
+## Converting to a data.frame
+
+the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a "time" column, which gives the timestamp of each sample.
+
+```{r}
+df <- as.data.frame(X)
+str(df)
+```
+
