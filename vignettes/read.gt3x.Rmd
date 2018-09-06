@@ -1,5 +1,5 @@
 ---
-title: "Getting started with accelerometer"
+title: "Getting started with read.gt3x"
 author: "Tuomo Nieminen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

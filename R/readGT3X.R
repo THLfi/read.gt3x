@@ -5,7 +5,10 @@ NULL
 
 #' Convert NET ticks to POSIXct datetime
 #'
-#' ref: # https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r
+#' @details
+#' reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
+#'
+#' @family parser-utils
 ticks2datetime <- function(ticks, tz) {
   ticks <- as.numeric(ticks)
   seconds <- ticks / 1e7
@@ -16,6 +19,8 @@ ticks2datetime <- function(ticks, tz) {
 #' Parse GT3X info.txt file
 #'
 #' @param path Path to a .gt3x file or an unzipped gt3x directory
+#'
+#' @family gt3x-parsers
 parse_gt3x_info <- function(path) {
   if(is_gt3x(path))
     path <- unzip.gt3x(path, files = "info.txt")
@@ -37,12 +42,16 @@ parse_gt3x_info <- function(path) {
 #'
 #' @param x gt3x_info object returned by parse_gt3x_info()
 #'
+#' @family gt3x-parser
+#'
 print.gt3x_info <- function(x) {
   cat("GT3X information\n")
   str(x, give.head = FALSE, no.list=TRUE)
 }
 
 #' Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
+#'
+#' @family parser-utils
 get_n_samples<- function(info) {
   start <- info[["Start Date"]]
   end <- info[["Last Sample Time"]]
@@ -63,10 +72,13 @@ get_n_samples<- function(info) {
 #' datadir <- gt3x_datapath()
 #' gt3xfolders <- unzip.gt3x(datadir)
 #' x <- readGT3X(gt3xfolders[1])
+#' df <- as.data.frame(x)
 #'
 #' # temporary unzip and read
 #' gt3xfile <- gt3x_datapath(1)
 #' x <- readGT3X(gt3xfile)
+#'
+#' @family gt3x-parser
 #'
 #' @export
 readGT3X <- function(path, verbose = FALSE, ...) {
@@ -98,5 +110,19 @@ readGT3X <- function(path, verbose = FALSE, ...) {
 
 }
 
-
-
+#' Convert an activity matrix to a data.frame
+#'
+#' @param activity Object of class 'activity' (returned by readGT3X)
+#'
+#' @family gt3x-parser
+#'
+#' @export
+as.data.frame.activity <- function(activity) {
+  options(digits = 15, digits.secs = 3)
+  start_time = as.numeric(attr(activity, "start_time"))
+  time_index <- attr(activity, "time_index")
+  sample_rate <- attr(activity, "sample_rate")
+  df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
+  class(df$time) <- "POSIXct"
+  df
+}

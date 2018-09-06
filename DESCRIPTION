@@ -2,8 +2,7 @@ Package: read.gt3x
 Type: Package
 Title: Parse actigraph accelerometer data (.gt3x)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Tuomo Nieminen <tuomo.a.nieminen@gmail.com>
+Authors@R: person("Tuomo", "Nieminen", email = "tuomo.a.nieminen@gmail.co", role = c("aut", "cre"))
 Description: The read.gt3x package implements a high performance C++ parser for actigraphs .gt3x data format for accelerometer samples. 
     Activity samples can be easily read into an R matrix. 
     This allows for storing the raw accelerometer samples in the original binary format to reserve space.

@@ -17,8 +17,8 @@ using namespace std;
 
 const int N_ACTIVITYCOLUMNS = 3; // accelometer measures in three directions: x,y,z
 const int SIGNIF_DIGITS = 3;
+const int TIME_UNIT = 100; // hZ
 
-const uint64_t TIMESTAMP_UNIT = 1000; // milliseconds
 
 // The gt3x logrecord types.
 enum LogRecordType {
@@ -147,14 +147,14 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
 // Activity parsers for the two possible formats
 // ---------------------------------------------
 
-uint32_t createTimeStamp(uint32_t timestamp, int i, double_t sample_time, uint32_t start_time) {
-  return round( ( (double_t)(timestamp - start_time) + (double_t)i * sample_time ) * TIMESTAMP_UNIT) ;
+uint32_t createTimeStamp(uint32_t payload_start, int i, int sample_rate, uint32_t start_time) {
+  return round( ( (double_t)(payload_start - start_time) + (double_t)i * (1.0 / sample_rate ) ) * TIME_UNIT) ;
 }
 
 
 // Parsea second of activity data (type 2) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
-void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t timestamp, double_t sample_time, uint32_t start_time, bool debug) {
+void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
   int16_t item;
 
   if(debug)
@@ -164,14 +164,14 @@ void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& ti
       stream.read(reinterpret_cast<char*>(&item), 2);
       activity(i + start, j) = item;
     }
-    timeStamps(i + start) = createTimeStamp(timestamp, i, sample_time, start_time);
+    timeStamps(i + start) = createTimeStamp(payload_start, i, sample_rate, start_time);
   }
 }
 
 
 // Parse a second of activity data (type 1) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity.md
-void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t timestamp, double_t sample_time, uint32_t start_time, bool debug) {
+void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
 
   bool odd = 0;
   int current = 0;
@@ -214,7 +214,7 @@ void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& tim
       activity(i + start, j) = (int16_t)shifter;
       odd = !odd;
     }
-    timeStamps(i + start) = createTimeStamp(timestamp, i, sample_time, start_time);
+    timeStamps(i + start) = createTimeStamp(payload_start, i, sample_rate, start_time);
   }
 }
 
@@ -292,12 +292,10 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   uint8_t type;
   uint8_t item;
   uint16_t size;
-  uint32_t timestamp;
+  uint32_t payload_start;
   uint32_t start_time;
   int total_records = 0;
   int sample_size;
-
-  double_t sample_time =  1.0 / (double_t)sample_rate;
 
   int chksum;
 
@@ -307,7 +305,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     if(!GT3Xstream) break;
 
     if(item == RECORD_SEPARATOR) {
-      ParseHeader(GT3Xstream, type, timestamp, size);
+      ParseHeader(GT3Xstream, type, payload_start, size);
       sample_size = bytes2samplesize(type, size);
       // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
@@ -321,12 +319,12 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       }
 
       else if(type == RECORDTYPE_ACTIVITY) {
-        ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, timestamp, sample_time, start_time, debug);
+        ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
 
       else if(type == RECORDTYPE_ACTIVITY2) {
-        ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, timestamp, sample_time, start_time, debug);
+        ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
 
@@ -358,7 +356,6 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
   colnames(out) = CharacterVector::create("X", "Y", "Z");
   out.attr("time_index") = timeStamps[Range(0, total_records - 1)];
-  out.attr("time_unit") = TIMESTAMP_UNIT;
 
   out.attr("start_time") = start_time;
   out.attr("sample_rate") = sample_rate;
