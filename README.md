@@ -24,6 +24,14 @@ This package makes it easier and faster to read the raw accelerometer samples in
 - Fast access to the accelerometer's measurements  
 - Circumvent ActiLifes filtering algorithms  
 
+## Installation
+
+You can install the read.gt3x package from GitHub, using the devtools-package (available in CRAN).
+
+```
+devtools::install_github("THLfi/read.gt3x")
+```
+
 
 ## Basic usage
 
