@@ -49,85 +49,23 @@ have_log_and_info <- function(gt3x) {
   return(haslog & hasinfo)
 }
 
-#' Unzip a single gt3x file
-#'
-#' A .gt3x file is a zipped archive with two files: log.bin and info.txt.
-#' This function unzips the contents of the archive to a single folder.
-#' This is a helper for unzip.gt3x()
-#'
-#' @param path Path to a .gt3x file
-#' @param dirname The name of the resulting directory where the content of <path> are extracted.
-#' Default is the name of the input file, sans the .gt3x extension.
-#' @param location A path to an output directory. Default is a tempdir().
-#' @param files The names of files to extract. Default is info.txt and log.bin
-#'
-unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path)), location = tempdir(), files = c("info.txt", "log.bin")) {
 
-  cat("Unzipping ", path, "\n")
-
-  if(!is_gt3x(path)) {
-    message(path, " is a not a .gt3x file. Unzipping failed")
-    return(NULL)
-  }
-
-  if(!have_log_and_info(path)) {
-    message(path, " did not contain both log.bin and info.txt. Unzipping failed.")
-    return(NULL)
-  }
-
-  exdir <- file.path(location, dirname)
-  extractedpaths <- unzip(path, files = files, exdir = exdir)
-  cat(" === info.txt and log.bin extracted to ", exdir, "\n")
-  exdir
-}
-
-
-
-#' Unzip gt3x files
-#'
-#' unzip.gt3x() makes it convenient to unzip multiple .gt3x files.
-#'
-#' @param path One of the following: (1) A path to a directory with .gt3x files in which case they are all unzipped, or
-#' (2) A character vector of direct paths to .gt3x files.
-#' @param location Path to a directory to unzip the files to. Default is a temporary directory created by tempdir().
+#' Convert NET ticks to POSIXct datetime
 #'
 #' @details
-#'  A .gt3x file is a zipped directory with two files: log.bin and info.txt.
-#'  This function simply unzips the contents of the directories.
-#'
-#' @return
-#' Returns a vector of paths to unzipped gt3x folders.
-#'
-#' @family file manipulations
-#'
-#' @examples
-#'
-#' # unzip a single .gt3x file
-#' path <- gt3x_datapath(1)
-#' gt3xdir <- unzip.gt3x(path)
-#'
-#' # unzip multiple .gt3x files
-#' dir <- gt3x_datapath()
-#' gt3xdirs <- unzip.gt3x(dir)
-#'
-#' @export
-unzip.gt3x <- function(path, location = tempdir()) {
-  if(length(path) == 1 & !is_gt3x(path[1])) {
-    gt3xfiles <- list_gt3x(path)
-  } else {
-    gt3xfiles <- path
-    if(!all(is_gt3x(gt3xfiles))) stop("Some or all of the filepaths do not have a .gt3x extension")
-  }
+#' reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
+ticks2datetime <- function(ticks, tz) {
+  ticks <- as.numeric(ticks)
+  seconds <- ticks / 1e7
+  datetime <- as.POSIXct(seconds, origin='0001-01-01', tz=tz)
+  datetime
+}
 
-  n <- length(gt3xfiles)
-  if(n < 1) stop("No .gt3x files found")
-
-  message("Unzipping gt3x data to ", location)
-
-  result_paths <- vector("character", n)
-  for(i in seq_len(n)) {
-    cat(i, "/", n, " ", sep = "")
-    result_paths[i] <- unzip_single_gt3x(gt3xfiles[i], location = location)
-  }
-  result_paths
+#' Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
+get_n_samples<- function(gt3x_info) {
+  start <- gt3x_info[["Start Date"]]
+  end <- gt3x_info[["Last Sample Time"]]
+  rate <- gt3x_info[["Sample Rate"]]
+  seqs <- as.numeric(difftime(end, start, units = "secs"))
+  seqs*rate
 }
