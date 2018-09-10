@@ -13,7 +13,7 @@
 #'
 unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path)), location = tempdir(), files = c("info.txt", "log.bin")) {
 
-  message("Unzipping ", path, "\n")
+  message("Unzipping ", path)
 
   if(!is_gt3x(path)) {
     message(path, " is a not a .gt3x file. Unzipping failed")
@@ -27,7 +27,7 @@ unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path
 
   exdir <- file.path(location, dirname)
   extractedpaths <- unzip(path, files = files, exdir = exdir)
-  message(" === info.txt and log.bin extracted to ", exdir, "\n")
+  message(" === info.txt and log.bin extracted to ", exdir)
   exdir
 }
 
