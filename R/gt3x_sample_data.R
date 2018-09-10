@@ -16,7 +16,7 @@ gt3x_datapath <- function(index = NULL) {
   filenames <- gt3x_filename(index)
   for(i in seq_along(filenames)) {
     if(!file.exists(file.path(datadir, filenames[i])))
-      gt3x_download(url = gt3x_url(i), destfile = file.path(datadir, filenames[i]))
+      gt3x_download(url = gt3x_url(i), exdir = datadir)
   }
   if(!is.null(index)) {
     files <- list_gt3x(datadir)
@@ -27,11 +27,11 @@ gt3x_datapath <- function(index = NULL) {
 
 
 #' Download and unzip a zipped gt3xfile
-gt3x_download <- function(url, destfile) {
+gt3x_download <- function(url, exdir) {
   message("Downloading gt3x sample data...")
   temp <- tempfile()
   download.file(url, temp, method = "auto")
-  unzip(temp, exdir = destfile)
+  unzip(temp, exdir = exdir)
   unlink(temp)
 }
 
