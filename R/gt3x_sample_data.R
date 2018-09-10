@@ -42,8 +42,8 @@ gt3x_download <- function(url, exdir) {
 #' Get url of gt3x sample file
 #'
 #' @family sample-data
-gt3x_url <- function(index = NULL, filename = NULL, version = "v0.2-alpha", baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
-  dataurl <- gt3x_dataurl(version, baseurl)
+gt3x_url <- function(index = NULL, filename = NULL) {
+  dataurl <- gt3x_dataurl()
   if(is.null(filename))
     filename <- gt3x_filename(index, zipped = TRUE)
   file.path(dataurl, filename)
@@ -52,7 +52,7 @@ gt3x_url <- function(index = NULL, filename = NULL, version = "v0.2-alpha", base
 #' Get url of github release
 #'
 #' @family sample-data
-gt3x_dataurl <- function(version = "v0.2-alpha", baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
+gt3x_dataurl <- function(version = "v0.1", baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
   url <- file.path(baseurl, version)
 }
 
