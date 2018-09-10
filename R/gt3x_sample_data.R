@@ -1,18 +1,5 @@
 #' Path to read.gt3x package sample data
 #'
-<<<<<<< HEAD
-#' @param index The index of a sample file to retrieve
-#'
-#' @examples
-#' dir <- gt3x_datapath()
-#'
-#' @export
-gt3x_datapath <- function(index = NULL) {
-  datadir <- file.path(path.package("read.gt3x"), "extdata")
-  if(!is.null(index)) {
-    files <- list_gt3x(datadir)
-    if(index > length(files)) stop("Index is larger than the number of sample files, which there are ", length(files))
-=======
 #' @param index Integer. The index of a sample file to retrieve. If NULL (default) the path to the directory
 #' including the sample files will be returned.
 #'
@@ -33,13 +20,11 @@ gt3x_datapath <- function(index = NULL) {
   }
   if(!is.null(index)) {
     files <- list_gt3x(datadir)
->>>>>>> github
     return(files[index])
   }
   datadir
 }
-<<<<<<< HEAD
-=======
+
 
 #' Download and unzip a zipped gt3xfile
 gt3x_download <- function(url, destfile) {
@@ -73,4 +58,4 @@ gt3x_filename <- function(index = NULL, zipped = FALSE) {
   if(index < 1) stop("Index can't be less than 1")
   files[index]
 }
->>>>>>> github
+
