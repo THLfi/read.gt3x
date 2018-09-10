@@ -14,20 +14,20 @@ NULL
 #' # first unzip, then read
 #' datadir <- gt3x_datapath()
 #' gt3xfolders <- unzip.gt3x(datadir)
-#' x <- readGT3X(gt3xfolders[1])
+#' x <- read.gt3x(gt3xfolders[1])
 #' df <- as.data.frame(x)
 #' head(df)
 #'
 #' # temporary unzip and read
 #' gt3xfile <- gt3x_datapath(1)
-#' x <- readGT3X(gt3xfile)
+#' x <- read.gt3x(gt3xfile)
 #' df <- as.data.frame(x)
 #' head(df)
 #'
 #' @family gt3x-parsers
 #'
 #' @export
-readGT3X <- function(path, verbose = FALSE, ...) {
+read.gt3x <- function(path, verbose = FALSE, ...) {
 
   fun_start_time <- Sys.time()
 
@@ -58,7 +58,7 @@ readGT3X <- function(path, verbose = FALSE, ...) {
 
 #' Convert an activity matrix to a data.frame
 #'
-#' @param activity Object of class 'activity' (returned by readGT3X)
+#' @param activity Object of class 'activity' (returned by read.gt3x)
 #'
 #' @family gt3x-parsers
 #'

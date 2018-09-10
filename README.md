@@ -51,7 +51,7 @@ gt3xfile <- gt3x_datapath(1)
 The `readGT3X()` function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix with three columns: X,Y,Z.
 
 ```{r}
-X <- readGT3X(gt3xfile)
+X <- read.gt3x(gt3xfile)
 ```
 
 You can also convert the matrix to a data.frame with 4 columns: X,Y,Z,time
