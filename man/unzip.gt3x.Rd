@@ -34,6 +34,7 @@ gt3xdirs <- unzip.gt3x(dir)
 
 }
 \seealso{
-Other file manipulations: \code{\link{list_gt3x}}
+Other file manipulations: \code{\link{gt3x_datapath}},
+  \code{\link{is_gt3x}}, \code{\link{list_gt3x}}
 }
 \concept{file manipulations}

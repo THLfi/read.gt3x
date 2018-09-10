@@ -24,7 +24,7 @@ NULL
 #' df <- as.data.frame(x)
 #' head(df)
 #'
-#' @family gt3x-parser
+#' @family gt3x-parsers
 #'
 #' @export
 readGT3X <- function(path, verbose = FALSE, ...) {
@@ -60,7 +60,7 @@ readGT3X <- function(path, verbose = FALSE, ...) {
 #'
 #' @param activity Object of class 'activity' (returned by readGT3X)
 #'
-#' @family gt3x-parser
+#' @family gt3x-parsers
 #'
 #' @export
 as.data.frame.activity <- function(activity) {

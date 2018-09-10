@@ -9,7 +9,7 @@
 #' @return
 #' Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.
 #'
-#' @family gt3x-utils
+#' @family file manipulations
 #'
 #' @examples
 #'
@@ -37,6 +37,8 @@ list_gt3x <- function(dirpath) {
 
 
 #' Check if a .gt3x file or unzipped gt3x directory has both log.bin adn info.txt
+#'
+#' @family gt3x-utils
 have_log_and_info <- function(gt3x) {
   if(is_gt3x(gt3x))
     filenames <- unzip(gt3x, list = TRUE)$Name
@@ -54,6 +56,8 @@ have_log_and_info <- function(gt3x) {
 #'
 #' @details
 #' reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
+#'
+#' @family gt3x-utils
 ticks2datetime <- function(ticks, tz) {
   ticks <- as.numeric(ticks)
   seconds <- ticks / 1e7
@@ -62,6 +66,8 @@ ticks2datetime <- function(ticks, tz) {
 }
 
 #' Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
+#'
+#' @family gt3x-utils
 get_n_samples<- function(gt3x_info) {
   start <- gt3x_info[["Start Date"]]
   end <- gt3x_info[["Last Sample Time"]]

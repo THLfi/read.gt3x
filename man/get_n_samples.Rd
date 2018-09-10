@@ -9,3 +9,8 @@ get_n_samples(gt3x_info)
 \description{
 Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
 }
+\seealso{
+Other gt3x-utils: \code{\link{have_log_and_info}},
+  \code{\link{ticks2datetime}}
+}
+\concept{gt3x-utils}

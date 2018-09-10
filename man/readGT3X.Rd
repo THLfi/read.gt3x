@@ -29,7 +29,8 @@ head(df)
 
 }
 \seealso{
-Other gt3x-parser: \code{\link{as.data.frame.activity}},
+Other gt3x-parsers: \code{\link{as.data.frame.activity}},
+  \code{\link{parse_gt3x_info}},
   \code{\link{print.gt3x_info}}
 }
-\concept{gt3x-parser}
+\concept{gt3x-parsers}

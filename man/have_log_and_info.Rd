@@ -9,3 +9,8 @@ have_log_and_info(gt3x)
 \description{
 Check if a .gt3x file or unzipped gt3x directory has both log.bin adn info.txt
 }
+\seealso{
+Other gt3x-utils: \code{\link{get_n_samples}},
+  \code{\link{ticks2datetime}}
+}
+\concept{gt3x-utils}

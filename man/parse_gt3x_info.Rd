@@ -17,4 +17,8 @@ gt3xfile <- gt3x_datapath(1)
 parse_gt3x_info(gt3xfile)
 
 }
+\seealso{
+Other gt3x-parsers: \code{\link{as.data.frame.activity}},
+  \code{\link{print.gt3x_info}}, \code{\link{readGT3X}}
+}
 \concept{gt3x-parsers}

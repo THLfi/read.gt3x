@@ -2,11 +2,16 @@
 % Please edit documentation in R/gt3x_sample_data.R
 \name{gt3x_url}
 \alias{gt3x_url}
-\title{Get url of gt3x sample files}
+\title{Get url of gt3x sample file}
 \usage{
 gt3x_url(index = NULL, filename = NULL, version = "v0.2-alpha",
   baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
 }
 \description{
-Get url of gt3x sample files
+Get url of gt3x sample file
 }
+\seealso{
+Other sample-data: \code{\link{gt3x_dataurl}},
+  \code{\link{gt3x_download}}
+}
+\concept{sample-data}

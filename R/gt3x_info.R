@@ -32,7 +32,7 @@ parse_gt3x_info <- function(path) {
 #'
 #' @param x gt3x_info object returned by parse_gt3x_info()
 #'
-#' @family gt3x-parser
+#' @family gt3x-parsers
 #'
 #' @export
 print.gt3x_info <- function(x) {

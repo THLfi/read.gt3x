@@ -13,7 +13,7 @@
 Convert an activity matrix to a data.frame
 }
 \seealso{
-Other gt3x-parser: \code{\link{print.gt3x_info}},
-  \code{\link{readGT3X}}
+Other gt3x-parsers: \code{\link{parse_gt3x_info}},
+  \code{\link{print.gt3x_info}}, \code{\link{readGT3X}}
 }
-\concept{gt3x-parser}
+\concept{gt3x-parsers}

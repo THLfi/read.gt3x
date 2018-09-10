@@ -9,3 +9,8 @@ gt3x_download(url, exdir)
 \description{
 Download and unzip a zipped gt3xfile
 }
+\seealso{
+Other sample-data: \code{\link{gt3x_dataurl}},
+  \code{\link{gt3x_url}}
+}
+\concept{sample-data}

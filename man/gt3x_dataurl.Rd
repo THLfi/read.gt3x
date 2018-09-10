@@ -10,3 +10,8 @@ gt3x_dataurl(version = "v0.2-alpha",
 \description{
 Get url of github release
 }
+\seealso{
+Other sample-data: \code{\link{gt3x_download}},
+  \code{\link{gt3x_url}}
+}
+\concept{sample-data}

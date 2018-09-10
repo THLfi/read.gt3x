@@ -24,4 +24,8 @@ is_gt3x("test.gt3x") # TRUE
 is_gt3x("test") # FALSE
 
 }
-\concept{gt3x-utils}
+\seealso{
+Other file manipulations: \code{\link{gt3x_datapath}},
+  \code{\link{list_gt3x}}, \code{\link{unzip.gt3x}}
+}
+\concept{file manipulations}
