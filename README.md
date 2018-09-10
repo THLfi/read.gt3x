@@ -54,4 +54,7 @@ The `readGT3X()` function can take as input a path to a single .gt3x file and wi
 X <- readGT3X(gt3xfile)
 ```
 
+## Documentation
+
+[Documentation](https://thlfi.github.io/read.gt3x/), hosted by GitHub pages.
 
