@@ -7,8 +7,6 @@ NULL
 #'
 #' @details
 #' reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
-#'
-#' @family parser-utils
 ticks2datetime <- function(ticks, tz) {
   ticks <- as.numeric(ticks)
   seconds <- ticks / 1e7
@@ -21,9 +19,15 @@ ticks2datetime <- function(ticks, tz) {
 #' @param path Path to a .gt3x file or an unzipped gt3x directory
 #'
 #' @family gt3x-parsers
+#'
+#' @examples
+#' gt3xfile <- gt3x_datapath(1)
+#' parse_gt3x_info(gt3xfile)
+#'
+#' @export
 parse_gt3x_info <- function(path) {
   if(is_gt3x(path))
-    path <- unzip.gt3x(path, files = "info.txt")
+    path <- unzip.gt3x(path)
   infotxt <- readLines(file.path(path, "info.txt"))
   infotxt <- strsplit(infotxt, split = ": ")
   infomatrix <- do.call("rbind", infotxt)
@@ -44,18 +48,17 @@ parse_gt3x_info <- function(path) {
 #'
 #' @family gt3x-parser
 #'
+#' @export
 print.gt3x_info <- function(x) {
   cat("GT3X information\n")
   str(x, give.head = FALSE, no.list=TRUE)
 }
 
 #' Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
-#'
-#' @family parser-utils
-get_n_samples<- function(info) {
-  start <- info[["Start Date"]]
-  end <- info[["Last Sample Time"]]
-  rate <- info[["Sample Rate"]]
+get_n_samples<- function(gt3x_info) {
+  start <- gt3x_info[["Start Date"]]
+  end <- gt3x_info[["Last Sample Time"]]
+  rate <- gt3x_info[["Sample Rate"]]
   seqs <- as.numeric(difftime(end, start, units = "secs"))
   seqs*rate
 }
