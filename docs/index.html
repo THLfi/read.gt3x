@@ -99,8 +99,15 @@
 <pre class="{r}"><code>library(read.gt3x)</code></pre>
 <p>First we need the path to a single gt3x file.</p>
 <pre class="{r}"><code>gt3xfile &lt;- gt3x_datapath(1)</code></pre>
-<p>The <code><a href="reference/readGT3X.html">readGT3X()</a></code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
-<pre class="{r}"><code>X &lt;- readGT3X(gt3xfile)</code></pre>
+<p>The <code>readGT3X()</code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix with three columns: X,Y,Z.</p>
+<pre class="{r}"><code>X &lt;- read.gt3x(gt3xfile)</code></pre>
+<p>You can also convert the matrix to a data.frame with 4 columns: X,Y,Z,time</p>
+<pre class="{r}"><code>df &lt;- as.data.frame(X)</code></pre>
+</div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p><a href="https://thlfi.github.io/read.gt3x/">Documentation</a>, hosted by GitHub pages.</p>
 </div>
 </div>
   </div>

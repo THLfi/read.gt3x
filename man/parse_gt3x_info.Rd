@@ -19,6 +19,6 @@ parse_gt3x_info(gt3xfile)
 }
 \seealso{
 Other gt3x-parsers: \code{\link{as.data.frame.activity}},
-  \code{\link{print.gt3x_info}}, \code{\link{readGT3X}}
+  \code{\link{print.gt3x_info}}, \code{\link{read.gt3x}}
 }
 \concept{gt3x-parsers}

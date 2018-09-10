@@ -4,8 +4,7 @@
 \alias{gt3x_url}
 \title{Get url of gt3x sample file}
 \usage{
-gt3x_url(index = NULL, filename = NULL, version = "v0.2-alpha",
-  baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
+gt3x_url(index = NULL, filename = NULL)
 }
 \description{
 Get url of gt3x sample file

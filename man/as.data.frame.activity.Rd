@@ -7,13 +7,13 @@
 \method{as.data.frame}{activity}(activity)
 }
 \arguments{
-\item{activity}{Object of class 'activity' (returned by readGT3X)}
+\item{activity}{Object of class 'activity' (returned by read.gt3x)}
 }
 \description{
 Convert an activity matrix to a data.frame
 }
 \seealso{
 Other gt3x-parsers: \code{\link{parse_gt3x_info}},
-  \code{\link{print.gt3x_info}}, \code{\link{readGT3X}}
+  \code{\link{print.gt3x_info}}, \code{\link{read.gt3x}}
 }
 \concept{gt3x-parsers}

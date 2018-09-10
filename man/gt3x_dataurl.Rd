@@ -4,7 +4,7 @@
 \alias{gt3x_dataurl}
 \title{Get url of github release}
 \usage{
-gt3x_dataurl(version = "v0.2-alpha",
+gt3x_dataurl(version = "v0.1",
   baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
 }
 \description{
