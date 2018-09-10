@@ -16,12 +16,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-To access the read.gt3x package, use:
+This document describes how the **read.gt3x** package can be used to read binary activity data into R. To access the read.gt3x package, use:
 
 ```{r}
 library(read.gt3x)
 ```
 
+For source code and installation instructions, see the [GitHub page](https://github.com/THLfi/read.gt3x).
 
 ## Reading .gt3x data into R
 
@@ -85,6 +86,6 @@ the read.gt3x package has an as.data.frame method for the activity matrix, which
 
 ```{r}
 df <- as.data.frame(X)
-str(df)
+head(df)
 ```
 
