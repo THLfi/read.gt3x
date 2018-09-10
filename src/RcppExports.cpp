@@ -6,13 +6,13 @@
 using namespace Rcpp;
 
 // activityAsDataFrame
-DataFrame activityAsDataFrame(NumericMatrix& m, IntegerVector time_index, double start_time, int sample_rate);
+DataFrame activityAsDataFrame(NumericMatrix& m, IntegerVector& time_index, double start_time, int sample_rate);
 RcppExport SEXP _read_gt3x_activityAsDataFrame(SEXP mSEXP, SEXP time_indexSEXP, SEXP start_timeSEXP, SEXP sample_rateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix& >::type m(mSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type time_index(time_indexSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type time_index(time_indexSEXP);
     Rcpp::traits::input_parameter< double >::type start_time(start_timeSEXP);
     Rcpp::traits::input_parameter< int >::type sample_rate(sample_rateSEXP);
     rcpp_result_gen = Rcpp::wrap(activityAsDataFrame(m, time_index, start_time, sample_rate));

@@ -3,7 +3,7 @@ using namespace Rcpp;
 using namespace std;
 
 // [[Rcpp::export]]
-DataFrame activityAsDataFrame(NumericMatrix &m, IntegerVector time_index, double start_time, int sample_rate) {
+DataFrame activityAsDataFrame(NumericMatrix &m, IntegerVector &time_index, double start_time, int sample_rate) {
 
   NumericVector timestamp = NumericVector(m.nrow());
   for(int i = 0; i < m.nrow(); i++)
