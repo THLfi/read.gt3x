@@ -16,10 +16,13 @@ NULL
 #' gt3xfolders <- unzip.gt3x(datadir)
 #' x <- readGT3X(gt3xfolders[1])
 #' df <- as.data.frame(x)
+#' head(df)
 #'
 #' # temporary unzip and read
 #' gt3xfile <- gt3x_datapath(1)
 #' x <- readGT3X(gt3xfile)
+#' df <- as.data.frame(x)
+#' head(df)
 #'
 #' @family gt3x-parser
 #'
