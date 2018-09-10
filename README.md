@@ -48,7 +48,7 @@ First we need the path to a single gt3x file.
 gt3xfile <- gt3x_datapath(1)
 ```
 
-The `readGT3X()` function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix with three columns: X,Y,Z.
+The `read.gt3x()` function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix with three columns: X,Y,Z.
 
 ```{r}
 X <- read.gt3x(gt3xfile)
