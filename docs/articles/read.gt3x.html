@@ -59,7 +59,7 @@
       <h1>Getting started with read.gt3x</h1>
                         <h4 class="author">Tuomo Nieminen</h4>
             
-            <h4 class="date">2018-09-06</h4>
+            <h4 class="date">2018-09-10</h4>
       
       
 
@@ -68,12 +68,12 @@
     
     
 <div class="contents">
-<p>To access the accelerometer package, use:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(accelerometer)</code></pre></div>
+<p>To access the read.gt3x package, use:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(read.gt3x)</code></pre></div>
 <div id="reading--gt3x-data-into-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading--gt3x-data-into-r" class="anchor"></a>Reading .gt3x data into R</h2>
-<p>The accelerometer package includes two sample .gt3x files which I’ll use to demonstrate reading the data. First we need the path to a single gt3x file.</p>
+<p>The read.gt3x package includes two sample .gt3x files which I’ll use to demonstrate reading the data. First we need the path to a single gt3x file.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gt3xfile &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span>(<span class="dv">1</span>)</code></pre></div>
 <div id="method-1-temporary-unzip-and-read" class="section level3">
 <h3 class="hasAnchor">
@@ -81,9 +81,9 @@
 <p>readGT3X() can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readGT3X.html">readGT3X</a></span>(gt3xfile)
 <span class="co">#&gt; Input is a .gt3x file, unzipping to a temporary location first...</span>
-<span class="co">#&gt; Unzipping gt3x data to /tmp/Rtmp1a8BKY</span>
-<span class="co">#&gt; 1/1 Unzipping  /home/tnin/R/x86_64-pc-linux-gnu-library/3.2/accelerometer/extdata/EE_left_29.5. (2017-05-30).gt3x </span>
-<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/Rtmp1a8BKY/EE_left_29.5.(2017-05-30)</span>
+<span class="co">#&gt; Unzipping gt3x data to /tmp/RtmpeDbvsW</span>
+<span class="co">#&gt; 1/1 Unzipping  /home/tnin/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x </span>
+<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/RtmpeDbvsW/EE_left_29.5.2017-05-30</span>
 <span class="co">#&gt; Parsing GT3X data via CPP.. expected sample size: 60692900</span>
 <span class="co">#&gt; Sample size: 60684200</span>
 <span class="co">#&gt; Done (in 5 seconds)</span></code></pre></div>
@@ -103,11 +103,11 @@
 <p>readGT3X() also accepts paths to unzipped gt3x folders. To demonstrate the usage, we’ll unzip the sample .gt3x files in the package, and then read them. The unzipGT3X() helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named “subject001.gt3x” are extracted to a folder named “subject001”. unzipGT3X() returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">datadir &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span>() <span class="co"># location of .gt3x files</span>
 gt3xfolders &lt;-<span class="st"> </span><span class="kw"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span>(datadir, <span class="dt">location =</span> <span class="kw">tempdir</span>())
-<span class="co">#&gt; Unzipping gt3x data to /tmp/Rtmp1a8BKY</span>
-<span class="co">#&gt; 1/2 Unzipping  /home/tnin/R/x86_64-pc-linux-gnu-library/3.2/accelerometer/extdata/EE_left_29.5. (2017-05-30).gt3x </span>
-<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/Rtmp1a8BKY/EE_left_29.5.(2017-05-30) </span>
-<span class="co">#&gt; 2/2 Unzipping  /home/tnin/R/x86_64-pc-linux-gnu-library/3.2/accelerometer/extdata/SS_left_19.5. (2017-05-22).gt3x </span>
-<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/Rtmp1a8BKY/SS_left_19.5.(2017-05-22)</span></code></pre></div>
+<span class="co">#&gt; Unzipping gt3x data to /tmp/RtmpeDbvsW</span>
+<span class="co">#&gt; 1/2 Unzipping  /home/tnin/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x </span>
+<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/RtmpeDbvsW/EE_left_29.5.2017-05-30 </span>
+<span class="co">#&gt; 2/2 Unzipping  /home/tnin/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x </span>
+<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/RtmpeDbvsW/SS_left_19.5.2017-05-22</span></code></pre></div>
 <p>The readGT3X() function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gt3xfolder &lt;-<span class="st"> </span>gt3xfolders[<span class="dv">1</span>]
 X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readGT3X.html">readGT3X</a></span>(gt3xfolder)
@@ -133,16 +133,26 @@ X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readGT3X.
 <span class="co">#&gt;  - attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   ..$ : NULL</span>
 <span class="co">#&gt;   ..$ : chr [1:3] "X" "Y" "Z"</span>
-<span class="co">#&gt;  - attr(*, "time_index")= int [1:60684200] 0 10 20 30 40 50 60 70 80 90 ...</span>
-<span class="co">#&gt;  - attr(*, "time_unit")= num 1000</span>
+<span class="co">#&gt;  - attr(*, "time_index")= int [1:60684200] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="co">#&gt;  - attr(*, "start_time")= POSIXct[1:1], format: "2017-05-23 12:15:00"</span>
 <span class="co">#&gt;  - attr(*, "sample_rate")= int 100</span></code></pre></div>
 <ul>
 <li>time_index: Time passed since start</li>
-<li>time_unit: Units per second. 1000 means milliseconds.</li>
 <li>start_time: timestamp of first sample</li>
 <li>sample_rate: Samples per second.</li>
 </ul>
+</div>
+<div id="converting-to-a-data-frame" class="section level2">
+<h2 class="hasAnchor">
+<a href="#converting-to-a-data-frame" class="anchor"></a>Converting to a data.frame</h2>
+<p>the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a “time” column, which gives the timestamp of each sample.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(X)
+<span class="kw">str</span>(df)
+<span class="co">#&gt; 'data.frame':    60684200 obs. of  4 variables:</span>
+<span class="co">#&gt;  $ X   : num  -0.035 -0.008 0.008 0.008 0.004 0 0 -0.004 -0.02 -0.027 ...</span>
+<span class="co">#&gt;  $ Y   : num  0.348 0.352 0.332 0.32 0.316 0.301 0.297 0.316 0.336 0.359 ...</span>
+<span class="co">#&gt;  $ Z   : num  -0.965 -0.934 -0.887 -0.848 -0.844 -0.852 -0.883 -0.918 -0.938 -0.941 ...</span>
+<span class="co">#&gt;  $ time:Class 'POSIXct'  num [1:60684200] 1.5e+09 1.5e+09 1.5e+09 1.5e+09 1.5e+09 ...</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -154,6 +164,7 @@ X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readGT3X.
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#reading--gt3x-data-into-r">Reading .gt3x data into R</a></li>
       <li><a href="#activity-data-matrix">Activity data matrix</a></li>
+      <li><a href="#converting-to-a-data-frame">Converting to a data.frame</a></li>
       </ul>
 </div>
       </div>

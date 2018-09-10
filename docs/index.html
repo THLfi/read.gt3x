@@ -86,11 +86,18 @@
 <li>Circumvent ActiLifes filtering algorithms</li>
 </ul>
 </div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the read.gt3x package from GitHub, using the devtools-package (available in CRAN).</p>
+<pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("THLfi/read.gt3x")</a></code></pre>
+</div>
 <div id="basic-usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-usage" class="anchor"></a>Basic usage</h2>
-<pre class="{r}"><code>library(accelerometer)</code></pre>
-<p>The accelerometer package includes two sample .gt3x files which can be used to demonstrate reading the data. First we need the path to a single gt3x file.</p>
+<p>The read.gt3x package includes two sample .gt3x files which can be used to demonstrate reading the data.</p>
+<pre class="{r}"><code>library(read.gt3x)</code></pre>
+<p>First we need the path to a single gt3x file.</p>
 <pre class="{r}"><code>gt3xfile &lt;- gt3x_datapath(1)</code></pre>
 <p>The <code><a href="reference/readGT3X.html">readGT3X()</a></code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
 <pre class="{r}"><code>X &lt;- readGT3X(gt3xfile)</code></pre>

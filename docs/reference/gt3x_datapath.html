@@ -97,14 +97,21 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>index</th>
-      <td><p>The index of a sample file to retrieve</p></td>
+      <td><p>Integer. The index of a sample file to retrieve. If NULL (default) the path to the directory
+including the sample files will be returned.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other file manipulations: <code><a href='is_gt3x.html'>is_gt3x</a></code>,
+  <code><a href='list_gt3x.html'>list_gt3x</a></code>, <code><a href='unzip.gt3x.html'>unzip.gt3x</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>dir</span> <span class='kw'>&lt;-</span> <span class='fu'>gt3x_datapath</span>()
+<span class='no'>gt3x_filename</span> <span class='kw'>&lt;-</span> <span class='fu'>gt3x_datapath</span>(<span class='fl'>1</span>)
 
 <span class='co'># }</span></pre>
   </div>
@@ -112,7 +119,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

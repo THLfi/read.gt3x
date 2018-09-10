@@ -103,7 +103,8 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other gt3x-parser: <code><a href='as.data.frame.activity.html'>as.data.frame.activity</a></code>,
+    <p>Other gt3x-parsers: <code><a href='as.data.frame.activity.html'>as.data.frame.activity</a></code>,
+  <code><a href='parse_gt3x_info.html'>parse_gt3x_info</a></code>,
   <code><a href='print.gt3x_info.html'>print.gt3x_info</a></code></p>
     
 
@@ -114,10 +115,13 @@
 <span class='no'>gt3xfolders</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='unzip.gt3x.html'>unzip.gt3x</a></span>(<span class='no'>datadir</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>readGT3X</span>(<span class='no'>gt3xfolders</span>[<span class='fl'>1</span>])
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>as.data.frame</span>(<span class='no'>x</span>)
+<span class='fu'>head</span>(<span class='no'>df</span>)
 
 <span class='co'># temporary unzip and read</span>
 <span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>(<span class='fl'>1</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>readGT3X</span>(<span class='no'>gt3xfile</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>as.data.frame</span>(<span class='no'>x</span>)
+<span class='fu'>head</span>(<span class='no'>df</span>)
 
 <span class='co'># }</span></pre>
   </div>
