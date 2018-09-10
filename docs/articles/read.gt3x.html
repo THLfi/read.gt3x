@@ -82,9 +82,9 @@
 <p>readGT3X() can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readGT3X.html">readGT3X</a></span>(gt3xfile)
 <span class="co">#&gt; Input is a .gt3x file, unzipping to a temporary location first...</span>
-<span class="co">#&gt; Unzipping gt3x data to /tmp/Rtmp74kA0R</span>
+<span class="co">#&gt; Unzipping gt3x data to /tmp/RtmpddbLEQ</span>
 <span class="co">#&gt; 1/1 Unzipping  /home/tnin/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x </span>
-<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/Rtmp74kA0R/EE_left_29.5.2017-05-30</span>
+<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/RtmpddbLEQ/EE_left_29.5.2017-05-30</span>
 <span class="co">#&gt; Parsing GT3X data via CPP.. expected sample size: 60692900</span>
 <span class="co">#&gt; Sample size: 60684200</span>
 <span class="co">#&gt; Done (in 5 seconds)</span></code></pre></div>
@@ -103,12 +103,13 @@
 <p>.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as <em>unzipped</em> folders containing these two files, because otherwise the readGT3X() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data.</p>
 <p>readGT3X() also accepts paths to unzipped gt3x folders. To demonstrate the usage, we’ll unzip the sample .gt3x files in the package, and then read them. The unzipGT3X() helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named “subject001.gt3x” are extracted to a folder named “subject001”. unzipGT3X() returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">datadir &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span>() <span class="co"># location of .gt3x files</span>
+<span class="co">#&gt; Downloading gt3x sample data...</span>
 gt3xfolders &lt;-<span class="st"> </span><span class="kw"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span>(datadir, <span class="dt">location =</span> <span class="kw">tempdir</span>())
-<span class="co">#&gt; Unzipping gt3x data to /tmp/Rtmp74kA0R</span>
+<span class="co">#&gt; Unzipping gt3x data to /tmp/RtmpddbLEQ</span>
 <span class="co">#&gt; 1/2 Unzipping  /home/tnin/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x </span>
-<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/Rtmp74kA0R/EE_left_29.5.2017-05-30 </span>
+<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/RtmpddbLEQ/EE_left_29.5.2017-05-30 </span>
 <span class="co">#&gt; 2/2 Unzipping  /home/tnin/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x </span>
-<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/Rtmp74kA0R/SS_left_19.5.2017-05-22</span></code></pre></div>
+<span class="co">#&gt;  === info.txt and log.bin extracted to  /tmp/RtmpddbLEQ/SS_left_19.5.2017-05-22</span></code></pre></div>
 <p>The readGT3X() function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gt3xfolder &lt;-<span class="st"> </span>gt3xfolders[<span class="dv">1</span>]
 X &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readGT3X.html">readGT3X</a></span>(gt3xfolder)
