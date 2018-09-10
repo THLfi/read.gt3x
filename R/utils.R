@@ -37,8 +37,6 @@ list_gt3x <- function(dirpath) {
 
 
 #' Check if a .gt3x file or unzipped gt3x directory has both log.bin adn info.txt
-#'
-#' @family gt3x-utils
 have_log_and_info <- function(gt3x) {
   if(is_gt3x(gt3x))
     filenames <- unzip(gt3x, list = TRUE)$Name
@@ -62,8 +60,6 @@ have_log_and_info <- function(gt3x) {
 #' Default is the name of the input file, sans the .gt3x extension.
 #' @param location A path to an output directory. Default is a tempdir().
 #' @param files The names of files to extract. Default is info.txt and log.bin
-#'
-#' @family file manipulations
 #'
 unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path)), location = tempdir(), files = c("info.txt", "log.bin")) {
 

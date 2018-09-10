@@ -4,7 +4,7 @@
 \alias{gt3x_download}
 \title{Download and unzip a zipped gt3xfile}
 \usage{
-gt3x_download(url, destfile)
+gt3x_download(url, exdir)
 }
 \description{
 Download and unzip a zipped gt3xfile

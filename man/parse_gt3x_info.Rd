@@ -12,4 +12,9 @@ parse_gt3x_info(path)
 \description{
 Parse GT3X info.txt file
 }
+\examples{
+gt3xfile <- gt3x_datapath(1)
+parse_gt3x_info(gt3xfile)
+
+}
 \concept{gt3x-parsers}

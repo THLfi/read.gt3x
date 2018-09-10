@@ -9,7 +9,3 @@ get_n_samples(info)
 \description{
 Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
 }
-\seealso{
-Other parser-utils: \code{\link{ticks2datetime}}
-}
-\concept{parser-utils}

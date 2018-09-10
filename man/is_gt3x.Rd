@@ -24,7 +24,4 @@ is_gt3x("test.gt3x") # TRUE
 is_gt3x("test") # FALSE
 
 }
-\seealso{
-Other gt3x-utils: \code{\link{have_log_and_info}}
-}
 \concept{gt3x-utils}

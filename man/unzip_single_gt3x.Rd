@@ -22,8 +22,3 @@ A .gt3x file is a zipped archive with two files: log.bin and info.txt.
 This function unzips the contents of the archive to a single folder.
 This is a helper for unzip.gt3x()
 }
-\seealso{
-Other file manipulations: \code{\link{list_gt3x}},
-  \code{\link{unzip.gt3x}}
-}
-\concept{file manipulations}

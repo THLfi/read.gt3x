@@ -12,7 +12,3 @@ Convert NET ticks to POSIXct datetime
 \details{
 reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
 }
-\seealso{
-Other parser-utils: \code{\link{get_n_samples}}
-}
-\concept{parser-utils}

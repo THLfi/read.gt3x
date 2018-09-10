@@ -14,7 +14,6 @@ list_gt3x(gt3x_datapath())
 
 }
 \seealso{
-Other file manipulations: \code{\link{unzip.gt3x}},
-  \code{\link{unzip_single_gt3x}}
+Other file manipulations: \code{\link{unzip.gt3x}}
 }
 \concept{file manipulations}
