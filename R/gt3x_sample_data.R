@@ -52,7 +52,7 @@ gt3x_url <- function(index = NULL, filename = NULL) {
 #' Get url of github release
 #'
 #' @family sample-data
-gt3x_dataurl <- function(version = "v0.1", baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
+gt3x_dataurl <- function(version = "v1.0", baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
   url <- file.path(baseurl, version)
 }
 
