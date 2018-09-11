@@ -32,7 +32,7 @@ gt3x_datapath <- function(index = NULL) {
 #'
 #' @family sample-data
 gt3x_download <- function(url, exdir) {
-  message("Downloading gt3x sample data...")
+  message("Downloading gt3x sample data from ", url)
   temp <- tempfile()
   download.file(url, temp, method = "auto")
   unzip(temp, exdir = exdir)
