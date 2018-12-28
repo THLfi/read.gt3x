@@ -9,6 +9,9 @@
 \arguments{
 \item{activity}{Object of class 'activity' (returned by read.gt3x)}
 }
+\value{
+An object of class 'activity_df' which is also a data.frame
+}
 \description{
 Convert an activity matrix to a data.frame
 }
