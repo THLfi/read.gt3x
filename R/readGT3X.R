@@ -63,6 +63,8 @@ read.gt3x <- function(path, verbose = FALSE, ...) {
 #'
 #' @family gt3x-parsers
 #'
+#' @return An object of class 'activity_df' which is also a data.frame
+#'
 #' @export
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
@@ -70,7 +72,8 @@ as.data.frame.activity <- function(activity) {
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
-  attr(df, "subject_name") <- attr(activity, "subject_name")
   class(df$time) <- "POSIXct"
-  df
+  structure(df,
+            class = c("activity_df", class(df)),
+            subject_name = attr(activity, "subject_name"))
 }
