@@ -47,7 +47,8 @@ read.gt3x <- function(path, verbose = FALSE, ...) {
   logpath <- file.path(path, "log.bin")
   accdata <- parseGT3X(logpath, max_samples = samples, scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`, verbose = verbose, ...)
 
-  attr(accdata, "start_time") = as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01")
+  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01")
+  attr(accdata, "subject_name") <- info[["Subject Name"]]
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
@@ -69,6 +70,7 @@ as.data.frame.activity <- function(activity) {
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
+  attr(df, "subject_name") <- attr(activity, "subject_name")
   class(df$time) <- "POSIXct"
   df
 }
