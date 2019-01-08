@@ -10,8 +10,9 @@
 #' Default is the name of the input file, sans the .gt3x extension.
 #' @param location A path to an output directory. Default is a tempdir().
 #' @param files The names of files to extract. Default is info.txt and log.bin
+#' @param remove_original Remove the zipfile after unzipping?
 #'
-unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path)), location = tempdir(), files = c("info.txt", "log.bin")) {
+unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path)), location = tempdir(), files = c("info.txt", "log.bin"), remove_original = FALSE) {
 
   message("Unzipping ", path)
 
@@ -27,7 +28,13 @@ unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path
 
   exdir <- file.path(location, dirname)
   extractedpaths <- unzip(path, files = files, exdir = exdir)
+  stopifnot(length(extractedpaths) > 0)
   message(" === info.txt and log.bin extracted to ", exdir)
+  if(remove_original) {
+    message("Removing original zipfile...")
+    removed <- file.remove(path)
+    if(removed) message("Removed ", path)
+  }
   exdir
 }
 
@@ -40,6 +47,8 @@ unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path
 #' @param path One of the following: (1) A path to a directory with .gt3x files in which case they are all unzipped, or
 #' (2) A character vector of direct paths to .gt3x files.
 #' @param location Path to a directory to unzip the files to. Default is a temporary directory created by tempdir().
+#'
+#' @param remove_original Remove the zipfiles after unzipping?
 #'
 #' @details
 #'  A .gt3x file is a zipped directory with two files: log.bin and info.txt.
@@ -61,7 +70,7 @@ unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path
 #' gt3xdirs <- unzip.gt3x(dir)
 #'
 #' @export
-unzip.gt3x <- function(path, location = tempdir()) {
+unzip.gt3x <- function(path, location = tempdir(), remove_original = FALSE) {
   if(length(path) == 1 & !is_gt3x(path[1])) {
     gt3xfiles <- list_gt3x(path)
   } else {
@@ -77,7 +86,7 @@ unzip.gt3x <- function(path, location = tempdir()) {
   result_paths <- vector("character", n)
   for(i in seq_len(n)) {
     message(i, "/", n, " ", sep = "")
-    result_paths[i] <- unzip_single_gt3x(gt3xfiles[i], location = location)
+    result_paths[i] <- unzip_single_gt3x(gt3xfiles[i], location = location, remove_original = remove_original)
   }
   result_paths
 }
