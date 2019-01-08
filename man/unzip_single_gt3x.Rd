@@ -5,7 +5,8 @@
 \title{Unzip a single gt3x file}
 \usage{
 unzip_single_gt3x(path, dirname = basename(gsub(".gt3x$| ", "", path)),
-  location = tempdir(), files = c("info.txt", "log.bin"))
+  location = tempdir(), files = c("info.txt", "log.bin"),
+  remove_original = FALSE)
 }
 \arguments{
 \item{path}{Path to a .gt3x file}
@@ -16,6 +17,8 @@ Default is the name of the input file, sans the .gt3x extension.}
 \item{location}{A path to an output directory. Default is a tempdir().}
 
 \item{files}{The names of files to extract. Default is info.txt and log.bin}
+
+\item{remove_original}{Remove the zipfile after unzipping?}
 }
 \description{
 A .gt3x file is a zipped archive with two files: log.bin and info.txt.

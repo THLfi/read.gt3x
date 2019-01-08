@@ -4,13 +4,15 @@
 \alias{unzip.gt3x}
 \title{Unzip gt3x files}
 \usage{
-unzip.gt3x(path, location = tempdir())
+unzip.gt3x(path, location = tempdir(), remove_original = FALSE)
 }
 \arguments{
 \item{path}{One of the following: (1) A path to a directory with .gt3x files in which case they are all unzipped, or
 (2) A character vector of direct paths to .gt3x files.}
 
 \item{location}{Path to a directory to unzip the files to. Default is a temporary directory created by tempdir().}
+
+\item{remove_original}{Remove the zipfiles after unzipping?}
 }
 \value{
 Returns a vector of paths to unzipped gt3x folders.
