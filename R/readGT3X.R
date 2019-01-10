@@ -8,6 +8,7 @@ NULL
 #' Read activity samples from a GT3X file as a matrix
 #'
 #' @param path Path to gt3x folder
+#' @param asDataFrame convert to an activity_df, see \code{as.data.frame.activity}
 #'
 #' @examples
 #'
@@ -18,16 +19,15 @@ NULL
 #' df <- as.data.frame(x)
 #' head(df)
 #'
-#' # temporary unzip and read
+#' # temporary unzip, read, convert to a data frame
 #' gt3xfile <- gt3x_datapath(1)
-#' x <- read.gt3x(gt3xfile)
-#' df <- as.data.frame(x)
+#' df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 #' head(df)
 #'
 #' @family gt3x-parsers
 #'
 #' @export
-read.gt3x <- function(path, verbose = FALSE, ...) {
+read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
 
   fun_start_time <- Sys.time()
 
@@ -52,8 +52,13 @@ read.gt3x <- function(path, verbose = FALSE, ...) {
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
-  structure(accdata,
+  x <- structure(accdata,
             class = c("activity", class(accdata)))
+
+  if(asDataFrame)
+    x <- as.data.frame(x)
+
+  x
 
 }
 
@@ -71,7 +76,10 @@ as.data.frame.activity <- function(activity) {
   start_time = as.numeric(attr(activity, "start_time"))
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
+
+  message("Converting to a data.frame ...")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
+  message("Done")
   class(df$time) <- "POSIXct"
   structure(df,
             class = c("activity_df", class(df)),

@@ -4,10 +4,12 @@
 \alias{read.gt3x}
 \title{Read GT3X}
 \usage{
-read.gt3x(path, verbose = FALSE, ...)
+read.gt3x(path, verbose = FALSE, asDataFrame = FALSE, ...)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
+
+\item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
 }
 \description{
 Read activity samples from a GT3X file as a matrix
