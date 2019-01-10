@@ -47,8 +47,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
   logpath <- file.path(path, "log.bin")
   accdata <- parseGT3X(logpath, max_samples = samples, scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`, verbose = verbose, ...)
 
-  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01")
+  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = "GMT")
   attr(accdata, "subject_name") <- info[["Subject Name"]]
+  attr(accdata, "time_zone") <- info[["TimeZone"]]
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
@@ -73,15 +74,16 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
 #' @export
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
-  start_time = as.numeric(attr(activity, "start_time"))
+  start_time = as.numeric(attr(activity, "start_time"), tz = "GMT")
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
 
   message("Converting to a data.frame ...")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
+  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = "GMT")
   message("Done")
-  class(df$time) <- "POSIXct"
   structure(df,
             class = c("activity_df", class(df)),
-            subject_name = attr(activity, "subject_name"))
+            subject_name = attr(activity, "subject_name"),
+            time_zone = attr(activity, "time_zone"))
 }

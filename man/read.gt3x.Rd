@@ -23,10 +23,9 @@ x <- read.gt3x(gt3xfolders[1])
 df <- as.data.frame(x)
 head(df)
 
-# temporary unzip and read
+# temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
-x <- read.gt3x(gt3xfile)
-df <- as.data.frame(x)
+df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 head(df)
 
 }

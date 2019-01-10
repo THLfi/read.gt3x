@@ -21,9 +21,9 @@ parse_gt3x_info <- function(path) {
   names(values) <- infomatrix[, 1]
   info <- as.list(values)
   info$`Sample Rate` <- as.numeric(info$`Sample Rate`)
-  info$`Start Date` <- ticks2datetime(info$`Start Date`, tz = info$`TimeZone`)
-  info$`Last Sample Time` <- ticks2datetime(info$`Last Sample Time`, tz = info$`TimeZone`)
-  info$`Download Date` <- ticks2datetime(info$`Download Date`, tz = info$`TimeZone`)
+  info$`Start Date` <- ticks2datetime(info$`Start Date`)
+  info$`Last Sample Time` <- ticks2datetime(info$`Last Sample Time`)
+  info$`Download Date` <- ticks2datetime(info$`Download Date`)
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
   structure(info, class = c("gt3x_info", class(info)))
 }
