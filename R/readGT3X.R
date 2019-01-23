@@ -8,6 +8,7 @@ NULL
 #' Read activity samples from a GT3X file as a matrix
 #'
 #' @param path Path to gt3x folder
+#' @param asDataFrame convert to an activity_df, see \code{as.data.frame.activity}
 #'
 #' @examples
 #'
@@ -18,16 +19,15 @@ NULL
 #' df <- as.data.frame(x)
 #' head(df)
 #'
-#' # temporary unzip and read
+#' # temporary unzip, read, convert to a data frame
 #' gt3xfile <- gt3x_datapath(1)
-#' x <- read.gt3x(gt3xfile)
-#' df <- as.data.frame(x)
+#' df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 #' head(df)
 #'
 #' @family gt3x-parsers
 #'
 #' @export
-read.gt3x <- function(path, verbose = FALSE, ...) {
+read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
 
   fun_start_time <- Sys.time()
 
@@ -47,13 +47,19 @@ read.gt3x <- function(path, verbose = FALSE, ...) {
   logpath <- file.path(path, "log.bin")
   accdata <- parseGT3X(logpath, max_samples = samples, scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`, verbose = verbose, ...)
 
-  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01")
+  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = "GMT")
   attr(accdata, "subject_name") <- info[["Subject Name"]]
+  attr(accdata, "time_zone") <- info[["TimeZone"]]
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
-  structure(accdata,
+  x <- structure(accdata,
             class = c("activity", class(accdata)))
+
+  if(asDataFrame)
+    x <- as.data.frame(x)
+
+  x
 
 }
 
@@ -68,12 +74,16 @@ read.gt3x <- function(path, verbose = FALSE, ...) {
 #' @export
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
-  start_time = as.numeric(attr(activity, "start_time"))
+  start_time = as.numeric(attr(activity, "start_time"), tz = "GMT")
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
+
+  message("Converting to a data.frame ...")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
-  class(df$time) <- "POSIXct"
+  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = "GMT")
+  message("Done")
   structure(df,
             class = c("activity_df", class(df)),
-            subject_name = attr(activity, "subject_name"))
+            subject_name = attr(activity, "subject_name"),
+            time_zone = attr(activity, "time_zone"))
 }

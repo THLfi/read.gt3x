@@ -58,10 +58,10 @@ have_log_and_info <- function(gt3x) {
 #' reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
 #'
 #' @family gt3x-utils
-ticks2datetime <- function(ticks, tz) {
+ticks2datetime <- function(ticks, tz = "GMT") {
   ticks <- as.numeric(ticks)
   seconds <- ticks / 1e7
-  datetime <- as.POSIXct(seconds, origin='0001-01-01', tz=tz)
+  datetime <- as.POSIXct(seconds, origin='0001-01-01', tz = tz)
   datetime
 }
 

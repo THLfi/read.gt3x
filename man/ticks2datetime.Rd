@@ -4,7 +4,7 @@
 \alias{ticks2datetime}
 \title{Convert NET ticks to POSIXct datetime}
 \usage{
-ticks2datetime(ticks, tz)
+ticks2datetime(ticks, tz = "GMT")
 }
 \description{
 Convert NET ticks to POSIXct datetime

@@ -4,10 +4,12 @@
 \alias{read.gt3x}
 \title{Read GT3X}
 \usage{
-read.gt3x(path, verbose = FALSE, ...)
+read.gt3x(path, verbose = FALSE, asDataFrame = FALSE, ...)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
+
+\item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
 }
 \description{
 Read activity samples from a GT3X file as a matrix
@@ -21,10 +23,9 @@ x <- read.gt3x(gt3xfolders[1])
 df <- as.data.frame(x)
 head(df)
 
-# temporary unzip and read
+# temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
-x <- read.gt3x(gt3xfile)
-df <- as.data.frame(x)
+df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 head(df)
 
 }
