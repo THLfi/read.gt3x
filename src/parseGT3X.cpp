@@ -147,12 +147,15 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
 // Activity parsers for the two possible formats
 // ---------------------------------------------
 
+
+
+// number of time units passed since start_time for i:th sample in payload
 uint32_t createTimeStamp(uint32_t payload_start, int i, int sample_rate, uint32_t start_time) {
   return round( ( (double_t)(payload_start - start_time) + (double_t)i * (1.0 / sample_rate ) ) * TIME_UNIT) ;
 }
 
 
-// Parsea second of activity data (type 2) and insert into matrix 'out'
+// Parse second of activity data (type 2) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
 void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
   int16_t item;
