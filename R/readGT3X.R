@@ -26,7 +26,7 @@ NULL
 #' datadir <- gt3x_datapath()
 #' gt3xfolders <- unzip.gt3x(datadir)
 #' gt3xfile <- gt3xfolders[2]
-#' x <- read.gt3x(gt3xfile, imputeZeroes = T, debug = T)
+#' x <- read.gt3x(gt3xfile, imputeZeroes = T)
 #' df2 <- as.data.frame(x)
 #' head(df2)
 #'
