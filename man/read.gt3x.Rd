@@ -4,12 +4,25 @@
 \alias{read.gt3x}
 \title{Read GT3X}
 \usage{
-read.gt3x(path, verbose = FALSE, asDataFrame = FALSE, ...)
+read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
+  imputeZeroes = FALSE, ...)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
 
 \item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
+
+\item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
+the time series will be incomplete in case there is missingness.}
+}
+\value{
+A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
+ \itemize{
+\item \code{start_time} :  Start time from info file in \code{POSIXct} format.
+\item \code{subject_name} : Subject name from info file
+\item \code{time_zone} : Time zone from info file
+\item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+}
 }
 \description{
 Read activity samples from a GT3X file as a matrix
@@ -19,9 +32,10 @@ Read activity samples from a GT3X file as a matrix
 # first unzip, then read
 datadir <- gt3x_datapath()
 gt3xfolders <- unzip.gt3x(datadir)
-x <- read.gt3x(gt3xfolders[1])
-df <- as.data.frame(x)
-head(df)
+gt3xfile <- gt3xfolders[2]
+x <- read.gt3x(gt3xfile, imputeZeroes = T)
+df2 <- as.data.frame(x)
+head(df2)
 
 # temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
