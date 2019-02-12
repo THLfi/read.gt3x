@@ -91,5 +91,6 @@ as.data.frame.activity <- function(activity) {
   structure(df,
             class = c("activity_df", class(df)),
             subject_name = attr(activity, "subject_name"),
-            time_zone = attr(activity, "time_zone"))
+            time_zone = attr(activity, "time_zone"),
+            missingness = attr(activity, "missingness"))
 }
