@@ -18,7 +18,7 @@ activityAsDataFrame <- function(m, time_index, start_time, sample_rate) {
 #' Returns a matrix with max_samples rows and 4 columns, where the first 3 columns are the acceleration samples and
 #' the last column is timestamps in seconds (including 100th of seconds) starting from 00:00:00 1970-01-01 UTC (UNIX time)
 #'
-parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE) {
-    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug)
+parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE, impute_zeroes = FALSE) {
+    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug, impute_zeroes)
 }
 
