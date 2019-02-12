@@ -12,6 +12,14 @@ NULL
 #' @param imputeZeroes Impute zeros in case there are missingness? Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
 #'
+#' @return A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
+#'  \itemize{
+#' \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
+#' \item \code{subject_name} : Subject name from info file
+#' \item \code{time_zone} : Time zone from info file
+#' \item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+#' }
+#'
 #' @examples
 #'
 #' # first unzip, then read
@@ -75,7 +83,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 #'
 #' @family gt3x-parsers
 #'
-#' @return An object of class 'activity_df' which is also a data.frame
+#' @return An object of class 'activity_df' which is also a data.frame with the following attributes
+#' #'  \itemize{
+#' \item \code{subject_name} : Subject name from info file
+#' \item \code{time_zone} : Time zone from info file
+#' \item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+#' }
 #'
 #' @export
 as.data.frame.activity <- function(activity) {
