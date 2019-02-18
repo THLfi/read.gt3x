@@ -1,8 +1,19 @@
 #include <Rcpp.h>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
+
 using namespace Rcpp;
 using namespace std;
+
+namespace patch {
+  template < typename T > std::string to_string( const T& n ) {
+    std::ostringstream stm ;
+    stm << n ;
+    return stm.str() ;
+  }
+}
 
 // tuomo.a.nieminen@gmail.com
 // 2018
@@ -341,7 +352,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
         if(payload_timediff > 0) {
           int n_missing = payload_timediff*sample_rate;
-          Missingness[to_string(expected_payload_start)] = n_missing;
+          Missingness[patch::to_string(expected_payload_start)] = n_missing;
           if(impute_zeroes && total_records > 0) {
             ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
             total_records += n_missing;
