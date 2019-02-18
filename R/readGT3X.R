@@ -63,7 +63,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
   attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = "GMT")
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
-  names(attr(accdata, "missingness")) <- as.POSIXct(as.integer(names(attr(accdata, "missingness"))), origin = "1970-01-01", tz = "GMT")
+  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.integer(names(attr(accdata, "missingness"))), origin = "1970-01-01", tz = "GMT"),
+                                             n_missing = attr(accdata, "missingness"))
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
