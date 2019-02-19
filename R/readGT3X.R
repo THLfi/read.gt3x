@@ -130,7 +130,7 @@ compute_VM <- function(X) sqrt(rowSums(X^2))
 as_vm_vector <- function(activity) {
 
   options(digits = 15, digits.secs = 3)
-  start_time  <- as.numeric(attr(activity, "start_time"), tz = "GMT")
+  start_time  <- attr(activity, "start_time")
   sample_rate <- attr(activity, "sample_rate")
   subject_name <- attr(activity, "subject_name")
   missingness <- attr(activity, "missingness")
@@ -139,12 +139,13 @@ as_vm_vector <- function(activity) {
   time_index <- attr(activity, "time_index")
 
   activity <- compute_VM(activity)
-  time <- as.POSIXct(start_time + (time_index / sample_rate), tz = "GMT", origin = "1970-01-01")
+  time <- as.POSIXct(as.numeric(start_time, tz = "GMT") + (time_index / sample_rate), tz = "GMT", origin = "1970-01-01")
 
   structure(activity, class = c("activity_vm", class(activity)),
             time = time,
             subject_name = subject_name,
             missingness = missingness,
-            time_zone = time_zone)
+            time_zone = time_zone,
+            start_time = start_time)
 
 }
