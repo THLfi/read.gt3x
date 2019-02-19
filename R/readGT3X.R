@@ -133,7 +133,7 @@ as_vm_vector <- function(activity) {
   start_time  <- as.numeric(attr(activity, "start_time"), tz = "GMT")
   sample_rate <- attr(activity, "sample_rate")
   subject_name <- attr(activity, "subject_name")
-  missingnes <- attr(activity, "missingness")
+  missingness <- attr(activity, "missingness")
   time_zone <- attr(activity, "time_zone")
 
   time_index <- attr(activity, "time_index")
