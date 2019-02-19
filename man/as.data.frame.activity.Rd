@@ -14,7 +14,7 @@ An object of class 'activity_df' which is also a data.frame with the following a
 #'  \itemize{
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
-\item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+\item \code{missingness} : Data frame with timestamps and the number of missing values associated.
 }
 }
 \description{
