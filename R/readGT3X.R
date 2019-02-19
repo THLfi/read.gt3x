@@ -145,6 +145,7 @@ as_vm_vector <- function(activity) {
             time = time,
             subject_name = subject_name,
             missingness = missingness,
-            time_zone = time_zone)
+            time_zone = time_zone,
+            start_time = start_time)
 
 }
