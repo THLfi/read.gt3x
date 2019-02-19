@@ -88,7 +88,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 #' #'  \itemize{
 #' \item \code{subject_name} : Subject name from info file
 #' \item \code{time_zone} : Time zone from info file
-#' \item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+#' \item \code{missingness} : Data frame with timestamps and the number of missing values associated.
 #' }
 #'
 #' @export
@@ -107,4 +107,44 @@ as.data.frame.activity <- function(activity) {
             subject_name = attr(activity, "subject_name"),
             time_zone = attr(activity, "time_zone"),
             missingness = attr(activity, "missingness"))
+}
+
+compute_VM <- function(X) sqrt(rowSums(X^2))
+
+#' Activity matrix as vector magnitude vector
+#'
+#' @param activity Matrix with class 'activity' as returned by read.gt3x
+#'
+#'
+#' @return A vector with class 'activity_vm' which has length equal to nrow(activity).
+#' Each index holds the vector magnitude (sqrt(x^2 + y^2 + z^2)) of the corresponding input row.
+#' The object has the following attributes:
+#' \itemize{
+#' \item \code{subject_name} : Subject name from info file
+#' \item \code{time_zone} : Time zone from info file
+#' \item \code{missingness} : Data frame with timestamps and the number of missing values associated.
+#' \item \code{time} : timestamp associated with each sample
+#' }
+#'
+#' @export
+as.vector.activity <- function(activity) {
+
+  options(digits = 15, digits.secs = 3)
+  start_time = as.numeric(attr(activity, "start_time"), tz = "GMT")
+  sample_rate <- attr(activity, "sample_rate")
+  subject_name <- attr(activity, "subject_name")
+  missingnes <- attr(activity, "missingness")
+  time_zone - attr(activity, "time_zone")
+
+  time_index <- attr(activity, "time_index")
+
+  activity <- compute_VM(activity)
+  time <- as.POSIXct(start_time + (time_index / sample_rate), tz = "GMT", origin = "1970-01-01")
+
+  structure(activity, class = c("activity_vm", class(activity)),
+            time = time,
+            subject_name = subject_name,
+            missingness = missingness,
+            time_zone = time_zone)
+
 }
