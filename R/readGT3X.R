@@ -127,7 +127,7 @@ compute_VM <- function(X) sqrt(rowSums(X^2))
 #' }
 #'
 #' @export
-as.vector.activity <- function(activity) {
+as_vm_vector <- function(activity) {
 
   options(digits = 15, digits.secs = 3)
   start_time  <- as.numeric(attr(activity, "start_time"), tz = "GMT")
