@@ -130,11 +130,11 @@ compute_VM <- function(X) sqrt(rowSums(X^2))
 as.vector.activity <- function(activity) {
 
   options(digits = 15, digits.secs = 3)
-  start_time = as.numeric(attr(activity, "start_time"), tz = "GMT")
+  start_time  <- as.numeric(attr(activity, "start_time"), tz = "GMT")
   sample_rate <- attr(activity, "sample_rate")
   subject_name <- attr(activity, "subject_name")
   missingnes <- attr(activity, "missingness")
-  time_zone - attr(activity, "time_zone")
+  time_zone <- attr(activity, "time_zone")
 
   time_index <- attr(activity, "time_index")
 
