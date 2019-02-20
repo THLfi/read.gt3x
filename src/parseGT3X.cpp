@@ -28,7 +28,7 @@ namespace patch {
 
 const int N_ACTIVITYCOLUMNS = 3; // accelometer measures in three directions: x,y,z
 const int SIGNIF_DIGITS = 3;
-const int TIME_UNIT = 100; // hZ
+const int TIME_UNIT = 100; // hundreth of a second
 
 
 // The gt3x logrecord types.
@@ -334,6 +334,10 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     if(item == RECORD_SEPARATOR) {
       ParseHeader(GT3Xstream, type, payload_start, size);
       sample_size = bytes2samplesize(type, size);
+
+      if(sample_size > sample_rate) {
+        sample_size = sample_rate;
+      }
       // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
       if(sample_size + total_records > max_samples) {
