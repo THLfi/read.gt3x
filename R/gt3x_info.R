@@ -22,6 +22,7 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   info <- as.list(values)
   info$`Sample Rate` <- as.numeric(info$`Sample Rate`)
   info$`Start Date` <- ticks2datetime(info$`Start Date`, tz = tz)
+  info$`Stop Date` <- ticks2datetime(info$`Stop Date`, tz = tz)
   info$`Last Sample Time` <- ticks2datetime(info$`Last Sample Time`, tz = tz)
   info$`Download Date` <- ticks2datetime(info$`Download Date`, tz = tz)
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
