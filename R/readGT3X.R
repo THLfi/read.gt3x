@@ -67,7 +67,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
                        scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`,
                        verbose = verbose, impute_zeroes = imputeZeroes, ...)
 
-  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = tz)
+  attr(accdata, "start_time") <- info[["Start Time"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
   attr(accdata, "tz") <- tz # actual timezone used for timestamps
