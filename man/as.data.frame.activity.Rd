@@ -10,7 +10,12 @@
 \item{activity}{Object of class 'activity' (returned by read.gt3x)}
 }
 \value{
-An object of class 'activity_df' which is also a data.frame
+An object of class 'activity_df' which is also a data.frame with the following attributes
+#'  \itemize{
+\item \code{subject_name} : Subject name from info file
+\item \code{time_zone} : Time zone from info file
+\item \code{missingness} : Data frame with timestamps and the number of missing values associated.
+}
 }
 \description{
 Convert an activity matrix to a data.frame

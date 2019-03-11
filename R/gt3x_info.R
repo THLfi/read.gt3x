@@ -11,7 +11,7 @@
 #' parse_gt3x_info(gt3xfile)
 #'
 #' @export
-parse_gt3x_info <- function(path) {
+parse_gt3x_info <- function(path, tz = "GMT") {
   if(is_gt3x(path))
     path <- unzip.gt3x(path)
   infotxt <- readLines(file.path(path, "info.txt"))
@@ -21,9 +21,9 @@ parse_gt3x_info <- function(path) {
   names(values) <- infomatrix[, 1]
   info <- as.list(values)
   info$`Sample Rate` <- as.numeric(info$`Sample Rate`)
-  info$`Start Date` <- ticks2datetime(info$`Start Date`)
-  info$`Last Sample Time` <- ticks2datetime(info$`Last Sample Time`)
-  info$`Download Date` <- ticks2datetime(info$`Download Date`)
+  info$`Start Date` <- ticks2datetime(info$`Start Date`, tz = tz)
+  info$`Last Sample Time` <- ticks2datetime(info$`Last Sample Time`, tz = tz)
+  info$`Download Date` <- ticks2datetime(info$`Download Date`, tz = tz)
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
   structure(info, class = c("gt3x_info", class(info)))
 }

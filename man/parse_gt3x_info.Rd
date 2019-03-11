@@ -4,7 +4,7 @@
 \alias{parse_gt3x_info}
 \title{Parse GT3X info.txt file}
 \usage{
-parse_gt3x_info(path)
+parse_gt3x_info(path, tz = "GMT")
 }
 \arguments{
 \item{path}{Path to a .gt3x file or an unzipped gt3x directory}

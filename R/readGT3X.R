@@ -9,15 +9,28 @@ NULL
 #'
 #' @param path Path to gt3x folder
 #' @param asDataFrame convert to an activity_df, see \code{as.data.frame.activity}
+#' @param imputeZeroes Impute zeros in case there are missingness? Default is FALSE, in which case
+#' the time series will be incomplete in case there is missingness.
+#' @param tz Time zone. E.g. "Europe/Helsinki". Can be set using options(read.gt3x.timezone = "Europe/Helsinki").
+#' If not given or set, will use "GMT". This is used for converting numeric timestamps to POSIXct format.
+#'
+#' @return A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
+#'  \itemize{
+#' \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
+#' \item \code{subject_name} : Subject name from info file
+#' \item \code{time_zone} : Time zone from info file
+#' \item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+#' }
 #'
 #' @examples
 #'
 #' # first unzip, then read
 #' datadir <- gt3x_datapath()
 #' gt3xfolders <- unzip.gt3x(datadir)
-#' x <- read.gt3x(gt3xfolders[1])
-#' df <- as.data.frame(x)
-#' head(df)
+#' gt3xfile <- gt3xfolders[2]
+#' x <- read.gt3x(gt3xfile, imputeZeroes = T)
+#' df2 <- as.data.frame(x)
+#' head(df2)
 #'
 #' # temporary unzip, read, convert to a data frame
 #' gt3xfile <- gt3x_datapath(1)
@@ -27,7 +40,7 @@ NULL
 #' @family gt3x-parsers
 #'
 #' @export
-read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
+read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes = FALSE, tz = NULL, ...) {
 
   fun_start_time <- Sys.time()
 
@@ -36,7 +49,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
     path <- unzip.gt3x(path)
   }
 
-  info <- parse_gt3x_info(path)
+  if(is.null(tz))
+    tz <- options("read.gt3x.timezone")
+  if(is.null(tz))
+    tz <- "GMT"
+
+  info <- parse_gt3x_info(path, tz = tz)
 
   if (verbose)
     print(info)
@@ -45,11 +63,17 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
 
   message("Parsing GT3X data via CPP.. expected sample size: ", samples)
   logpath <- file.path(path, "log.bin")
-  accdata <- parseGT3X(logpath, max_samples = samples, scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`, verbose = verbose, ...)
+  accdata <- parseGT3X(logpath, max_samples = samples,
+                       scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`,
+                       verbose = verbose, impute_zeroes = imputeZeroes, ...)
 
-  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = "GMT")
+  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = tz)
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
+  attr(accdata, "tz") <- tz # actual timezone used for timestamps
+  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.integer(names(attr(accdata, "missingness"))),
+                                                               origin = "1970-01-01", tz = tz),
+                                             n_missing = attr(accdata, "missingness"))
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
@@ -69,21 +93,30 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, ...) {
 #'
 #' @family gt3x-parsers
 #'
-#' @return An object of class 'activity_df' which is also a data.frame
+#' @return An object of class 'activity_df' which is also a data.frame with the following attributes
+#' #'  \itemize{
+#' \item \code{subject_name} : Subject name from info file
+#' \item \code{time_zone} : Time zone from info file
+#' \item \code{missingness} : Data frame with timestamps and the number of missing values associated.
+#' }
 #'
 #' @export
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
-  start_time = as.numeric(attr(activity, "start_time"), tz = "GMT")
+  tz <- attr(activity, "tz")
+  start_time = as.numeric(attr(activity, "start_time"), tz = tz)
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
 
   message("Converting to a data.frame ...")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
-  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = "GMT")
+  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = tz)
   message("Done")
   structure(df,
             class = c("activity_df", class(df)),
             subject_name = attr(activity, "subject_name"),
-            time_zone = attr(activity, "time_zone"))
+            time_zone = attr(activity, "time_zone"),
+            tz = tz,
+            missingness = attr(activity, "missingness"))
 }
+

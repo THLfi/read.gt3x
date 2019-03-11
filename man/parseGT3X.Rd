@@ -5,7 +5,7 @@
 \title{Parse activity samples from a GT3X file}
 \usage{
 parseGT3X(filename, max_samples, scale_factor, sample_rate,
-  verbose = FALSE, debug = FALSE)
+  verbose = FALSE, debug = FALSE, impute_zeroes = FALSE)
 }
 \arguments{
 \item{filename}{(char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples}

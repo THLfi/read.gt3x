@@ -1,8 +1,19 @@
 #include <Rcpp.h>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
+
 using namespace Rcpp;
 using namespace std;
+
+namespace patch {
+  template < typename T > std::string to_string( const T& n ) {
+    std::ostringstream stm ;
+    stm << n ;
+    return stm.str() ;
+  }
+}
 
 // tuomo.a.nieminen@gmail.com
 // 2018
@@ -17,7 +28,7 @@ using namespace std;
 
 const int N_ACTIVITYCOLUMNS = 3; // accelometer measures in three directions: x,y,z
 const int SIGNIF_DIGITS = 3;
-const int TIME_UNIT = 100; // hZ
+const int TIME_UNIT = 100; // hundreth of a second
 
 
 // The gt3x logrecord types.
@@ -147,18 +158,19 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
 // Activity parsers for the two possible formats
 // ---------------------------------------------
 
+
+
+// number of time units passed since start_time for i:th sample in payload
 uint32_t createTimeStamp(uint32_t payload_start, int i, int sample_rate, uint32_t start_time) {
   return round( ( (double_t)(payload_start - start_time) + (double_t)i * (1.0 / sample_rate ) ) * TIME_UNIT) ;
 }
 
 
-// Parsea second of activity data (type 2) and insert into matrix 'out'
+// Parse second of activity data (type 2) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
 void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
   int16_t item;
 
-  if(debug)
-    Rcout << "Start: " << start << " Records: " << sample_size << "\n";
   for(int i = 0; i < sample_size; ++i) {
     for (int j = 0; j < N_ACTIVITYCOLUMNS; ++j) {
       stream.read(reinterpret_cast<char*>(&item), 2);
@@ -175,9 +187,6 @@ void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& tim
 
   bool odd = 0;
   int current = 0;
-
-  if(debug)
-    Rcout << "Start: " << start << " Records: " << sample_size << "\n";
 
   for(int i = 0; i < sample_size; ++i) {
     for (int j = 0; j < N_ACTIVITYCOLUMNS; ++j) {
@@ -221,6 +230,20 @@ void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& tim
 // ---------------------------------------------
 // END Activity parsers
 
+
+// Imputation
+
+// the data matrix is initialized with zeroes
+// to 'impute' zeroes, simply go forward in time stamps
+// ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
+void ImputeZeroes(IntegerVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, bool debug) {
+
+  if(debug)
+    Rcout << "imputing " << sample_size << " values at index " << total_records << " \n";
+
+  for(int i = 0; i < sample_size; ++i)
+    timeStamps(i + total_records) = createTimeStamp(total_records, i, sample_rate, start_time);
+}
 
 
 // -----------------------
@@ -281,11 +304,13 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' the last column is timestamps in seconds (including 100th of seconds) starting from 00:00:00 1970-01-01 UTC (UNIX time)
 //'
 // [[Rcpp::export]]
-NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose = false, const bool debug = false) {
+NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate,
+                        const bool verbose = false, const bool debug = false, const bool impute_zeroes = false) {
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
   NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
   IntegerVector timeStamps(max_samples);
+  IntegerVector Missingness;
 
   const uint8_t RECORD_SEPARATOR = 30;
 
@@ -294,6 +319,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   uint16_t size;
   uint32_t payload_start;
   uint32_t start_time;
+  uint32_t expected_payload_start;
+  int payload_timediff;
   int total_records = 0;
   int sample_size;
 
@@ -307,23 +334,46 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     if(item == RECORD_SEPARATOR) {
       ParseHeader(GT3Xstream, type, payload_start, size);
       sample_size = bytes2samplesize(type, size);
+
+      if(sample_size > sample_rate) {
+        sample_size = sample_rate;
+      }
       // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
-      if(sample_size > max_samples - total_records) {
+      if(sample_size + total_records > max_samples) {
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
         break;
       }
 
       if(type == RECORDTYPE_PARAMETERS) {
         ParseParameters(GT3Xstream, size, start_time, verbose);
+        expected_payload_start = start_time + 1;
       }
 
-      else if(type == RECORDTYPE_ACTIVITY) {
+      if( (type == RECORDTYPE_ACTIVITY | type == RECORDTYPE_ACTIVITY2)) {
+
+        payload_timediff = (int)(payload_start - expected_payload_start);
+
+        if(payload_timediff > 0) {
+          int n_missing = payload_timediff*sample_rate;
+          Missingness[patch::to_string(expected_payload_start)] = n_missing;
+
+          if(impute_zeroes && total_records > 0) {
+            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
+            total_records += n_missing;
+          }
+        }
+
+        expected_payload_start = payload_start + 1;
+
+      }
+
+      if(type == RECORDTYPE_ACTIVITY & sample_size > 0) {
         ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
 
-      else if(type == RECORDTYPE_ACTIVITY2) {
+      else if(type == RECORDTYPE_ACTIVITY2 & sample_size > 0) {
         ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
@@ -333,6 +383,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       }
 
       chksum = GT3Xstream.get();
+
 
     } else if (std::ios::cur > 1) {
         Rcout << "CPP parser warnng: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
@@ -356,6 +407,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
   colnames(out) = CharacterVector::create("X", "Y", "Z");
   out.attr("time_index") = timeStamps[Range(0, total_records - 1)];
+  out.attr("missingness") = Missingness;
 
   out.attr("start_time") = start_time;
   out.attr("sample_rate") = sample_rate;
