@@ -357,6 +357,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
         if(payload_timediff > 0) {
           int n_missing = payload_timediff*sample_rate;
           Missingness[patch::to_string(expected_payload_start)] = n_missing;
+
           if(impute_zeroes && total_records > 0) {
             ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
             total_records += n_missing;
@@ -367,12 +368,12 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
       }
 
-      if(type == RECORDTYPE_ACTIVITY) {
+      if(type == RECORDTYPE_ACTIVITY & sample_size > 0) {
         ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
 
-      else if(type == RECORDTYPE_ACTIVITY2) {
+      else if(type == RECORDTYPE_ACTIVITY2 & sample_size > 0) {
         ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }

@@ -120,5 +120,3 @@ as.data.frame.activity <- function(activity) {
             missingness = attr(activity, "missingness"))
 }
 
-compute_VM <- function(X) sqrt(rowSums(X^2))
-
