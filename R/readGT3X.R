@@ -11,6 +11,8 @@ NULL
 #' @param asDataFrame convert to an activity_df, see \code{as.data.frame.activity}
 #' @param imputeZeroes Impute zeros in case there are missingness? Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
+#' @param tz Time zone. E.g. "Europe/Helsinki". Can be set using options(read.gt3x.timezone = "Europe/Helsinki").
+#' If not given or set, will use "GMT". This is used for converting numeric timestamps to POSIXct format.
 #'
 #' @return A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 #'  \itemize{
@@ -38,7 +40,7 @@ NULL
 #' @family gt3x-parsers
 #'
 #' @export
-read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes = FALSE, ...) {
+read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes = FALSE, tz = NULL, ...) {
 
   fun_start_time <- Sys.time()
 
@@ -47,7 +49,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
     path <- unzip.gt3x(path)
   }
 
-  info <- parse_gt3x_info(path)
+  if(is.null(tz))
+    tz <- options("read.gt3x.timezone")
+  if(is.null(tz))
+    tz <- "GMT"
+
+  info <- parse_gt3x_info(path, tz = tz)
 
   if (verbose)
     print(info)
@@ -60,10 +67,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
                        scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`,
                        verbose = verbose, impute_zeroes = imputeZeroes, ...)
 
-  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = "GMT")
+  attr(accdata, "start_time") <- as.POSIXct(attr(accdata, "start_time"), origin = "1970-01-01", tz = tz)
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
-  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.integer(names(attr(accdata, "missingness"))), origin = "1970-01-01", tz = "GMT"),
+  attr(accdata, "tz") <- tz # actual timezone used for timestamps
+  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.integer(names(attr(accdata, "missingness"))),
+                                                               origin = "1970-01-01", tz = tz),
                                              n_missing = attr(accdata, "missingness"))
 
   message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
@@ -94,58 +103,22 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 #' @export
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
-  start_time = as.numeric(attr(activity, "start_time"), tz = "GMT")
+  tz <- attr(activity, "tz")
+  start_time = as.numeric(attr(activity, "start_time"), tz = tz)
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
 
   message("Converting to a data.frame ...")
   df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
-  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = "GMT")
+  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = tz)
   message("Done")
   structure(df,
             class = c("activity_df", class(df)),
             subject_name = attr(activity, "subject_name"),
             time_zone = attr(activity, "time_zone"),
+            tz = tz,
             missingness = attr(activity, "missingness"))
 }
 
 compute_VM <- function(X) sqrt(rowSums(X^2))
 
-#' Activity matrix as vector magnitude vector
-#'
-#' @param activity Matrix with class 'activity' as returned by read.gt3x
-#'
-#'
-#' @return A vector with class 'activity_vm' which has length equal to nrow(activity).
-#' Each index holds the vector magnitude (sqrt(x^2 + y^2 + z^2)) of the corresponding input row.
-#' The object has the following attributes:
-#' \itemize{
-#' \item \code{subject_name} : Subject name from info file
-#' \item \code{time_zone} : Time zone from info file
-#' \item \code{missingness} : Data frame with timestamps and the number of missing values associated.
-#' \item \code{time} : timestamp associated with each sample
-#' }
-#'
-#' @export
-as_vm_vector <- function(activity) {
-
-  options(digits = 15, digits.secs = 3)
-  start_time  <- attr(activity, "start_time")
-  sample_rate <- attr(activity, "sample_rate")
-  subject_name <- attr(activity, "subject_name")
-  missingness <- attr(activity, "missingness")
-  time_zone <- attr(activity, "time_zone")
-
-  time_index <- attr(activity, "time_index")
-
-  activity <- compute_VM(activity)
-  time <- as.POSIXct(as.numeric(start_time, tz = "GMT") + (time_index / sample_rate), tz = "GMT", origin = "1970-01-01")
-
-  structure(activity, class = c("activity_vm", class(activity)),
-            time = time,
-            subject_name = subject_name,
-            missingness = missingness,
-            time_zone = time_zone,
-            start_time = start_time)
-
-}

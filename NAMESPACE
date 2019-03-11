@@ -2,7 +2,6 @@
 
 S3method(as.data.frame,activity)
 S3method(print,gt3x_info)
-export(as_vm_vector)
 export(gt3x_datapath)
 export(list_gt3x)
 export(parse_gt3x_info)
