@@ -61,7 +61,7 @@ have_log_and_info <- function(gt3x) {
 ticks2datetime <- function(ticks, tz = "GMT") {
   ticks <- as.numeric(ticks)
   seconds <- ticks / 1e7
-  datetime <- as.POSIXct(seconds, origin='0001-01-01', tz = tz)
+  datetime <- as.POSIXct(seconds, origin = '0001-01-01', tz = tz)
   datetime
 }
 

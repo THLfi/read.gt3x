@@ -5,14 +5,14 @@ NULL
 
 #' Read GT3X
 #'
-#' Read activity samples from a GT3X file as a matrix
+#' Read activity samples from a GT3X file as a matrix.
+#' Please note that all timestams are in local time (of the device) even though they are
+#' represented as POSIXct with GMT timezone.
 #'
 #' @param path Path to gt3x folder
 #' @param asDataFrame convert to an activity_df, see \code{as.data.frame.activity}
 #' @param imputeZeroes Impute zeros in case there are missingness? Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
-#' @param tz Time zone. E.g. "Europe/Helsinki". Can be set using options(read.gt3x.timezone = "Europe/Helsinki").
-#' If not given or set, will use "GMT". This is used for converting numeric timestamps to POSIXct format.
 #'
 #' @return A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 #'  \itemize{
@@ -40,7 +40,7 @@ NULL
 #' @family gt3x-parsers
 #'
 #' @export
-read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes = FALSE, tz = NULL, ...) {
+read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes = FALSE, ...) {
 
   fun_start_time <- Sys.time()
 
@@ -49,11 +49,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
     path <- unzip.gt3x(path)
   }
 
-  if(is.null(tz))
-    tz <- options("read.gt3x.timezone")
-  if(is.null(tz))
-    tz <- "GMT"
-
+  tz  <- "GMT" # used for parsing, times are actually in local timezone
   info <- parse_gt3x_info(path, tz = tz)
 
   if (verbose)
@@ -70,7 +66,6 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
   attr(accdata, "start_time") <- info[["Start Date"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
-  attr(accdata, "tz") <- tz # actual timezone used for timestamps
   attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.integer(names(attr(accdata, "missingness"))),
                                                                origin = "1970-01-01", tz = tz),
                                              n_missing = attr(accdata, "missingness"))
@@ -103,7 +98,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 #' @export
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
-  tz <- attr(activity, "tz")
+  tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time = as.numeric(attr(activity, "start_time"), tz = tz)
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
@@ -116,7 +111,6 @@ as.data.frame.activity <- function(activity) {
             class = c("activity_df", class(df)),
             subject_name = attr(activity, "subject_name"),
             time_zone = attr(activity, "time_zone"),
-            tz = tz,
             missingness = attr(activity, "missingness"))
 }
 
