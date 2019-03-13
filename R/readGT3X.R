@@ -64,13 +64,14 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
                        verbose = verbose, impute_zeroes = imputeZeroes, ...)
 
   attr(accdata, "start_time") <- info[["Start Date"]]
+  attr(accdata, "stop_time") <- info[["Stop Date"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
-  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.integer(names(attr(accdata, "missingness"))),
+  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
                                                                origin = "1970-01-01", tz = tz),
                                              n_missing = attr(accdata, "missingness"))
 
-  message("Done", " (in ",  as.integer(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
+  message("Done", " (in ",  as.numeric(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
   x <- structure(accdata,
             class = c("activity", class(accdata)))
