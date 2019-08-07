@@ -14,6 +14,12 @@ NULL
 #' @param imputeZeroes Impute zeros in case there are missingness? Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
 #'
+#' @note
+#'
+#' The timestamps in the .gt3x data format are saved in .NET format, which is nanoseconds in local time since 0001-01-01.
+#' This is a bit tricky to parse into an R datetime format. DateTimes are therefore represented as POSIXct format with the 'GMT' timezone attribute, which is false; the datetime actually
+#' represents local time.
+#'
 #' @return A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 #'  \itemize{
 #' \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
@@ -100,7 +106,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 as.data.frame.activity <- function(activity) {
   options(digits = 15, digits.secs = 3)
   tz <- "GMT" # used for parsing, timestamps are actually in local time
-  start_time = as.numeric(attr(activity, "start_time"), tz = tz)
+  start_time <- as.numeric(attr(activity, "start_time"), tz = tz)
   time_index <- attr(activity, "time_index")
   sample_rate <- attr(activity, "sample_rate")
 

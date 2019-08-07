@@ -409,7 +409,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   out.attr("time_index") = timeStamps[Range(0, total_records - 1)];
   out.attr("missingness") = Missingness;
 
-  out.attr("start_time") = start_time;
+  out.attr("start_time_log") = start_time;
   out.attr("sample_rate") = sample_rate;
 
   if(verbose)
