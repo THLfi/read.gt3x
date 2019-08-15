@@ -5,7 +5,7 @@
 \title{Read GT3X}
 \usage{
 read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
-  imputeZeroes = FALSE, tz = NULL, ...)
+  imputeZeroes = FALSE, ...)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
@@ -14,9 +14,6 @@ read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
 
 \item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
-
-\item{tz}{Time zone. E.g. "Europe/Helsinki". Can be set using options(read.gt3x.timezone = "Europe/Helsinki").
-If not given or set, will use "GMT". This is used for converting numeric timestamps to POSIXct format.}
 }
 \value{
 A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
@@ -28,7 +25,14 @@ A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 }
 }
 \description{
-Read activity samples from a GT3X file as a matrix
+Read activity samples from a GT3X file as a matrix.
+Please note that all timestams are in local time (of the device) even though they are
+represented as POSIXct with GMT timezone.
+}
+\note{
+The timestamps in the .gt3x data format are saved in .NET format, which is nanoseconds in local time since 0001-01-01.
+This is a bit tricky to parse into an R datetime format. DateTimes are therefore represented as POSIXct format with the 'GMT' timezone attribute, which is false; the datetime actually
+represents local time.
 }
 \examples{
 

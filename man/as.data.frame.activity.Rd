@@ -4,10 +4,14 @@
 \alias{as.data.frame.activity}
 \title{Convert an activity matrix to a data.frame}
 \usage{
-\method{as.data.frame}{activity}(activity)
+\method{as.data.frame}{activity}(x, ..., verbose = FALSE)
 }
 \arguments{
-\item{activity}{Object of class 'activity' (returned by read.gt3x)}
+\item{x}{Object of class 'activity' (returned by read.gt3x)}
+
+\item{...}{not used}
+
+\item{verbose}{print diagnostic messages}
 }
 \value{
 An object of class 'activity_df' which is also a data.frame with the following attributes

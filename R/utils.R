@@ -10,6 +10,7 @@
 #' Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.
 #'
 #' @family file manipulations
+#' @param export
 #'
 #' @examples
 #'

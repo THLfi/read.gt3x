@@ -12,8 +12,9 @@
 #'
 #' @export
 parse_gt3x_info <- function(path, tz = "GMT") {
-  if(is_gt3x(path))
+  if(is_gt3x(path)) {
     path <- unzip.gt3x(path)
+  }
   infotxt <- readLines(file.path(path, "info.txt"))
   infotxt <- strsplit(infotxt, split = ": ")
   infomatrix <- do.call("rbind", infotxt)
@@ -32,12 +33,13 @@ parse_gt3x_info <- function(path, tz = "GMT") {
 #' Print the contents of the info.txt file in a gt3x folder
 #'
 #' @param x gt3x_info object returned by parse_gt3x_info()
+#' @param ... not used
 #'
 #' @family gt3x-parsers
 #'
 #' @export
-print.gt3x_info <- function(x) {
+print.gt3x_info <- function(x, ...) {
   cat("GT3X information\n")
-  str(x, give.head = FALSE, no.list=TRUE)
+  str(x, give.head = FALSE, no.list = TRUE)
 }
 

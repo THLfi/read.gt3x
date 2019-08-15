@@ -4,10 +4,12 @@
 \alias{print.gt3x_info}
 \title{Print the contents of the info.txt file in a gt3x folder}
 \usage{
-\method{print}{gt3x_info}(x)
+\method{print}{gt3x_info}(x, ...)
 }
 \arguments{
 \item{x}{gt3x_info object returned by parse_gt3x_info()}
+
+\item{...}{not used}
 }
 \description{
 Print the contents of the info.txt file in a gt3x folder

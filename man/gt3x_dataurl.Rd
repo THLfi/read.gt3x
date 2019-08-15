@@ -7,11 +7,15 @@
 gt3x_dataurl(version = "v1.0",
   baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
 }
+\arguments{
+\item{version}{release version}
+
+\item{baseurl}{URL for GitHub release}
+}
 \description{
 Get url of github release
 }
 \seealso{
-Other sample-data: \code{\link{gt3x_download}},
-  \code{\link{gt3x_url}}
+Other sample-data: \code{\link{gt3x_datapath}}
 }
 \concept{sample-data}

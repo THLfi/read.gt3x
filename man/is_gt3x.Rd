@@ -8,6 +8,8 @@ is_gt3x(path)
 }
 \arguments{
 \item{path}{Path(s) to file(s)}
+
+\item{export}{}
 }
 \value{
 Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.

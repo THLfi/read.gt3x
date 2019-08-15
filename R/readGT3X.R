@@ -80,7 +80,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
   message("Done", " (in ",  as.numeric(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
 
   x <- structure(accdata,
-            class = c("activity", class(accdata)))
+                 class = c("activity", class(accdata)))
 
   if(asDataFrame)
     x <- as.data.frame(x)
@@ -91,7 +91,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 
 #' Convert an activity matrix to a data.frame
 #'
-#' @param activity Object of class 'activity' (returned by read.gt3x)
+#' @param x Object of class 'activity' (returned by read.gt3x)
+#' @param ... not used
+#' @param verbose print diagnostic messages
 #'
 #' @family gt3x-parsers
 #'
@@ -103,21 +105,30 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 #' }
 #'
 #' @export
-as.data.frame.activity <- function(activity) {
+as.data.frame.activity <- function(x, ..., verbose = FALSE) {
+  dig = getOption("digits")
+  dig.sec = getOption("digits.secs")
   options(digits = 15, digits.secs = 3)
+  on.exit({
+    options(digits = dig, digits.secs = dig.sec)
+  })
   tz <- "GMT" # used for parsing, timestamps are actually in local time
-  start_time <- as.numeric(attr(activity, "start_time"), tz = tz)
-  time_index <- attr(activity, "time_index")
-  sample_rate <- attr(activity, "sample_rate")
+  start_time <- as.numeric(attr(x, "start_time"), tz = tz)
+  time_index <- attr(x, "time_index")
+  sample_rate <- attr(x, "sample_rate")
 
-  message("Converting to a data.frame ...")
-  df <- activityAsDataFrame(activity, time_index, start_time, sample_rate)
+  if (verbose) {
+    message("Converting to a data.frame ...")
+  }
+  df <- activityAsDataFrame(x, time_index, start_time, sample_rate)
   df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = tz)
-  message("Done")
+  if (verbose) {
+    message("Done")
+  }
   structure(df,
             class = c("activity_df", class(df)),
-            subject_name = attr(activity, "subject_name"),
-            time_zone = attr(activity, "time_zone"),
-            missingness = attr(activity, "missingness"))
+            subject_name = attr(x, "subject_name"),
+            time_zone = attr(x, "time_zone"),
+            missingness = attr(x, "missingness"))
 }
 
