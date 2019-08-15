@@ -4,6 +4,8 @@
 \alias{gt3x_datapath}
 \alias{gt3x_download}
 \alias{gt3x_url}
+\alias{gt3x_dataurl}
+\alias{gt3x_filename}
 \title{Path to read.gt3x package sample data}
 \usage{
 gt3x_datapath(index = NULL, verbose = TRUE)
@@ -11,6 +13,11 @@ gt3x_datapath(index = NULL, verbose = TRUE)
 gt3x_download(url, exdir, verbose = TRUE)
 
 gt3x_url(index = NULL, filename = NULL)
+
+gt3x_dataurl(version = "v1.0",
+  baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
+
+gt3x_filename(index = NULL, zipped = FALSE)
 }
 \arguments{
 \item{index}{Integer. The index of a sample file to retrieve. If NULL (default) the path to the directory
@@ -24,7 +31,11 @@ including the sample files will be returned.}
 
 \item{filename}{file to grab to make url}
 
-\item{verbose}{print diagnostic messages}
+\item{version}{release version}
+
+\item{baseurl}{URL for GitHub release}
+
+\item{zipped}{do the files have a \code{.zip} extension}
 }
 \description{
 Path to read.gt3x package sample data
@@ -32,6 +43,10 @@ Path to read.gt3x package sample data
 Download and unzip a zipped gt3xfile
 
 Get url of gt3x sample file
+
+Get url of github release
+
+Get sample gt3x filenames
 }
 \examples{
 dir <- gt3x_datapath()
@@ -41,10 +56,6 @@ gt3x_filename <- gt3x_datapath(1)
 \seealso{
 Other file manipulations: \code{\link{is_gt3x}},
   \code{\link{list_gt3x}}, \code{\link{unzip.gt3x}}
-
-Other sample-data: \code{\link{gt3x_dataurl}}
-
-Other sample-data: \code{\link{gt3x_dataurl}}
 }
 \concept{file manipulations}
 \concept{sample-data}

@@ -13,11 +13,15 @@ parseGT3X(filename, max_samples, scale_factor, sample_rate,
 \item{max_samples}{Maximum number of rows to parse. The returned matrix will always contain this number of rows, having zeroes if
 not data is found.}
 
+\item{scale_factor}{Scale factor for the activity samples.}
+
+\item{sample_rate}{sampling rate for activity samples.}
+
 \item{verbose}{Print the parameters from the log.bin file and other messages?}
 
 \item{debug}{Print information for every activity second}
 
-\item{scale}{factor Scale factor for the activity samples.}
+\item{impute_zeroes}{Impute zeros in case there are missingness?}
 }
 \value{
 Returns a matrix with max_samples rows and 4 columns, where the first 3 columns are the acceleration samples and

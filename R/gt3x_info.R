@@ -3,7 +3,7 @@
 #' Parse GT3X info.txt file
 #'
 #' @param path Path to a .gt3x file or an unzipped gt3x directory
-#'
+#' @param tz timezone, passed to \code{\link{ticks2datetime}}
 #' @family gt3x-parsers
 #'
 #' @examples

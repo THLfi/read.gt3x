@@ -8,7 +8,7 @@
 [![Travis build
 status](https://travis-ci.com/muschellij2/read.gt3x.svg?branch=master)](https://travis-ci.com/muschellij2/read.gt3x)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/muschellij2/read.gt3x?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/read.gt3x)
+status](https://ci.appveyor.com/api/projects/status/github/muschellij2/read-gt3x?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/read-gt3x)
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for
@@ -87,13 +87,13 @@ columns: X,Y,Z.
 ``` r
 X <- read.gt3x(gt3xfile)
 #> Input is a .gt3x file, unzipping to a temporary location first...
-#> Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp11q9Ka
+#> Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpLTCtqy
 #> 1/1
-#> Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp11q9Ka/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x
-#>  === info.txt and log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp11q9Ka/EE_left_29.5.2017-05-30
+#> Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpLTCtqy/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x
+#>  === info.txt and log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpLTCtqy/EE_left_29.5.2017-05-30
 #> Parsing GT3X data via CPP.. expected sample size: 60692900
 #> Sample size: 60684100
-#> Done (in 16.2557809352875 seconds)
+#> Done (in 16.8180649280548 seconds)
 head(X)
 #>           X     Y      Z
 #> [1,] -0.164 0.820 -0.637

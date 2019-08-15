@@ -40,7 +40,7 @@ gt3x_datapath <- function(index = NULL, verbose = TRUE) {
 #' @rdname gt3x_datapath
 #' @param url url of the file to download
 #' @param exdir directory to extract the zip file
-#' @param verbose print diagnostic messages
+#' @importFrom utils download.file str unzip
 #'
 gt3x_download <- function(url, exdir, verbose = TRUE) {
   if (verbose) {
@@ -68,6 +68,7 @@ gt3x_url <- function(index = NULL, filename = NULL) {
 #' Get url of github release
 #'
 #' @family sample-data
+#' @rdname gt3x_datapath
 #' @param version release version
 #' @param baseurl URL for GitHub release
 gt3x_dataurl <- function(
@@ -78,6 +79,8 @@ gt3x_dataurl <- function(
 }
 
 #' Get sample gt3x filenames
+#' @rdname gt3x_datapath
+#' @param zipped do the files have a \code{.zip} extension
 gt3x_filename <- function(index = NULL, zipped = FALSE) {
   files <- c("EE_left_29.5.2017-05-30.gt3x", "SS_left_19.5.2017-05-22.gt3x")
   if (zipped) {

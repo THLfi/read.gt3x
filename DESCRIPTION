@@ -10,7 +10,9 @@ License: file LICENSE.txt
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
-Imports: Rcpp
+Imports: 
+    Rcpp,
+    utils
 RoxygenNote: 6.1.1
 Suggests: knitr,
     rmarkdown

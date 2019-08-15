@@ -10,10 +10,14 @@ read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
 \arguments{
 \item{path}{Path to gt3x folder}
 
+\item{verbose}{print diagnostic messages}
+
 \item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
 
 \item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
+
+\item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
 }
 \value{
 A numeric matrix with 3 columns (X, Y, Z) and the following attributes:

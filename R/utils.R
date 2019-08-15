@@ -10,7 +10,7 @@
 #' Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.
 #'
 #' @family file manipulations
-#' @param export
+#' @export
 #'
 #' @examples
 #'
@@ -18,7 +18,7 @@
 #' is_gt3x("test") # FALSE
 #'
 is_gt3x <- function(path) {
-  if(length(path) == 0) return(F)
+  if (length(path) == 0) return(FALSE)
   sapply(path, function(f) grepl("\\.gt3x$", f))
 }
 
@@ -26,12 +26,13 @@ is_gt3x <- function(path) {
 #'
 #' @examples
 #' list_gt3x(gt3x_datapath())
+#' @param path Path(s) to file(s)
 #'
 #' @family file manipulations
 #'
 #' @export
-list_gt3x <- function(dirpath) {
-  files <- list.files(path = dirpath, full.names = TRUE)
+list_gt3x <- function(path) {
+  files <- list.files(path = path, full.names = TRUE)
   gt3xfiles <- files[is_gt3x(files)]
   gt3xfiles
 }
@@ -40,15 +41,18 @@ list_gt3x <- function(dirpath) {
 #' Check if a .gt3x file or unzipped gt3x directory has both log.bin adn info.txt
 #'
 #' @family gt3x-utils
-have_log_and_info <- function(gt3x) {
-  if(is_gt3x(gt3x))
-    filenames <- unzip(gt3x, list = TRUE)$Name
-  else
-    filenames <- list.files(gt3x)
+#' @rdname is_gt3x
+#' @export
+have_log_and_info <- function(path) {
+  if (is_gt3x(path)) {
+    filenames <- unzip(path, list = TRUE)$Name
+  } else {
+    filenames <- list.files(path)
+  }
   haslog <- "log.bin" %in% filenames
   hasinfo <- "info.txt" %in% filenames
-  if(!haslog) message(gt3x, " doesn't contain log.bin")
-  if(!hasinfo) message(gt3x, " doesn't contain info.txt")
+  if (!haslog) message(gt3x, " doesn't contain log.bin")
+  if (!hasinfo) message(gt3x, " doesn't contain info.txt")
   return(haslog & hasinfo)
 }
 
@@ -57,7 +61,8 @@ have_log_and_info <- function(gt3x) {
 #'
 #' @details
 #' reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
-#'
+#' @param ticks values in NET ticks format
+#' @param tz timezone, passed to \code{\link{as.POSIXct}}
 #' @family gt3x-utils
 ticks2datetime <- function(ticks, tz = "GMT") {
   ticks <- as.numeric(ticks)
@@ -69,10 +74,12 @@ ticks2datetime <- function(ticks, tz = "GMT") {
 #' Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
 #'
 #' @family gt3x-utils
-get_n_samples<- function(gt3x_info) {
-  start <- gt3x_info[["Start Date"]]
-  end <- gt3x_info[["Last Sample Time"]]
-  rate <- gt3x_info[["Sample Rate"]]
+#' @param x info out from \code{\link{parse_gt3x_info}}
+#' @export
+get_n_samples <- function(x) {
+  start <- x[["Start Date"]]
+  end <- x[["Last Sample Time"]]
+  rate <- x[["Sample Rate"]]
   seqs <- as.numeric(difftime(end, start, units = "secs"))
   seqs*rate
 }

@@ -13,6 +13,8 @@ NULL
 #' @param asDataFrame convert to an activity_df, see \code{as.data.frame.activity}
 #' @param imputeZeroes Impute zeros in case there are missingness? Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
+#' @param ... additional arguments to pass to \code{parseGT3X} C++ code
+#' @param verbose print diagnostic messages
 #'
 #' @note
 #'
@@ -46,11 +48,12 @@ NULL
 #' @family gt3x-parsers
 #'
 #' @export
-read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes = FALSE, ...) {
+read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
+                      imputeZeroes = FALSE, ...) {
 
   fun_start_time <- Sys.time()
 
-  if(is_gt3x(path)) {
+  if (is_gt3x(path)) {
     message("Input is a .gt3x file, unzipping to a temporary location first...")
     path <- unzip.gt3x(path)
   }
@@ -63,21 +66,34 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE, imputeZeroes =
 
   samples <- get_n_samples(info)
 
-  message("Parsing GT3X data via CPP.. expected sample size: ", samples)
+  if (verbose) {
+    message("Parsing GT3X data via CPP.. expected sample size: ", samples)
+  }
   logpath <- file.path(path, "log.bin")
-  accdata <- parseGT3X(logpath, max_samples = samples,
-                       scale_factor = info$`Acceleration Scale`, sample_rate = info$`Sample Rate`,
-                       verbose = verbose, impute_zeroes = imputeZeroes, ...)
+  accdata <- parseGT3X(
+    logpath, max_samples = samples,
+    scale_factor = info$`Acceleration Scale`,
+    sample_rate = info$`Sample Rate`,
+    verbose = as.logical(verbose), impute_zeroes = imputeZeroes, ...)
 
   attr(accdata, "start_time") <- info[["Start Date"]]
   attr(accdata, "stop_time") <- info[["Stop Date"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
-  attr(accdata, "missingness") <- data.frame(time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
-                                                               origin = "1970-01-01", tz = tz),
-                                             n_missing = attr(accdata, "missingness"))
+  attr(accdata, "missingness") <- data.frame(
+    time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
+                      origin = "1970-01-01", tz = tz),
+    n_missing = attr(accdata, "missingness"),
+    stringsAsFactors = FALSE)
 
-  message("Done", " (in ",  as.numeric(difftime(Sys.time(), fun_start_time, units = "secs")), " seconds)")
+  if (verbose) {
+    message("Done", " (in ",
+            as.numeric(
+              difftime(Sys.time(),
+                       fun_start_time, units = "secs")),
+            " seconds)"
+    )
+  }
 
   x <- structure(accdata,
                  class = c("activity", class(accdata)))

@@ -295,8 +295,10 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' @param filename (char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples
 //' @param max_samples Maximum number of rows to parse. The returned matrix will always contain this number of rows, having zeroes if
 //' not data is found.
-//' @param scale factor Scale factor for the activity samples.
+//' @param scale_factor Scale factor for the activity samples.
+//' @param sample_rate sampling rate for activity samples.
 //' @param verbose Print the parameters from the log.bin file and other messages?
+//' @param impute_zeroes Impute zeros in case there are missingness?
 //' @param debug Print information for every activity second
 //'
 //' @return
