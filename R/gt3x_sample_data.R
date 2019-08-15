@@ -37,10 +37,11 @@ gt3x_datapath <- function(index = NULL, verbose = TRUE) {
 #' Download and unzip a zipped gt3xfile
 #'
 #' @family sample-data
-#' @rdname gt3x_datapath
 #' @param url url of the file to download
 #' @param exdir directory to extract the zip file
 #' @importFrom utils download.file str unzip
+#' @export
+#' @return file path of \code{exdir}
 #'
 gt3x_download <- function(url, exdir, verbose = TRUE) {
   if (verbose) {
@@ -50,13 +51,15 @@ gt3x_download <- function(url, exdir, verbose = TRUE) {
   download.file(url, temp, method = "auto", quiet = !verbose)
   unzip(temp, exdir = exdir)
   unlink(temp)
+  return(exdir)
 }
 
 #' Get url of gt3x sample file
 #'
 #' @family sample-data
-#' @rdname gt3x_datapath
 #' @param filename file to grab to make url
+#' @export
+#' @return file path
 gt3x_url <- function(index = NULL, filename = NULL) {
   dataurl <- gt3x_dataurl()
   if (is.null(filename)) {
@@ -68,9 +71,9 @@ gt3x_url <- function(index = NULL, filename = NULL) {
 #' Get url of github release
 #'
 #' @family sample-data
-#' @rdname gt3x_datapath
 #' @param version release version
 #' @param baseurl URL for GitHub release
+#' @return URL to file
 gt3x_dataurl <- function(
   version = "v1.0",
   baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
@@ -78,9 +81,10 @@ gt3x_dataurl <- function(
   url
 }
 
-#' Get sample gt3x filenames
 #' @rdname gt3x_datapath
 #' @param zipped do the files have a \code{.zip} extension
+#' @return Character vector of files
+#' @export
 gt3x_filename <- function(index = NULL, zipped = FALSE) {
   files <- c("EE_left_29.5.2017-05-30.gt3x", "SS_left_19.5.2017-05-22.gt3x")
   if (zipped) {
