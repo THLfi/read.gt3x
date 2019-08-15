@@ -39,6 +39,8 @@ gt3x_datapath <- function(index = NULL, verbose = TRUE) {
 #' @family sample-data
 #' @param url url of the file to download
 #' @param exdir directory to extract the zip file
+#' @param verbose print diagnostic messages
+#'
 #' @importFrom utils download.file str unzip
 #' @export
 #' @return file path of \code{exdir}
@@ -58,6 +60,8 @@ gt3x_download <- function(url, exdir, verbose = TRUE) {
 #'
 #' @family sample-data
 #' @param filename file to grab to make url
+#' @param index The index of a sample file to retrieve, passed to
+#' \code{\link{gt3x_filename}}
 #' @export
 #' @return file path
 gt3x_url <- function(index = NULL, filename = NULL) {

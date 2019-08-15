@@ -7,10 +7,12 @@
 \usage{
 is_gt3x(path)
 
-have_log_and_info(path)
+have_log_and_info(path, verbose = TRUE)
 }
 \arguments{
 \item{path}{Path(s) to file(s)}
+
+\item{verbose}{print diagnostic messages}
 }
 \value{
 Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.

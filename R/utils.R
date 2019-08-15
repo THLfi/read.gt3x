@@ -42,8 +42,9 @@ list_gt3x <- function(path) {
 #'
 #' @family gt3x-utils
 #' @rdname is_gt3x
+#' @param verbose print diagnostic messages
 #' @export
-have_log_and_info <- function(path) {
+have_log_and_info <- function(path, verbose = TRUE) {
   if (is_gt3x(path)) {
     filenames <- unzip(path, list = TRUE)$Name
   } else {
@@ -51,8 +52,12 @@ have_log_and_info <- function(path) {
   }
   haslog <- "log.bin" %in% filenames
   hasinfo <- "info.txt" %in% filenames
-  if (!haslog) message(gt3x, " doesn't contain log.bin")
-  if (!hasinfo) message(gt3x, " doesn't contain info.txt")
+  if (!haslog & verbose) {
+    message(path, " doesn't contain log.bin")
+  }
+  if (!hasinfo & verbose) {
+    message(path, " doesn't contain info.txt")
+  }
   return(haslog & hasinfo)
 }
 

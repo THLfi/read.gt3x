@@ -10,6 +10,8 @@ gt3x_download(url, exdir, verbose = TRUE)
 \item{url}{url of the file to download}
 
 \item{exdir}{directory to extract the zip file}
+
+\item{verbose}{print diagnostic messages}
 }
 \value{
 file path of \code{exdir}
