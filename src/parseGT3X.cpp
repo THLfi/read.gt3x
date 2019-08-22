@@ -343,8 +343,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
         sample_size = sample_rate;
       }
 
-      if (debug)
-        Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
+      // if (debug)
+        // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
       if(sample_size + total_records > max_samples) {
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
@@ -385,6 +385,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       }
 
       else {
+        if (debug)
+          Rcout << "Activity Type but no sample size";
         GT3Xstream.seekg(size, std::ios::cur);
       }
 
