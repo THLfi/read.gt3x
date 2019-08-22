@@ -535,11 +535,8 @@ NumericVector parseLuxBin(const char* filename,
 
   ParseLux(GT3Xstream, luxvec, scale_factor, max_value, sample_size);
   if (verbose)
-    Rcout << "Sample size: " << sample_size << "\n";
+    Rcout << "Lux Sample size: " << sample_size << "\n";
   GT3Xstream.close();
-
-  if(verbose)
-    Rcout << "Scaling...\n";
 
   return luxvec ;
 }
