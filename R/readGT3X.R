@@ -115,6 +115,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
   } else {
+    if (verbose) {
+      message("Using NHANES-GT3X format - older format")
+    }
     act_path <- file.path(path, "activity.bin")
     accdata <- parseActivityBin(
       act_path, max_samples = samples,

@@ -478,7 +478,7 @@ NumericMatrix parseActivityBin(const char* filename,
 
 
 // Parse second of activity data (type 2) and insert into matrix 'out'
-// ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
+// ref: https://github.com/actigraph/NHANES-GT3X-File-Format/blob/master/fileformats/lux.bin.md
 void ParseLux(ifstream& stream, NumericVector& luxvec, double LuxScaleFactor, double LuxMaxValue,  int sample_size) {
 
   // stream.seekg( 0, std::ios::end );
