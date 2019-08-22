@@ -204,30 +204,35 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   on.exit({
     options(digits = dig, digits.secs = dig.sec)
   })
+  all_attributes = attributes(x)
+
   tz <- "GMT" # used for parsing, timestamps are actually in local time
-  start_time <- as.numeric(attr(x, "start_time"), tz = tz)
-  time_index <- attr(x, "time_index")
-  sample_rate <- attr(x, "sample_rate")
+  start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
+  time_index <- all_attributes[["time_index"]]
+  sample_rate <- all_attributes[["sample_rate"]]
 
   if (verbose) {
     message("Converting to a data.frame ...")
   }
-  df <- activityAsDataFrame(x, time_index, start_time, sample_rate)
-  df$time <- as.POSIXct(df$time, origin = "1970-01-01", tz = tz)
+  class(x) = "matrix"
+  x = as.data.frame(x)
+  x$time = start_time + time_index/sample_rate;
+  # x <- activityAsDataFrame(x, time_index, start_time, sample_rate)
+  x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (verbose) {
     message("Done")
   }
-  df = structure(df,
-            class = c("activity_df", class(df)),
-            subject_name = attr(x, "subject_name"),
-            time_zone = attr(x, "time_zone"),
-            missingness = attr(x, "missingness"))
-  attr(df, "light_data") = attr(x, "light_data")
-  attr(df, "old_version") = attr(x, "old_version")
-  attr(df, "firmware") <- attr(x, "firmware")
-  attr(df, "serial_prefix") <- attr(x, "serial_prefix")
-  attr(df, "old_version") <- attr(x, "old_version")
-  df
+  x = structure(x,
+            class = c("activity_df", class(x)),
+            subject_name = all_attributes[["subject_name"]],
+            time_zone = all_attributes[["time_zone"]],
+            missingness = all_attributes[["missingness"]])
+  attr(x, "light_data") = all_attributes[["light_data"]]
+  attr(x, "old_version") = all_attributes[["old_version"]]
+  attr(x, "firmware") <- all_attributes[["firmware"]]
+  attr(x, "serial_prefix") <- all_attributes[["serial_prefix"]]
+  attr(x, "old_version") <- all_attributes[["old_version"]]
+  x
 }
 
 
