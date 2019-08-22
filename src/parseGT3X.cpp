@@ -328,6 +328,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
   int chksum;
 
+  if (debug)
+      Rcout << "Reading Stream...\n";
   while(GT3Xstream) {
 
     item = GT3Xstream.get();
@@ -340,7 +342,9 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       if(sample_size > sample_rate) {
         sample_size = sample_rate;
       }
-      // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
+
+      if (debug)
+        Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
       if(sample_size + total_records > max_samples) {
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
@@ -392,8 +396,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     }
   }
 
-
-  Rcout << "Sample size: " << total_records << "\n";
+  if (verbose)
+    Rcout << "Total Records: " << total_records << "\n";
   GT3Xstream.close();
 
   if(verbose)

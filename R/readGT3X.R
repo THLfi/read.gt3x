@@ -43,12 +43,12 @@ NULL
 #' x <- read.gt3x(gt3xfile, imputeZeroes = TRUE)
 #' df2 <- as.data.frame(x)
 #' head(df2)
-#' rm(x); gc()
+#' rm(x); gc(); gc()
 #' rm(df2); gc()
 #'
 #' # temporary unzip, read, convert to a data frame
 #' gt3xfile <- gt3x_datapath(1)
-#' df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
+#' df <- read.gt3x(gt3xfile, asDataFrame = TRUE, debug = TRUE)
 #' head(df)
 #'
 #' rm(df)
@@ -236,7 +236,9 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   attr(x, "firmware") <- all_attributes[["firmware"]]
   attr(x, "serial_prefix") <- all_attributes[["serial_prefix"]]
   attr(x, "old_version") <- all_attributes[["old_version"]]
-  x
+  attr(x, "sample_rate") <- all_attributes[["sample_rate"]]
+
+    x
 }
 
 
