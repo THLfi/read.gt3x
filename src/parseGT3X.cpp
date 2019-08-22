@@ -310,6 +310,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
                         const bool verbose = false, const bool debug = false, const bool impute_zeroes = false) {
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
+  // Rcpp::NumericMatrix activityMatrix = Rcpp::no_init(max_samples, N_ACTIVITYCOLUMNS);
   NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
   IntegerVector timeStamps(max_samples);
   IntegerVector Missingness;

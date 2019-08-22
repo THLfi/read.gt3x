@@ -40,7 +40,8 @@ NULL
 #' datadir <- gt3x_datapath()
 #' gt3xfolders <- unzip.gt3x(datadir)
 #' gt3xfile <- gt3xfolders[2]
-#' x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, verbose = TRUE)
+#' x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
+#' verbose = TRUE)
 #' df2 <- as.data.frame(x)
 #' head(df2)
 #' rm(x); gc(); gc()
@@ -48,7 +49,8 @@ NULL
 #'
 #' # temporary unzip, read, convert to a data frame
 #' gt3xfile <- gt3x_datapath(1)
-#' df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = TRUE)
+#' memory.limit()
+#' df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 #' head(df)
 #'
 #' rm(df)
@@ -118,6 +120,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       sample_rate = info$`Sample Rate`,
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
+    if (verbose > 1) {
+      message("Activity data now in R")
+    }
   } else {
     if (verbose) {
       message("Using NHANES-GT3X format - older format")
@@ -129,7 +134,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       sample_rate = info$`Sample Rate`,
       verbose = as.logical(verbose),
       debug = FALSE, ...)
-
+    if (verbose > 1) {
+      message("Activity data now in R")
+    }
     lux_path <- file.path(path, "lux.bin")
     if (file.exists(lux_path)) {
       stopifnot(info$`Serial Prefix` %in% c("NEO", "MRA"))
@@ -151,6 +158,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   }
 
+  if (verbose > 1) {
+    message("Adding attributes")
+  }
   attr(accdata, "start_time") <- info[["Start Date"]]
   attr(accdata, "stop_time") <- info[["Stop Date"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
@@ -219,9 +229,11 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
     message("Converting to a data.frame ...")
   }
   class(x) = "matrix"
-  x = as.data.frame(x)
-  x$time = start_time + time_index/sample_rate;
-  # x <- activityAsDataFrame(x, time_index, start_time, sample_rate)
+  attr(x, "time_index") = NULL
+  # attr(x, "missingness") = NULL
+  # x = as.data.frame(x)
+  # x$time = start_time + time_index/sample_rate;
+  x <- activityAsDataFrame(x, time_index, start_time, sample_rate)
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (verbose) {
     message("Done")

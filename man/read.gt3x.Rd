@@ -48,7 +48,8 @@ represents local time.
 datadir <- gt3x_datapath()
 gt3xfolders <- unzip.gt3x(datadir)
 gt3xfile <- gt3xfolders[2]
-x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, verbose = TRUE)
+x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
+verbose = TRUE)
 df2 <- as.data.frame(x)
 head(df2)
 rm(x); gc(); gc()
@@ -56,7 +57,8 @@ rm(df2); gc()
 
 # temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
-df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = TRUE)
+memory.limit()
+df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 head(df)
 
 rm(df)
