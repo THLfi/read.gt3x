@@ -55,13 +55,13 @@ enum LogRecordType {
 
 
 // these are needed by decodeFloatParameterValue()
-const double PARAM_FLOAT_MINIMUM = 0.00000011920928955078125;  /* 2^-23 */
+// const double PARAM_FLOAT_MINIMUM = 0.00000011920928955078125;  /* 2^-23 */
 const double PARAM_FLOAT_MAXIMUM = 8388608.0;                  /* 2^23  */
 const uint32_t PARAM_ENCODED_MINIMUM = 0x00800000;
 const uint32_t PARAM_ENCODED_MAXIMUM = 0x007FFFFF;
 const uint32_t PARAM_SIGNIFICAND_MASK = 0x00FFFFFFu;
-const int PARAM_EXPONENT_MINIMUM = -128;
-const int PARAM_EXPONENT_MAXIMUM = 127;
+// const int PARAM_EXPONENT_MINIMUM = -128;
+// const int PARAM_EXPONENT_MAXIMUM = 127;
 const uint32_t PARAM_EXPONENT_MASK = 0xFF000000u;
 const int PARAM_EXPONENT_OFFSET = 24;
 

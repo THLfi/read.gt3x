@@ -45,6 +45,9 @@ X <- read.gt3x(gt3xfile)
 head(X)
 ```
 
+```{r, echo = FALSE}
+rm(X); gc(); gc()
+```
 
 ### Method 2: permanent unzip, then read
 
@@ -85,7 +88,12 @@ str(X)
 the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a "time" column, which gives the timestamp of each sample.
 
 ```{r}
-df <- as.data.frame(X)
-head(df)
+X <- as.data.frame(X)
+head(X)
+```
+
+
+```{r, echo = FALSE}
+rm(X); gc(); gc()
 ```
 
