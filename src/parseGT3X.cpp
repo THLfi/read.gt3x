@@ -126,7 +126,7 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
     if(address == 0) {
 
       // these are floats that must be converted
-      if(key == 49 | key == 51 | key == 55 | key == 57 | key == 58) {
+      if( (key == 49 | key == 51 | key == 55 | key == 57 | key == 58) ) {
         decoded_value = decodeFloatParameterValue(value);
         if(verbose)
           Rcout << " value: " << decoded_value << "\n";
@@ -352,7 +352,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
         expected_payload_start = start_time + 1;
       }
 
-      if( (type == RECORDTYPE_ACTIVITY | type == RECORDTYPE_ACTIVITY2)) {
+      if( (type == RECORDTYPE_ACTIVITY | type == RECORDTYPE_ACTIVITY2) ) {
 
         payload_timediff = (int)(payload_start - expected_payload_start);
 
@@ -370,12 +370,12 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
       }
 
-      if(type == RECORDTYPE_ACTIVITY & sample_size > 0) {
+      if ( (type == RECORDTYPE_ACTIVITY & sample_size > 0) ) {
         ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
 
-      else if(type == RECORDTYPE_ACTIVITY2 & sample_size > 0) {
+      else if ((type == RECORDTYPE_ACTIVITY2 & sample_size > 0)) {
         ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
         total_records += sample_size;
       }
@@ -402,22 +402,22 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
   if(verbose)
     Rcout << "Removing excess rows \n";
-  NumericMatrix out =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
+  activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
 
   if(verbose)
     Rcout << "Creating dimnames \n";
 
-  colnames(out) = CharacterVector::create("X", "Y", "Z");
-  out.attr("time_index") = timeStamps[Range(0, total_records - 1)];
-  out.attr("missingness") = Missingness;
+  colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  activityMatrix.attr("time_index") = timeStamps[Range(0, total_records - 1)];
+  activityMatrix.attr("missingness") = Missingness;
 
-  out.attr("start_time_log") = start_time;
-  out.attr("sample_rate") = sample_rate;
+  activityMatrix.attr("start_time_log") = start_time;
+  activityMatrix.attr("sample_rate") = sample_rate;
 
   if(verbose)
     Rcout << "CPP returning \n";
 
-  return out;
+  return activityMatrix;
 
 }
 

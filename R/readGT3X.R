@@ -43,11 +43,15 @@ NULL
 #' x <- read.gt3x(gt3xfile, imputeZeroes = TRUE)
 #' df2 <- as.data.frame(x)
 #' head(df2)
+#' rm(x)
+#' rm(df2)
 #'
 #' # temporary unzip, read, convert to a data frame
 #' gt3xfile <- gt3x_datapath(1)
 #' df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 #' head(df)
+#'
+#' rm(df)
 #'
 #' \dontrun{
 #' url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X%2B.01.day.gt3x.zip"
