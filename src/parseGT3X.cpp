@@ -8,11 +8,11 @@ using namespace Rcpp;
 using namespace std;
 
 namespace patch {
-  template < typename T > std::string to_string( const T& n ) {
-    std::ostringstream stm ;
-    stm << n ;
-    return stm.str() ;
-  }
+template < typename T > std::string to_string( const T& n ) {
+  std::ostringstream stm ;
+  stm << n ;
+  return stm.str() ;
+}
 }
 
 // tuomo.a.nieminen@gmail.com
@@ -388,7 +388,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
 
     } else if (std::ios::cur > 1) {
-        Rcout << "CPP parser warnng: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
+      Rcout << "CPP parser warnng: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
     }
   }
 
@@ -422,3 +422,120 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 }
 
 
+//' Parse activity samples from a NHANES-GT3X file
+//'
+//' @param filename path to a activity.bin file inside the unzipped gt3x
+//' folder, which contains the activity samples
+//' @param max_samples Maximum number of rows to parse.
+//' The returned matrix will always contain this number of rows, having zeroes if
+//' not data is found.
+//' @param scale_factor Scale factor for the activity samples.
+//' @param sample_rate sampling rate for activity samples.
+//' @param verbose Print the parameters from the activity.bin file and other messages?
+//' @param debug Print information for every activity second
+//'
+//' @return
+//' Returns a matrix with max_samples rows and 3 columns, where the first 3
+//' columns are the acceleration samples and
+//' the last column is timestamps in seconds (including 100th of seconds)
+//' starting from 00:00:00 1970-01-01 UTC (UNIX time)
+//'
+// [[Rcpp::export]]
+NumericMatrix parseActivityBin(const char* filename,
+                               const int max_samples,
+                               const double scale_factor,
+                               const int sample_rate,
+                               const bool verbose = false,
+                               const bool debug = false) {
+  ifstream GT3Xstream;
+  GT3Xstream.open(filename,  std::ios_base::binary);
+  NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
+  IntegerVector timeStamps(max_samples);
+
+  uint32_t payload_start = 0;
+  uint32_t start_time = 0;
+  int start = 0;
+  int sample_size = max_samples;
+
+
+  ParseActivity(GT3Xstream, activityMatrix, timeStamps, start, sample_size, payload_start, sample_rate, start_time, debug);
+  if (verbose)
+    Rcout << "Sample size: " << sample_size << "\n";
+  GT3Xstream.close();
+
+  if(verbose)
+    Rcout << "Scaling...\n";
+  scaleAndRoundActivity(activityMatrix, scale_factor, sample_size);
+
+  colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  activityMatrix.attr("time_index") = timeStamps[Range(0, sample_size - 1)];
+
+  activityMatrix.attr("start_time_log") = start_time;
+  activityMatrix.attr("sample_rate") = sample_rate;
+
+  return activityMatrix ;
+}
+
+
+// Parse second of activity data (type 2) and insert into matrix 'out'
+// ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
+void ParseLux(ifstream& stream, NumericVector& luxvec, double LuxScaleFactor, double LuxMaxValue,  int sample_size) {
+
+  // stream.seekg( 0, std::ios::end );
+  // uint16_t file_length = stream.tellg() ;
+  // stream.seekg( 0, std::ios::beg );
+  uint16_t lux ;
+  double dbl_lux;
+
+  for(int i = 0; i < sample_size; ++i) {
+    stream.read(reinterpret_cast<char*>(&lux), sizeof(uint16_t));
+
+    if (lux < 20.0)
+      dbl_lux = 0.0;
+    else if (lux >= 65535.0)
+      dbl_lux = 0.0 ;
+    else
+      dbl_lux = min(lux * LuxScaleFactor, LuxMaxValue);
+
+    //round to nearest integer
+    dbl_lux = round(dbl_lux);
+    luxvec(i) = dbl_lux;
+  }
+
+}
+
+
+//' Parse activity samples from a GT3X file
+//'
+//' @param filename (char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples
+//' @param max_samples Maximum number of rows to parse. The returned matrix will always contain this number of rows, having zeroes if
+//' not data is found.
+//' @param scale_factor Scale factor for the activity samples.
+//' @param max_value Maximum value to truncate
+//' @param verbose Print the parameters from the log.bin file and other messages?
+//'
+//' @return
+//' Returns a vector with max_samples eleements
+//'
+// [[Rcpp::export]]
+NumericVector parseLuxBin(const char* filename,
+                          const int max_samples,
+                          const double scale_factor,
+                          const double max_value,
+                          const bool verbose = false) {
+  ifstream GT3Xstream;
+  GT3Xstream.open(filename,  std::ios_base::binary);
+  NumericVector luxvec(max_samples);
+
+  int sample_size = max_samples;
+
+  ParseLux(GT3Xstream, luxvec, scale_factor, max_value, sample_size);
+  if (verbose)
+    Rcout << "Sample size: " << sample_size << "\n";
+  GT3Xstream.close();
+
+  if(verbose)
+    Rcout << "Scaling...\n";
+
+  return luxvec ;
+}

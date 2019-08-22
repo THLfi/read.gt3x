@@ -50,8 +50,8 @@ have_log_and_info <- function(path, verbose = TRUE) {
   } else {
     filenames <- list.files(path)
   }
-  haslog <- "log.bin" %in% filenames
-  hasinfo <- "info.txt" %in% filenames
+  haslog <- have_log(path, verbose)
+  hasinfo <- have_info(path, verbose)
   if (!haslog & verbose) {
     message(path, " doesn't contain log.bin")
   }
@@ -59,6 +59,27 @@ have_log_and_info <- function(path, verbose = TRUE) {
     message(path, " doesn't contain info.txt")
   }
   return(haslog & hasinfo)
+}
+
+
+
+have_info <- function(path, verbose = TRUE) {
+  if (is_gt3x(path)) {
+    filenames <- unzip(path, list = TRUE)$Name
+  } else {
+    filenames <- list.files(path)
+  }
+  "info.txt" %in% filenames
+}
+
+
+have_log <- function(path, verbose = TRUE) {
+  if (is_gt3x(path)) {
+    filenames <- unzip(path, list = TRUE)$Name
+  } else {
+    filenames <- list.files(path)
+  }
+  "log.bin" %in% filenames
 }
 
 
@@ -85,6 +106,9 @@ get_n_samples <- function(x) {
   start <- x[["Start Date"]]
   end <- x[["Last Sample Time"]]
   rate <- x[["Sample Rate"]]
+  if (length(end) == 0) {
+    end = x[["Stop Date"]]
+  }
   seqs <- as.numeric(difftime(end, start, units = "secs"))
   seqs*rate
 }

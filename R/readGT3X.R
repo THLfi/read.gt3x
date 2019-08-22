@@ -18,8 +18,11 @@ NULL
 #'
 #' @note
 #'
-#' The timestamps in the .gt3x data format are saved in .NET format, which is nanoseconds in local time since 0001-01-01.
-#' This is a bit tricky to parse into an R datetime format. DateTimes are therefore represented as POSIXct format with the 'GMT' timezone attribute, which is false; the datetime actually
+#' The timestamps in the .gt3x data format are saved in .NET format, which is
+#'  nanoseconds in local time since 0001-01-01.
+#' This is a bit tricky to parse into an R datetime format. DateTimes are
+#' therefore represented as POSIXct format with the 'GMT' timezone attribute,
+#'  which is false; the datetime actually
 #' represents local time.
 #'
 #' @return A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
@@ -27,7 +30,8 @@ NULL
 #' \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
 #' \item \code{subject_name} : Subject name from info file
 #' \item \code{time_zone} : Time zone from info file
-#' \item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+#' \item \code{missingness} : Named integer vector. Names are Posixct
+#' timestamps and values are the number of missing values.
 #' }
 #'
 #' @examples
@@ -45,6 +49,16 @@ NULL
 #' df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 #' head(df)
 #'
+#' \dontrun{
+#' url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X%2B.01.day.gt3x.zip"
+#' destfile = tempfile(fileext = ".zip")
+#' dl = download.file(url, destfile = destfile)
+#' gt3x_file = unzip(destfile, exdir = tempdir())
+#' gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
+#' path = gt3x_file
+#'
+#' res = read.gt3x(path)
+#' }
 #' @family gt3x-parsers
 #'
 #' @export
@@ -53,38 +67,97 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   fun_start_time <- Sys.time()
 
+  has_info = have_info(path)
+  if (has_info) {
+    info = parse_gt3x_info(path)
+  }
+  files = c("info.txt", "log.bin")
+  if (has_info) {
+    is_old_version = old_version(info)
+    if (is_old_version) {
+      files = c("info.txt",
+                "activity.bin",
+                "lux.bin")
+    }
+  }
+
   if (is_gt3x(path)) {
-    message("Input is a .gt3x file, unzipping to a temporary location first...")
-    path <- unzip.gt3x(path)
+    if (verbose) {
+      message(paste0("Input is a .gt3x file, unzipping to a ",
+                     "temporary location first..."))
+    }
+    path <- unzip.gt3x(path, verbose = verbose, files = files,
+                       check_structure = !is_old_version)
   }
 
   tz  <- "GMT" # used for parsing, times are actually in local timezone
   info <- parse_gt3x_info(path, tz = tz)
-
-  if (verbose)
+  if (is_old_version) {
+    if (length(info$`Acceleration Scale`) == 0) {
+      info$`Acceleration Scale` = 341L
+    }
+  }
+  if (verbose) {
     print(info)
+  }
 
   samples <- get_n_samples(info)
 
   if (verbose) {
     message("Parsing GT3X data via CPP.. expected sample size: ", samples)
   }
-  logpath <- file.path(path, "log.bin")
-  accdata <- parseGT3X(
-    logpath, max_samples = samples,
-    scale_factor = info$`Acceleration Scale`,
-    sample_rate = info$`Sample Rate`,
-    verbose = as.logical(verbose), impute_zeroes = imputeZeroes, ...)
+  if (!is_old_version) {
+    logpath <- file.path(path, "log.bin")
+    accdata <- parseGT3X(
+      logpath, max_samples = samples,
+      scale_factor = info$`Acceleration Scale`,
+      sample_rate = info$`Sample Rate`,
+      verbose = as.logical(verbose),
+      impute_zeroes = imputeZeroes, ...)
+  } else {
+    act_path <- file.path(path, "activity.bin")
+    accdata <- parseActivityBin(
+      act_path, max_samples = samples,
+      scale_factor = info$`Acceleration Scale`,
+      sample_rate = info$`Sample Rate`,
+      verbose = as.logical(verbose),
+      debug = FALSE, ...)
+
+    lux_path <- file.path(path, "lux.bin")
+    if (file.exists(lux_path)) {
+      stopifnot(info$`Serial Prefix` %in% c("NEO", "MRA"))
+      if (info$`Serial Prefix` == "NEO") {
+        lux_scale_factor = 1.25
+        lux_max_value = 2500L
+      }
+      if (info$`Serial Prefix` == "MRA") {
+        lux_scale_factor = 3.25
+        lux_max_value = 6000L
+      }
+      luxdata <- parseLuxBin(
+        lux_path, max_samples = samples,
+        scale_factor = lux_scale_factor,
+        max_value = lux_max_value,
+        verbose = as.logical(verbose))
+      attr(accdata, "light_data") = luxdata
+    }
+
+  }
 
   attr(accdata, "start_time") <- info[["Start Date"]]
   attr(accdata, "stop_time") <- info[["Stop Date"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
-  attr(accdata, "missingness") <- data.frame(
-    time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
-                      origin = "1970-01-01", tz = tz),
-    n_missing = attr(accdata, "missingness"),
-    stringsAsFactors = FALSE)
+  attr(accdata, "firmware") <- info[["Firmware"]]
+  attr(accdata, "serial_prefix") <- info[["Serial Prefix"]]
+  attr(accdata, "old_version") <- is_old_version
+  if (!is_old_version) {
+    attr(accdata, "missingness") <- data.frame(
+      time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
+                        origin = "1970-01-01", tz = tz),
+      n_missing = attr(accdata, "missingness"),
+      stringsAsFactors = FALSE)
+  }
 
   if (verbose) {
     message("Done", " (in ",
@@ -98,7 +171,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   x <- structure(accdata,
                  class = c("activity", class(accdata)))
 
-  if(asDataFrame)
+  if (asDataFrame)
     x <- as.data.frame(x)
 
   x
@@ -141,10 +214,73 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   if (verbose) {
     message("Done")
   }
-  structure(df,
+  df = structure(df,
             class = c("activity_df", class(df)),
             subject_name = attr(x, "subject_name"),
             time_zone = attr(x, "time_zone"),
             missingness = attr(x, "missingness"))
+  attr(df, "light_data") = attr(x, "light_data")
+  attr(df, "old_version") = attr(x, "old_version")
+  attr(df, "firmware") <- attr(x, "firmware")
+  attr(df, "serial_prefix") <- attr(x, "serial_prefix")
+  attr(df, "old_version") <- attr(x, "old_version")
+  df
 }
 
+
+#' Print the contents of the activity data
+#'
+#' @param x gt3x_info object returned by parse_gt3x_info()
+#' @param ... additional arguments passed to \code{\link{head}}
+#'
+#' @export
+#' @rdname print
+print.activity_df <- function(x, ...) {
+  cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
+  cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
+  cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
+  class(x) = "data.frame"
+  print(head(x, ...))
+}
+
+
+#' @rdname print
+#' @export
+head.activity_df = function(x, ...) {
+  all_attr = attributes(x)
+  nattr = names(all_attr)
+  nattr = setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
+  class(x) = "data.frame"
+  x = head(x, ...)
+  for (iattr in nattr) {
+    attr(x, iattr) =  all_attr[[iattr]]
+  }
+  class(x) = c("activity_df", class(x))
+  x
+}
+
+#' @rdname print
+#' @export
+print.activity <- function(x, ...) {
+  cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
+  cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
+  cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
+  class(x) = "matrix"
+  print(head(x, ...))
+}
+
+#' @rdname print
+#' @importFrom utils head
+#' @export
+head.activity = function(x, ...) {
+  all_attr = attributes(x)
+  nattr = names(all_attr)
+  nattr = setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
+  class(x) = "matrix"
+  x = utils::head(x, ...)
+  for (iattr in nattr) {
+    attr(x, iattr) =  all_attr[[iattr]]
+  }
+  class(x) = c("activity", class(x))
+  x
+}

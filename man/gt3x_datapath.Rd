@@ -10,7 +10,8 @@ gt3x_datapath(index = NULL, verbose = TRUE)
 gt3x_filename(index = NULL, zipped = FALSE)
 }
 \arguments{
-\item{index}{Integer. The index of a sample file to retrieve. If NULL (default) the path to the directory
+\item{index}{Integer. The index of a sample file to retrieve.
+If NULL (default) the path to the directory
 including the sample files will be returned.}
 
 \item{verbose}{print diagnostic messages}

@@ -12,8 +12,8 @@
 #'
 #' @export
 parse_gt3x_info <- function(path, tz = "GMT") {
-  if(is_gt3x(path)) {
-    path <- unzip.gt3x(path)
+  if (is_gt3x(path)) {
+    path <- unzip.gt3x(path, check_structure = FALSE, verbose = FALSE)
   }
   infotxt <- readLines(file.path(path, "info.txt"))
   infotxt <- strsplit(infotxt, split = ": ")
@@ -21,6 +21,7 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   values <- infomatrix[, 2]
   names(values) <- infomatrix[, 1]
   info <- as.list(values)
+  info$`Serial Prefix` = substr(info$`Serial Number`, 1, 3)
   info$`Sample Rate` <- as.numeric(info$`Sample Rate`)
   info$`Start Date` <- ticks2datetime(info$`Start Date`, tz = tz)
   info$`Stop Date` <- ticks2datetime(info$`Stop Date`, tz = tz)
@@ -28,6 +29,15 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   info$`Download Date` <- ticks2datetime(info$`Download Date`, tz = tz)
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
   structure(info, class = c("gt3x_info", class(info)))
+}
+
+old_version = function(info) {
+  firmware_version = info$Firmware
+  firmware_version = package_version(firmware_version)
+  hdr = info$`Serial Prefix`
+  ret = hdr %in% c("MRA", "NEO") &
+    firmware_version <= package_version("2.5.0")
+  return(ret)
 }
 
 #' Print the contents of the info.txt file in a gt3x folder
@@ -42,4 +52,3 @@ print.gt3x_info <- function(x, ...) {
   cat("GT3X information\n")
   str(x, give.head = FALSE, no.list = TRUE)
 }
-

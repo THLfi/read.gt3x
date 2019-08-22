@@ -25,7 +25,8 @@ A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
-\item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+\item \code{missingness} : Named integer vector. Names are Posixct
+timestamps and values are the number of missing values.
 }
 }
 \description{
@@ -34,8 +35,11 @@ Please note that all timestams are in local time (of the device) even though the
 represented as POSIXct with GMT timezone.
 }
 \note{
-The timestamps in the .gt3x data format are saved in .NET format, which is nanoseconds in local time since 0001-01-01.
-This is a bit tricky to parse into an R datetime format. DateTimes are therefore represented as POSIXct format with the 'GMT' timezone attribute, which is false; the datetime actually
+The timestamps in the .gt3x data format are saved in .NET format, which is
+ nanoseconds in local time since 0001-01-01.
+This is a bit tricky to parse into an R datetime format. DateTimes are
+therefore represented as POSIXct format with the 'GMT' timezone attribute,
+ which is false; the datetime actually
 represents local time.
 }
 \examples{
@@ -53,6 +57,16 @@ gt3xfile <- gt3x_datapath(1)
 df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 head(df)
 
+\dontrun{
+url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X\%2B.01.day.gt3x.zip"
+destfile = tempfile(fileext = ".zip")
+dl = download.file(url, destfile = destfile)
+gt3x_file = unzip(destfile, exdir = tempdir())
+gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
+path = gt3x_file
+
+res = read.gt3x(path)
+}
 }
 \seealso{
 Other gt3x-parsers: \code{\link{as.data.frame.activity}},
