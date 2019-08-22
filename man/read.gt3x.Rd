@@ -61,7 +61,10 @@ memory.limit()
 df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 head(df)
 
-rm(df)
+rm(df); gc(); gc()
+
+df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = 2)
+head(df)
 
 \dontrun{
 url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X\%2B.01.day.gt3x.zip"
