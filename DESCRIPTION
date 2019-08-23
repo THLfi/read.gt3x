@@ -1,17 +1,31 @@
 Package: read.gt3x
 Type: Package
-Title: Parse actigraph accelerometer data (.gt3x)
+Title: Parse Actigraph Accelerometer Data (.gt3x)
 Version: 0.1.0
-Authors@R: person("Tuomo", "Nieminen", email = "tuomo.a.nieminen@gmail.co", role = c("aut", "cre"))
-Description: The read.gt3x package implements a high performance C++ parser for actigraphs .gt3x data format for accelerometer samples. 
+Authors@R: c(person("Tuomo", "Nieminen", 
+    email = "tuomo.a.nieminen@gmail.co", 
+    role = c("aut", "cre")),
+    person(given = "John",
+           family = "Muschelli",
+           email = "muschellij2@gmail.com",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0001-6469-1750"))
+    )
+Description: Implements a high performance C++ parser 
+    for actigraphs .gt3x data format for accelerometer samples. 
     Activity samples can be easily read into an R matrix. 
-    This allows for storing the raw accelerometer samples in the original binary format to reserve space.
-License: file LICENSE.txt
+    This allows for storing the raw accelerometer samples in the original 
+    binary format to reserve space.
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
-Imports: Rcpp
+Imports: 
+    Rcpp,
+    utils
 RoxygenNote: 6.1.1
-Suggests: knitr,
-    rmarkdown
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr

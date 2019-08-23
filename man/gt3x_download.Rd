@@ -4,7 +4,17 @@
 \alias{gt3x_download}
 \title{Download and unzip a zipped gt3xfile}
 \usage{
-gt3x_download(url, exdir)
+gt3x_download(url, exdir, verbose = TRUE)
+}
+\arguments{
+\item{url}{url of the file to download}
+
+\item{exdir}{directory to extract the zip file}
+
+\item{verbose}{print diagnostic messages}
+}
+\value{
+file path of \code{exdir}
 }
 \description{
 Download and unzip a zipped gt3xfile

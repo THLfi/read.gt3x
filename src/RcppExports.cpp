@@ -36,10 +36,43 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// parseActivityBin
+NumericMatrix parseActivityBin(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose, const bool debug);
+RcppExport SEXP _read_gt3x_parseActivityBin(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP verboseSEXP, SEXP debugSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const char* >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const int >::type max_samples(max_samplesSEXP);
+    Rcpp::traits::input_parameter< const double >::type scale_factor(scale_factorSEXP);
+    Rcpp::traits::input_parameter< const int >::type sample_rate(sample_rateSEXP);
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< const bool >::type debug(debugSEXP);
+    rcpp_result_gen = Rcpp::wrap(parseActivityBin(filename, max_samples, scale_factor, sample_rate, verbose, debug));
+    return rcpp_result_gen;
+END_RCPP
+}
+// parseLuxBin
+NumericVector parseLuxBin(const char* filename, const int max_samples, const double scale_factor, const double max_value, const bool verbose);
+RcppExport SEXP _read_gt3x_parseLuxBin(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP max_valueSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const char* >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const int >::type max_samples(max_samplesSEXP);
+    Rcpp::traits::input_parameter< const double >::type scale_factor(scale_factorSEXP);
+    Rcpp::traits::input_parameter< const double >::type max_value(max_valueSEXP);
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(parseLuxBin(filename, max_samples, scale_factor, max_value, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_read_gt3x_activityAsDataFrame", (DL_FUNC) &_read_gt3x_activityAsDataFrame, 4},
     {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 7},
+    {"_read_gt3x_parseActivityBin", (DL_FUNC) &_read_gt3x_parseActivityBin, 6},
+    {"_read_gt3x_parseLuxBin", (DL_FUNC) &_read_gt3x_parseLuxBin, 5},
     {NULL, NULL, 0}
 };
 

@@ -10,8 +10,10 @@ activityAsDataFrame <- function(m, time_index, start_time, sample_rate) {
 #' @param filename (char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples
 #' @param max_samples Maximum number of rows to parse. The returned matrix will always contain this number of rows, having zeroes if
 #' not data is found.
-#' @param scale factor Scale factor for the activity samples.
+#' @param scale_factor Scale factor for the activity samples.
+#' @param sample_rate sampling rate for activity samples.
 #' @param verbose Print the parameters from the log.bin file and other messages?
+#' @param impute_zeroes Impute zeros in case there are missingness?
 #' @param debug Print information for every activity second
 #'
 #' @return
@@ -20,5 +22,43 @@ activityAsDataFrame <- function(m, time_index, start_time, sample_rate) {
 #'
 parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE, impute_zeroes = FALSE) {
     .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug, impute_zeroes)
+}
+
+#' Parse activity samples from a NHANES-GT3X file
+#'
+#' @param filename path to a activity.bin file inside the unzipped gt3x
+#' folder, which contains the activity samples
+#' @param max_samples Maximum number of rows to parse.
+#' The returned matrix will always contain this number of rows, having zeroes if
+#' not data is found.
+#' @param scale_factor Scale factor for the activity samples.
+#' @param sample_rate sampling rate for activity samples.
+#' @param verbose Print the parameters from the activity.bin file and other messages?
+#' @param debug Print information for every activity second
+#'
+#' @return
+#' Returns a matrix with max_samples rows and 3 columns, where the first 3
+#' columns are the acceleration samples and
+#' the last column is timestamps in seconds (including 100th of seconds)
+#' starting from 00:00:00 1970-01-01 UTC (UNIX time)
+#'
+parseActivityBin <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE) {
+    .Call('_read_gt3x_parseActivityBin', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug)
+}
+
+#' Parse activity samples from a GT3X file
+#'
+#' @param filename (char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples
+#' @param max_samples Maximum number of rows to parse. The returned matrix will always contain this number of rows, having zeroes if
+#' not data is found.
+#' @param scale_factor Scale factor for the activity samples.
+#' @param max_value Maximum value to truncate
+#' @param verbose Print the parameters from the log.bin file and other messages?
+#'
+#' @return
+#' Returns a vector with max_samples eleements
+#'
+parseLuxBin <- function(filename, max_samples, scale_factor, max_value, verbose = FALSE) {
+    .Call('_read_gt3x_parseLuxBin', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, max_value, verbose)
 }
 

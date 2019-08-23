@@ -8,6 +8,8 @@ parse_gt3x_info(path, tz = "GMT")
 }
 \arguments{
 \item{path}{Path to a .gt3x file or an unzipped gt3x directory}
+
+\item{tz}{timezone, passed to \code{\link{ticks2datetime}}}
 }
 \description{
 Parse GT3X info.txt file

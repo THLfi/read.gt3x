@@ -6,6 +6,15 @@
 \usage{
 gt3x_url(index = NULL, filename = NULL)
 }
+\arguments{
+\item{index}{The index of a sample file to retrieve, passed to
+\code{\link{gt3x_filename}}}
+
+\item{filename}{file to grab to make url}
+}
+\value{
+file path
+}
 \description{
 Get url of gt3x sample file
 }

@@ -6,6 +6,11 @@
 \usage{
 ticks2datetime(ticks, tz = "GMT")
 }
+\arguments{
+\item{ticks}{values in NET ticks format}
+
+\item{tz}{timezone, passed to \code{\link{as.POSIXct}}}
+}
 \description{
 Convert NET ticks to POSIXct datetime
 }
@@ -14,6 +19,6 @@ reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-time
 }
 \seealso{
 Other gt3x-utils: \code{\link{get_n_samples}},
-  \code{\link{have_log_and_info}}
+  \code{\link{is_gt3x}}
 }
 \concept{gt3x-utils}

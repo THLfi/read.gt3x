@@ -2,13 +2,24 @@
 % Please edit documentation in R/gt3x_sample_data.R
 \name{gt3x_datapath}
 \alias{gt3x_datapath}
+\alias{gt3x_filename}
 \title{Path to read.gt3x package sample data}
 \usage{
-gt3x_datapath(index = NULL)
+gt3x_datapath(index = NULL, verbose = TRUE)
+
+gt3x_filename(index = NULL, zipped = FALSE)
 }
 \arguments{
-\item{index}{Integer. The index of a sample file to retrieve. If NULL (default) the path to the directory
+\item{index}{Integer. The index of a sample file to retrieve.
+If NULL (default) the path to the directory
 including the sample files will be returned.}
+
+\item{verbose}{print diagnostic messages}
+
+\item{zipped}{do the files have a \code{.zip} extension}
+}
+\value{
+Character vector of files
 }
 \description{
 Path to read.gt3x package sample data

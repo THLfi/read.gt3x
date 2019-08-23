@@ -6,34 +6,68 @@
 #' This is a helper for unzip.gt3x()
 #'
 #' @param path Path to a .gt3x file
-#' @param dirname The name of the resulting directory where the content of <path> are extracted.
+#' @param dirname The name of the resulting directory where the content of
+#'  <path> are extracted.
 #' Default is the name of the input file, sans the .gt3x extension.
 #' @param location A path to an output directory. Default is a tempdir().
 #' @param files The names of files to extract. Default is info.txt and log.bin
 #' @param remove_original Remove the zipfile after unzipping?
+#' @param check_structure check to see if the structure is right for the file
+#' @param verbose print diagnostic messages
 #'
-unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path)), location = tempdir(), files = c("info.txt", "log.bin"), remove_original = FALSE) {
+#' @export
+#'
+unzip_single_gt3x <- function(
+  path,
+  dirname =  basename(gsub(".gt3x$| ","", path)),
+  location = tempdir(),
+  files = c("info.txt", "log.bin"),
+  remove_original = FALSE,
+  check_structure = TRUE,
+  verbose = TRUE) {
 
-  message("Unzipping ", path)
+  if (verbose) {
+    message("Unzipping ", path)
+  }
 
-  if(!is_gt3x(path)) {
+  if (!is_gt3x(path)) {
     message(path, " is a not a .gt3x file. Unzipping failed")
     return(NULL)
   }
 
-  if(!have_log_and_info(path)) {
-    message(path, " did not contain both log.bin and info.txt. Unzipping failed.")
-    return(NULL)
+  if (check_structure) {
+    if (!have_log_and_info(path)) {
+      message(path, " did not contain both log.bin and ",
+              "info.txt. Unzipping failed.")
+      return(NULL)
+    }
   }
 
   exdir <- file.path(location, dirname)
-  extractedpaths <- unzip(path, files = files, exdir = exdir)
+  if (check_structure) {
+    extractedpaths <- unzip(path, files = files, exdir = exdir)
+  } else {
+    suppressWarnings({
+      extractedpaths <- unzip(path, files = files, exdir = exdir)
+    })
+  }
   stopifnot(length(extractedpaths) > 0)
-  message(" === info.txt and log.bin extracted to ", exdir)
-  if(remove_original) {
-    message("Removing original zipfile...")
+  if (verbose) {
+    message(
+      paste0(
+        " === ",
+        paste(files, collapse = ", "),
+        " extracted to ", exdir)
+    )
+  }
+  if (remove_original) {
+    if (verbose) {
+      message("Removing original zipfile...")
+    }
     removed <- file.remove(path)
-    if(removed) message("Removed ", path)
+    if (removed & verbose) {
+      message("Removed ", path)
+    }
   }
   exdir
 }
@@ -44,11 +78,11 @@ unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path
 #'
 #' unzip.gt3x() makes it convenient to unzip multiple .gt3x files.
 #'
-#' @param path One of the following: (1) A path to a directory with .gt3x files in which case they are all unzipped, or
+#' @param path One of the following: (1) A path to a directory with
+#' .gt3x files in which case they are all unzipped, or
 #' (2) A character vector of direct paths to .gt3x files.
-#' @param location Path to a directory to unzip the files to. Default is a temporary directory created by tempdir().
-#'
-#' @param remove_original Remove the zipfiles after unzipping?
+#' @param verbose print diagnostic messages
+#' @param ... arguments to pass to \code{\link{unzip_single_gt3x}}
 #'
 #' @details
 #'  A .gt3x file is a zipped directory with two files: log.bin and info.txt.
@@ -70,23 +104,38 @@ unzip_single_gt3x <- function(path, dirname =  basename(gsub(".gt3x$| ","", path
 #' gt3xdirs <- unzip.gt3x(dir)
 #'
 #' @export
-unzip.gt3x <- function(path, location = tempdir(), remove_original = FALSE) {
-  if(length(path) == 1 & !is_gt3x(path[1])) {
+unzip.gt3x <- function(path, verbose = TRUE, ...) {
+  if (length(path) == 1 & !is_gt3x(path[1])) {
     gt3xfiles <- list_gt3x(path)
   } else {
     gt3xfiles <- path
-    if(!all(is_gt3x(gt3xfiles))) stop("Some or all of the filepaths do not have a .gt3x extension")
+    if (!all(is_gt3x(gt3xfiles))) {
+      stop("Some or all of the filepaths do not have a .gt3x extension")
+    }
   }
 
   n <- length(gt3xfiles)
-  if(n < 1) stop("No .gt3x files found")
+  if (n < 1) {
+    stop("No .gt3x files found")
+  }
 
-  message("Unzipping gt3x data to ", location)
+  args = list(...)
+  location = args$location
+  if (is.null(location)) {
+    location = tempdir()
+  }
+  if (verbose) {
+    message("Unzipping gt3x data to ", location)
+  }
 
   result_paths <- vector("character", n)
-  for(i in seq_len(n)) {
-    message(i, "/", n, " ", sep = "")
-    result_paths[i] <- unzip_single_gt3x(gt3xfiles[i], location = location, remove_original = remove_original)
+  for (i in seq_len(n)) {
+    if (verbose) {
+      message(i, "/", n, " ", sep = "")
+    }
+    result_paths[i] <- unzip_single_gt3x(
+      gt3xfiles[i], verbose = verbose,
+      ...)
   }
   result_paths
 }

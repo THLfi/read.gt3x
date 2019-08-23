@@ -4,14 +4,16 @@
 \alias{list_gt3x}
 \title{List full paths to all gt3x files in a directory}
 \usage{
-list_gt3x(dirpath)
+list_gt3x(path)
+}
+\arguments{
+\item{path}{Path(s) to file(s)}
 }
 \description{
 List full paths to all gt3x files in a directory
 }
 \examples{
 list_gt3x(gt3x_datapath())
-
 }
 \seealso{
 Other file manipulations: \code{\link{gt3x_datapath}},

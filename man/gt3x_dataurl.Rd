@@ -7,6 +7,14 @@
 gt3x_dataurl(version = "v1.0",
   baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
 }
+\arguments{
+\item{version}{release version}
+
+\item{baseurl}{URL for GitHub release}
+}
+\value{
+URL to file
+}
 \description{
 Get url of github release
 }

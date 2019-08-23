@@ -5,18 +5,19 @@
 \title{Read GT3X}
 \usage{
 read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
-  imputeZeroes = FALSE, tz = NULL, ...)
+  imputeZeroes = FALSE, ...)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
+
+\item{verbose}{print diagnostic messages}
 
 \item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
 
 \item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
 
-\item{tz}{Time zone. E.g. "Europe/Helsinki". Can be set using options(read.gt3x.timezone = "Europe/Helsinki").
-If not given or set, will use "GMT". This is used for converting numeric timestamps to POSIXct format.}
+\item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
 }
 \value{
 A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
@@ -24,11 +25,22 @@ A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
-\item \code{missingness} : Named integer vector. Names are Posixct timestamps and values are the number of missing values.
+\item \code{missingness} : Named integer vector. Names are Posixct
+timestamps and values are the number of missing values.
 }
 }
 \description{
-Read activity samples from a GT3X file as a matrix
+Read activity samples from a GT3X file as a matrix.
+Please note that all timestams are in local time (of the device) even though they are
+represented as POSIXct with GMT timezone.
+}
+\note{
+The timestamps in the .gt3x data format are saved in .NET format, which is
+ nanoseconds in local time since 0001-01-01.
+This is a bit tricky to parse into an R datetime format. DateTimes are
+therefore represented as POSIXct format with the 'GMT' timezone attribute,
+ which is false; the datetime actually
+represents local time.
 }
 \examples{
 
@@ -36,15 +48,34 @@ Read activity samples from a GT3X file as a matrix
 datadir <- gt3x_datapath()
 gt3xfolders <- unzip.gt3x(datadir)
 gt3xfile <- gt3xfolders[2]
-x <- read.gt3x(gt3xfile, imputeZeroes = T)
+x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
+verbose = TRUE)
 df2 <- as.data.frame(x)
 head(df2)
+rm(x); gc(); gc()
+rm(df2); gc()
 
 # temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
-df <- read.gt3x(gt3xfile, asDataFrame = TRUE)
+memory.limit()
+df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 head(df)
 
+rm(df); gc(); gc()
+
+df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = 2)
+head(df)
+
+\dontrun{
+url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X\%2B.01.day.gt3x.zip"
+destfile = tempfile(fileext = ".zip")
+dl = download.file(url, destfile = destfile)
+gt3x_file = unzip(destfile, exdir = tempdir())
+gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
+path = gt3x_file
+
+res = read.gt3x(path)
+}
 }
 \seealso{
 Other gt3x-parsers: \code{\link{as.data.frame.activity}},
