@@ -1,7 +1,7 @@
 Package: read.gt3x
 Type: Package
 Title: Parse Actigraph Accelerometer Data (.gt3x)
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(person("Tuomo", "Nieminen", 
     email = "tuomo.a.nieminen@gmail.co", 
     role = c("aut", "cre")),

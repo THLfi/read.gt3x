@@ -101,9 +101,16 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   tz  <- "GMT" # used for parsing, times are actually in local timezone
   info <- parse_gt3x_info(path, tz = tz)
+  is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  {
+    abs(x - round(x)) < tol
+  }
   if (is_old_version) {
     if (length(info$`Acceleration Scale`) == 0) {
       info$`Acceleration Scale` = 341L
+    }
+  } else {
+    if (is.wholenumber(info$`Acceleration Scale`)) {
+      info$`Acceleration Scale`= as.integer(info$`Acceleration Scale`)
     }
   }
   if (verbose) {
@@ -166,6 +173,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   }
   attr(accdata, "start_time") <- info[["Start Date"]]
   attr(accdata, "stop_time") <- info[["Stop Date"]]
+  attr(accdata, "last_sample_time") <- info[["Last Sample Time"]]
   attr(accdata, "subject_name") <- info[["Subject Name"]]
   attr(accdata, "time_zone") <- info[["TimeZone"]]
   attr(accdata, "firmware") <- info[["Firmware"]]
@@ -192,7 +200,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                  class = c("activity", class(accdata)))
 
   if (asDataFrame)
-    x <- as.data.frame(x)
+    x <- as.data.frame(x, verbose = verbose > 1)
 
   x
 
@@ -242,18 +250,19 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
     message("Done")
   }
   x = structure(x,
-            class = c("activity_df", class(x)),
-            subject_name = all_attributes[["subject_name"]],
-            time_zone = all_attributes[["time_zone"]],
-            missingness = all_attributes[["missingness"]])
+                class = c("activity_df", class(x)),
+                subject_name = all_attributes[["subject_name"]],
+                time_zone = all_attributes[["time_zone"]],
+                missingness = all_attributes[["missingness"]])
   attr(x, "light_data") = all_attributes[["light_data"]]
   attr(x, "old_version") = all_attributes[["old_version"]]
   attr(x, "firmware") <- all_attributes[["firmware"]]
+  attr(x, "last_sample_time") <- all_attributes[["last_sample_time"]]
   attr(x, "serial_prefix") <- all_attributes[["serial_prefix"]]
   attr(x, "old_version") <- all_attributes[["old_version"]]
   attr(x, "sample_rate") <- all_attributes[["sample_rate"]]
 
-    x
+  x
 }
 
 
