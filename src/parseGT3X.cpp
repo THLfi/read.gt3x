@@ -236,13 +236,14 @@ void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& tim
 // the data matrix is initialized with zeroes
 // to 'impute' zeroes, simply go forward in time stamps
 // ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
-void ImputeZeroes(IntegerVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, bool debug) {
+void ImputeZeroes(IntegerVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, uint32_t expected_payload_start, bool debug) {
 
   if(debug)
     Rcout << "imputing " << sample_size << " values at index " << total_records << " \n";
 
   for(int i = 0; i < sample_size; ++i)
-    timeStamps(i + total_records) = createTimeStamp(total_records, i, sample_rate, start_time);
+    timeStamps(i + total_records) = createTimeStamp(expected_payload_start, i, sample_rate, start_time);
+
 }
 
 
@@ -366,7 +367,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
           Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
           if(impute_zeroes && total_records > 0) {
-            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
+            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
             total_records += n_missing;
           }
         }
