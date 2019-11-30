@@ -335,7 +335,9 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   while(GT3Xstream) {
 
     item = GT3Xstream.get();
-    if(!GT3Xstream) break;
+    if(!GT3Xstream) {
+    break;
+  }
 
     if(item == RECORD_SEPARATOR) {
       ParseHeader(GT3Xstream, type, payload_start, size);
@@ -355,7 +357,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
       if(type == RECORDTYPE_PARAMETERS) {
         ParseParameters(GT3Xstream, size, start_time, verbose);
-        expected_payload_start = start_time + 1;
+        expected_payload_start = start_time ;
       }
 
       else if( (type == RECORDTYPE_ACTIVITY) | (type == RECORDTYPE_ACTIVITY2) ) {
@@ -411,7 +413,9 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
   if(verbose)
     Rcout << "Removing excess rows \n";
-  activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
+
+  if(!impute_zeroes)
+    activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
 
   if(verbose)
     Rcout << "Creating dimnames \n";
@@ -422,6 +426,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
   activityMatrix.attr("start_time_log") = start_time;
   activityMatrix.attr("sample_rate") = sample_rate;
+  activityMatrix.attr("impute_zeroes") = impute_zeroes;
+
 
   if(verbose)
     Rcout << "CPP returning \n";
