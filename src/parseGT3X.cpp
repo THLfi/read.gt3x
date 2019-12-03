@@ -368,13 +368,22 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
           int n_missing = payload_timediff*sample_rate;
           Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
-          if(impute_zeroes && total_records > 0) {
+          if(impute_zeroes) {
             ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
             total_records += n_missing;
           }
         }
 
         expected_payload_start = payload_start + 1;
+
+        if(sample_size == 0) {
+          Rcout << "activity type but no sample size at index " << total_records << "\n";
+          Missingness[patch::to_string(payload_start)] = sample_rate;
+          if(impute_zeroes) {
+            ImputeZeroes(timeStamps, total_records, sample_rate, sample_rate, start_time, payload_start, debug);
+            total_records += sample_rate;
+          }
+        }
 
 
       if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
@@ -390,8 +399,6 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       }
 
       else {
-        if (debug)
-          Rcout << "Activity Type but no sample size";
         GT3Xstream.seekg(size, std::ios::cur);
       }
 
@@ -411,17 +418,23 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     Rcout << "Scaling...\n";
   scaleAndRoundActivity(activityMatrix, scale_factor, total_records);
 
-  if(verbose)
-    Rcout << "Removing excess rows \n";
 
-  if(!impute_zeroes)
+  if(!impute_zeroes) {
+    if(verbose)
+      Rcout << "Removing excess rows \n";
     activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
+    timeStamps = timeStamps[Range(0, total_records - 1)];
+  } else {
+    int n_missing = max_samples - total_records;
+    Missingness[patch::to_string(expected_payload_start)] = n_missing;
+    ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+  }
 
   if(verbose)
     Rcout << "Creating dimnames \n";
 
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
-  activityMatrix.attr("time_index") = timeStamps[Range(0, total_records - 1)];
+  activityMatrix.attr("time_index") = timeStamps;
   activityMatrix.attr("missingness") = Missingness;
 
   activityMatrix.attr("start_time_log") = start_time;
