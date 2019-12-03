@@ -236,13 +236,14 @@ void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& tim
 // the data matrix is initialized with zeroes
 // to 'impute' zeroes, simply go forward in time stamps
 // ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
-void ImputeZeroes(IntegerVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, bool debug) {
+void ImputeZeroes(IntegerVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, uint32_t expected_payload_start, bool debug) {
 
   if(debug)
     Rcout << "imputing " << sample_size << " values at index " << total_records << " \n";
 
   for(int i = 0; i < sample_size; ++i)
-    timeStamps(i + total_records) = createTimeStamp(total_records, i, sample_rate, start_time);
+    timeStamps(i + total_records) = createTimeStamp(expected_payload_start, i, sample_rate, start_time);
+
 }
 
 
@@ -334,7 +335,9 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   while(GT3Xstream) {
 
     item = GT3Xstream.get();
-    if(!GT3Xstream) break;
+    if(!GT3Xstream) {
+    break;
+  }
 
     if(item == RECORD_SEPARATOR) {
       ParseHeader(GT3Xstream, type, payload_start, size);
@@ -354,10 +357,10 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
 
       if(type == RECORDTYPE_PARAMETERS) {
         ParseParameters(GT3Xstream, size, start_time, verbose);
-        expected_payload_start = start_time + 1;
+        expected_payload_start = start_time ;
       }
 
-      if( (type == RECORDTYPE_ACTIVITY) | (type == RECORDTYPE_ACTIVITY2) ) {
+      else if( (type == RECORDTYPE_ACTIVITY) | (type == RECORDTYPE_ACTIVITY2) ) {
 
         payload_timediff = (int)(payload_start - expected_payload_start);
 
@@ -365,15 +368,22 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
           int n_missing = payload_timediff*sample_rate;
           Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
-          if(impute_zeroes && total_records > 0) {
-            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
+          if(impute_zeroes) {
+            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
             total_records += n_missing;
           }
         }
 
         expected_payload_start = payload_start + 1;
 
-      }
+        if(sample_size == 0) {
+          Missingness[patch::to_string(payload_start)] = sample_rate;
+          if(impute_zeroes) {
+            ImputeZeroes(timeStamps, total_records, sample_rate, sample_rate, start_time, payload_start, debug);
+            total_records += sample_rate;
+          }
+        }
+
 
       if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
         ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
@@ -385,9 +395,9 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
         total_records += sample_size;
       }
 
+      }
+
       else {
-        if (debug)
-          Rcout << "Activity Type but no sample size";
         GT3Xstream.seekg(size, std::ios::cur);
       }
 
@@ -407,19 +417,29 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
     Rcout << "Scaling...\n";
   scaleAndRoundActivity(activityMatrix, scale_factor, total_records);
 
-  if(verbose)
-    Rcout << "Removing excess rows \n";
-  activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
+
+  if(!impute_zeroes) {
+    if(verbose)
+      Rcout << "Removing excess rows \n";
+    activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
+    timeStamps = timeStamps[Range(0, total_records - 1)];
+  } else {
+    int n_missing = max_samples - total_records;
+    Missingness[patch::to_string(expected_payload_start)] = n_missing;
+    ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+  }
 
   if(verbose)
     Rcout << "Creating dimnames \n";
 
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
-  activityMatrix.attr("time_index") = timeStamps[Range(0, total_records - 1)];
+  activityMatrix.attr("time_index") = timeStamps;
   activityMatrix.attr("missingness") = Missingness;
 
   activityMatrix.attr("start_time_log") = start_time;
   activityMatrix.attr("sample_rate") = sample_rate;
+  activityMatrix.attr("impute_zeroes") = impute_zeroes;
+
 
   if(verbose)
     Rcout << "CPP returning \n";
