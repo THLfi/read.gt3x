@@ -423,6 +423,9 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       Rcout << "Removing excess rows \n";
     activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
     timeStamps = timeStamps[Range(0, total_records - 1)];
+    int n_missing = max_samples - (total_records + sum(Missingness));
+    Missingness[patch::to_string(expected_payload_start)] = n_missing;
+
   } else {
     int n_missing = max_samples - total_records;
     Missingness[patch::to_string(expected_payload_start)] = n_missing;

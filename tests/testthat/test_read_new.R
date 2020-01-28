@@ -16,3 +16,9 @@ testthat::test_that("No lags in gt3x data.frame timestamps after imputation", {
   diffs <- diff(gt3xdf$time)
   testthat::expect_true(!any(diffs > 1))
 })
+
+
+testthat::test_that("Number of missing values correctly attributed", {
+  nmis <-   sum(attr(gt3xdata, "missingness")$n_missing)
+  testthat::expect_true(nrow(gt3xdata) + nmis == nrow(csvdata))
+})
