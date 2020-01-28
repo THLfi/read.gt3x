@@ -4,8 +4,14 @@
 \alias{parseActivityBin}
 \title{Parse activity samples from a NHANES-GT3X file}
 \usage{
-parseActivityBin(filename, max_samples, scale_factor, sample_rate,
-  verbose = FALSE, debug = FALSE)
+parseActivityBin(
+  filename,
+  max_samples,
+  scale_factor,
+  sample_rate,
+  verbose = FALSE,
+  debug = FALSE
+)
 }
 \arguments{
 \item{filename}{path to a activity.bin file inside the unzipped gt3x

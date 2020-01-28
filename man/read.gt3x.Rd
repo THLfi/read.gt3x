@@ -4,8 +4,13 @@
 \alias{read.gt3x}
 \title{Read GT3X}
 \usage{
-read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
-  imputeZeroes = FALSE, ...)
+read.gt3x(
+  path,
+  verbose = FALSE,
+  asDataFrame = FALSE,
+  imputeZeroes = FALSE,
+  ...
+)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
@@ -78,8 +83,9 @@ res = read.gt3x(path)
 }
 }
 \seealso{
-Other gt3x-parsers: \code{\link{as.data.frame.activity}},
-  \code{\link{parse_gt3x_info}},
-  \code{\link{print.gt3x_info}}
+Other gt3x-parsers: 
+\code{\link{as.data.frame.activity}()},
+\code{\link{parse_gt3x_info}()},
+\code{\link{print.gt3x_info}()}
 }
 \concept{gt3x-parsers}

@@ -32,11 +32,14 @@ is_gt3x("test") # FALSE
 
 }
 \seealso{
-Other file manipulations: \code{\link{gt3x_datapath}},
-  \code{\link{list_gt3x}}, \code{\link{unzip.gt3x}}
+Other file manipulations: 
+\code{\link{gt3x_datapath}()},
+\code{\link{list_gt3x}()},
+\code{\link{unzip.gt3x}()}
 
-Other gt3x-utils: \code{\link{get_n_samples}},
-  \code{\link{ticks2datetime}}
+Other gt3x-utils: 
+\code{\link{get_n_samples}()},
+\code{\link{ticks2datetime}()}
 }
 \concept{file manipulations}
 \concept{gt3x-utils}

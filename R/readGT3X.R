@@ -179,6 +179,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   attr(accdata, "firmware") <- info[["Firmware"]]
   attr(accdata, "serial_prefix") <- info[["Serial Prefix"]]
   attr(accdata, "old_version") <- is_old_version
+  attr(accdata, "header") <- info
   if (!is_old_version) {
     attr(accdata, "missingness") <- data.frame(
       time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
@@ -261,6 +262,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   attr(x, "serial_prefix") <- all_attributes[["serial_prefix"]]
   attr(x, "old_version") <- all_attributes[["old_version"]]
   attr(x, "sample_rate") <- all_attributes[["sample_rate"]]
+  attr(x, "header") <- all_attributes[["header"]]
 
   x
 }

@@ -15,7 +15,9 @@
 Print the contents of the info.txt file in a gt3x folder
 }
 \seealso{
-Other gt3x-parsers: \code{\link{as.data.frame.activity}},
-  \code{\link{parse_gt3x_info}}, \code{\link{read.gt3x}}
+Other gt3x-parsers: 
+\code{\link{as.data.frame.activity}()},
+\code{\link{parse_gt3x_info}()},
+\code{\link{read.gt3x}()}
 }
 \concept{gt3x-parsers}

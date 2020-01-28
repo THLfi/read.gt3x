@@ -4,9 +4,15 @@
 \alias{unzip_single_gt3x}
 \title{Unzip a single gt3x file}
 \usage{
-unzip_single_gt3x(path, dirname = basename(gsub(".gt3x$| ", "", path)),
-  location = tempdir(), files = c("info.txt", "log.bin"),
-  remove_original = FALSE, check_structure = TRUE, verbose = TRUE)
+unzip_single_gt3x(
+  path,
+  dirname = basename(gsub(".gt3x$| ", "", path)),
+  location = tempdir(),
+  files = c("info.txt", "log.bin"),
+  remove_original = FALSE,
+  check_structure = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{path}{Path to a .gt3x file}

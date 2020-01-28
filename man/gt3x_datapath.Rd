@@ -30,7 +30,9 @@ gt3x_filename <- gt3x_datapath(1)
 
 }
 \seealso{
-Other file manipulations: \code{\link{is_gt3x}},
-  \code{\link{list_gt3x}}, \code{\link{unzip.gt3x}}
+Other file manipulations: 
+\code{\link{is_gt3x}()},
+\code{\link{list_gt3x}()},
+\code{\link{unzip.gt3x}()}
 }
 \concept{file manipulations}
