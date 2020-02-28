@@ -76,6 +76,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   fun_start_time <- Sys.time()
 
+  path = unzip_zipped_gt3x(path)
   has_info = have_info(path)
   if (has_info) {
     info = parse_gt3x_info(path)

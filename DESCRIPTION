@@ -22,8 +22,10 @@ LazyData: true
 LinkingTo: Rcpp
 Imports: 
     Rcpp,
-    utils
-RoxygenNote: 7.0.1
+    utils,
+    R.utils,
+    tools
+RoxygenNote: 7.0.2
 Suggests: 
     knitr,
     rmarkdown,
