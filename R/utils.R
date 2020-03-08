@@ -43,6 +43,7 @@ unzip_zipped_gt3x = function(path) {
         ext = y,
         FUN = FUN,
         remove = FALSE,
+        overwrite = TRUE,
         temporary = TRUE)
     }, zipped_files, zip_exts)
     path[unzip_these & fe] = zip_outfiles
