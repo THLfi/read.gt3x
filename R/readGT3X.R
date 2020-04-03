@@ -15,6 +15,7 @@ NULL
 #' the time series will be incomplete in case there is missingness.
 #' @param ... additional arguments to pass to \code{parseGT3X} C++ code
 #' @param verbose print diagnostic messages
+#' @param cleanup should any unzipped files be deleted?
 #'
 #' @note
 #'
@@ -72,11 +73,16 @@ NULL
 #'
 #' @export
 read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
-                      imputeZeroes = FALSE, ...) {
+                      imputeZeroes = FALSE,
+                      cleanup = FALSE,
+                      ...) {
 
   fun_start_time <- Sys.time()
 
-  path = unzip_zipped_gt3x(path)
+  path = unzip_zipped_gt3x(path, cleanup = cleanup)
+  remove_path = path
+  remove_file = attr(file, "remove")
+
   has_info = have_info(path)
   if (has_info) {
     info = parse_gt3x_info(path)
@@ -111,7 +117,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     }
   } else {
     if (is.wholenumber(info$`Acceleration Scale`)) {
-      info$`Acceleration Scale`= as.integer(info$`Acceleration Scale`)
+      info$`Acceleration Scale` = as.integer(info$`Acceleration Scale`)
     }
   }
   if (verbose) {
@@ -167,6 +173,15 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       attr(accdata, "light_data") = luxdata
     }
 
+  }
+
+  if (cleanup) {
+    if (remove_file) {
+      file.remove(remove_path)
+    }
+    rm_files = file.path(path,
+                         c("log.bin", "info.txt", "activity.bin"))
+    file.remove(rm_files)
   }
 
   if (verbose > 1) {
@@ -241,6 +256,12 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   if (verbose) {
     message("Converting to a data.frame ...")
   }
+
+  if (verbose) {
+    if (time_index[1] != 0 ) {
+      message(paste0("First time index is: ", time_index[1]))
+    }
+  }
   class(x) = "matrix"
   attr(x, "time_index") = NULL
   # attr(x, "missingness") = NULL
@@ -248,6 +269,18 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   # x$time = start_time + time_index/sample_rate;
   x <- activityAsDataFrame(x, time_index, start_time, sample_rate)
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
+
+  if (verbose) {
+    missingness = all_attributes$missingness
+    if (!all(as.numeric(missingness$time) %% 1 == 0)) {
+      missingness$time = round(missingness$time)
+    }
+    dt = difftime(x$time[1], all_attributes[["start_time"]], units = "secs")
+    dt = abs(as.numeric(dt))
+    if (dt > 1 && !(round(x$time[1]) %in% missingness$time)) {
+      warning("Start time does not match header start time")
+    }
+  }
   if (verbose) {
     message("Done")
   }
@@ -264,6 +297,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   attr(x, "old_version") <- all_attributes[["old_version"]]
   attr(x, "sample_rate") <- all_attributes[["sample_rate"]]
   attr(x, "header") <- all_attributes[["header"]]
+  attr(x, "start_time") <- all_attributes[["start_time"]]
+  attr(x, "stop_time") <- all_attributes[["stop_time"]]
 
   x
 }

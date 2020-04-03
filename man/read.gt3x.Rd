@@ -9,6 +9,7 @@ read.gt3x(
   verbose = FALSE,
   asDataFrame = FALSE,
   imputeZeroes = FALSE,
+  cleanup = FALSE,
   ...
 )
 }
@@ -21,6 +22,8 @@ read.gt3x(
 
 \item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
+
+\item{cleanup}{should any unzipped files be deleted?}
 
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
 }
