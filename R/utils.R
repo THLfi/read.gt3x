@@ -26,11 +26,12 @@ unzip_zipped_gt3x = function(path, cleanup = TRUE) {
   if (length(path) == 0) return(path)
   stopifnot(length(path) == 1)
   exts = sapply(path, tools::file_ext)
+  reg_exts = exts
   exts = tolower(exts)
   unzip_these = exts %in% c("gz", "bz", "bz2", "xz")
   # don't decompress if the file doesn't exist
   fe = file.exists(path)
-  fe_before = file.exists(sub(paste0("[.]", exts), "", path))
+  fe_before = file.exists(sub(paste0("[.]", reg_exts, "$"), "", path))
   if (any(unzip_these & fe)) {
     zipped_files = path[unzip_these & fe]
     zip_exts = exts[unzip_these & fe]
