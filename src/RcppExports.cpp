@@ -6,16 +6,15 @@
 using namespace Rcpp;
 
 // activityAsDataFrame
-DataFrame activityAsDataFrame(NumericMatrix& m, IntegerVector& time_index, double start_time, int sample_rate);
-RcppExport SEXP _read_gt3x_activityAsDataFrame(SEXP mSEXP, SEXP time_indexSEXP, SEXP start_timeSEXP, SEXP sample_rateSEXP) {
+DataFrame activityAsDataFrame(NumericMatrix& m, IntegerVector& time_index, double start_time);
+RcppExport SEXP _read_gt3x_activityAsDataFrame(SEXP mSEXP, SEXP time_indexSEXP, SEXP start_timeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix& >::type m(mSEXP);
     Rcpp::traits::input_parameter< IntegerVector& >::type time_index(time_indexSEXP);
     Rcpp::traits::input_parameter< double >::type start_time(start_timeSEXP);
-    Rcpp::traits::input_parameter< int >::type sample_rate(sample_rateSEXP);
-    rcpp_result_gen = Rcpp::wrap(activityAsDataFrame(m, time_index, start_time, sample_rate));
+    rcpp_result_gen = Rcpp::wrap(activityAsDataFrame(m, time_index, start_time));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -70,7 +69,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_read_gt3x_activityAsDataFrame", (DL_FUNC) &_read_gt3x_activityAsDataFrame, 4},
+    {"_read_gt3x_activityAsDataFrame", (DL_FUNC) &_read_gt3x_activityAsDataFrame, 3},
     {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 8},
     {"_read_gt3x_parseActivityBin", (DL_FUNC) &_read_gt3x_parseActivityBin, 6},
     {"_read_gt3x_parseLuxBin", (DL_FUNC) &_read_gt3x_parseLuxBin, 5},

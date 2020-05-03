@@ -236,7 +236,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   # attr(x, "missingness") = NULL
   # x = as.data.frame(x)
   # x$time = start_time + time_index/sample_rate;
-  x <- activityAsDataFrame(x, time_index, start_time, sample_rate)
+  x <- activityAsDataFrame(x, time_index, start_time)
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (verbose) {
     message("Done")
