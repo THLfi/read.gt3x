@@ -117,6 +117,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       logpath, max_samples = samples,
       scale_factor = info[["Acceleration Scale"]],
       sample_rate = info[["Sample Rate"]],
+      start_time = as.numeric(info[["Start Date"]]),
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
     if (verbose > 1) {

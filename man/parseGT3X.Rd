@@ -4,7 +4,7 @@
 \alias{parseGT3X}
 \title{Parse activity samples from a GT3X file}
 \usage{
-parseGT3X(filename, max_samples, scale_factor, sample_rate,
+parseGT3X(filename, max_samples, scale_factor, sample_rate, start_time,
   verbose = FALSE, debug = FALSE, impute_zeroes = FALSE)
 }
 \arguments{
@@ -24,8 +24,9 @@ not data is found.}
 \item{impute_zeroes}{Impute zeros in case there are missingness?}
 }
 \value{
-Returns a matrix with max_samples rows and 4 columns, where the first 3 columns are the acceleration samples and
-the last column is timestamps in seconds (including 100th of seconds) starting from 00:00:00 1970-01-01 UTC (UNIX time)
+Returns a matrix with max_samples rows and 3 columns with the acceleration samples.
+The matrix has attributes
+"time_index", "missingness", "start_time_log", "sample_rate", "impute_zeroes".
 }
 \description{
 Parse activity samples from a GT3X file

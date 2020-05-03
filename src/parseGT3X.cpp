@@ -308,8 +308,14 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' "time_index", "missingness", "start_time_log", "sample_rate", "impute_zeroes".
 //'
 // [[Rcpp::export]]
-NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate,
-                        const bool verbose = false, const bool debug = false, const bool impute_zeroes = false) {
+NumericMatrix parseGT3X(const char* filename,
+                        const int max_samples,
+                        const double scale_factor,
+                        const int sample_rate,
+                        const uint32_t start_time,
+                        const bool verbose = false,
+                        const bool debug = false,
+                        const bool impute_zeroes = false) {
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
   // Rcpp::NumericMatrix activityMatrix = Rcpp::no_init(max_samples, N_ACTIVITYCOLUMNS);
@@ -323,8 +329,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   uint8_t item;
   uint16_t size;
   uint32_t payload_start;
-  uint32_t start_time;
-  uint32_t expected_payload_start;
+  uint32_t param_start_time;
+  uint32_t expected_payload_start = start_time;
   int payload_timediff;
   int total_records = 0;
   int sample_size;
@@ -358,8 +364,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
       }
 
       if(type == RECORDTYPE_PARAMETERS) {
-        ParseParameters(GT3Xstream, size, start_time, verbose);
-        expected_payload_start = start_time ;
+        ParseParameters(GT3Xstream, size, param_start_time, verbose);
+        expected_payload_start = param_start_time ;
       }
 
       else if( (type == RECORDTYPE_ACTIVITY) | (type == RECORDTYPE_ACTIVITY2) ) {
@@ -441,7 +447,8 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   activityMatrix.attr("time_index") = timeStamps;
   activityMatrix.attr("missingness") = Missingness;
 
-  activityMatrix.attr("start_time_log") = start_time;
+  activityMatrix.attr("start_time_param") = param_start_time;
+  activityMatrix.attr("start_time_info") = start_time;
   activityMatrix.attr("sample_rate") = sample_rate;
   activityMatrix.attr("impute_zeroes") = impute_zeroes;
 

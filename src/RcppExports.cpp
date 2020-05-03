@@ -20,8 +20,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // parseGT3X
-NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose, const bool debug, const bool impute_zeroes);
-RcppExport SEXP _read_gt3x_parseGT3X(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP verboseSEXP, SEXP debugSEXP, SEXP impute_zeroesSEXP) {
+NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const uint32_t start_time, const bool verbose, const bool debug, const bool impute_zeroes);
+RcppExport SEXP _read_gt3x_parseGT3X(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP start_timeSEXP, SEXP verboseSEXP, SEXP debugSEXP, SEXP impute_zeroesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -29,10 +29,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type max_samples(max_samplesSEXP);
     Rcpp::traits::input_parameter< const double >::type scale_factor(scale_factorSEXP);
     Rcpp::traits::input_parameter< const int >::type sample_rate(sample_rateSEXP);
+    Rcpp::traits::input_parameter< const uint32_t >::type start_time(start_timeSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< const bool >::type debug(debugSEXP);
     Rcpp::traits::input_parameter< const bool >::type impute_zeroes(impute_zeroesSEXP);
-    rcpp_result_gen = Rcpp::wrap(parseGT3X(filename, max_samples, scale_factor, sample_rate, verbose, debug, impute_zeroes));
+    rcpp_result_gen = Rcpp::wrap(parseGT3X(filename, max_samples, scale_factor, sample_rate, start_time, verbose, debug, impute_zeroes));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -70,7 +71,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_read_gt3x_activityAsDataFrame", (DL_FUNC) &_read_gt3x_activityAsDataFrame, 4},
-    {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 7},
+    {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 8},
     {"_read_gt3x_parseActivityBin", (DL_FUNC) &_read_gt3x_parseActivityBin, 6},
     {"_read_gt3x_parseLuxBin", (DL_FUNC) &_read_gt3x_parseLuxBin, 5},
     {NULL, NULL, 0}
