@@ -6,7 +6,7 @@ gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
 path = gt3x_file
 
 testthat::test_that("Reading in Old format works", {
-  res = read.gt3x::read.gt3x(path, verbose = TRUE)
+  res = read.gt3x::read.gt3x(path)
   testthat::expect_is(res, "activity")
   testthat::expect_is(res, "matrix")
   testthat::expect_equal(colnames(res), c("X", "Y", "Z"))
@@ -25,7 +25,7 @@ testthat::test_that("Reading in Old format works", {
 
 
 testthat::test_that("Converting Old to Data.frame", {
-  res = read.gt3x::read.gt3x(path, verbose = TRUE, asDataFrame = TRUE)
+  res = read.gt3x::read.gt3x(path, asDataFrame = TRUE)
   testthat::expect_is(res, "activity_df")
   testthat::expect_is(res, "data.frame")
   testthat::expect_equal(colnames(res), c("X", "Y", "Z", "time"))

@@ -1,6 +1,6 @@
 
-csvfile <- "tests/TAS1H30182785 (2019-09-17).csv"
-gt3xfile <- "tests/TAS1H30182785 (2019-09-17).gt3x"
+csvfile <- "../TAS1H30182785 (2019-09-17).csv"
+gt3xfile <- "../TAS1H30182785 (2019-09-17).gt3x"
 
 # Read ActiLife raw data output CSV
 csvdata <- as.data.frame(data.table::fread(csvfile))
@@ -22,3 +22,5 @@ testthat::test_that("Number of missing values correctly attributed", {
   nmis <-   sum(attr(gt3xdata, "missingness")$n_missing)
   testthat::expect_true(nrow(gt3xdata) + nmis == nrow(csvdata))
 })
+
+
