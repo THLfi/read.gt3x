@@ -7,3 +7,4 @@ src/*.o
 src/*.o.tmp
 R/read.old.gt3x.R
 man/read.gt3x.old.Rd
+issues/*

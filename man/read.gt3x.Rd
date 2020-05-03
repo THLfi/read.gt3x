@@ -5,7 +5,7 @@
 \title{Read GT3X}
 \usage{
 read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
-  imputeZeroes = FALSE, ...)
+  imputeZeroes = FALSE, cleanup = FALSE, ...)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
@@ -16,6 +16,8 @@ read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
 
 \item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
+
+\item{cleanup}{should any unzipped files be deleted?}
 
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
 }

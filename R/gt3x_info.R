@@ -33,7 +33,16 @@ parse_gt3x_info <- function(path, tz = "GMT") {
       if (length(info$`Acceleration Scale`) == 0) {
         info$`Acceleration Scale` = 341L
       }
-    }
+  }
+
+  is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  {
+    abs(x - round(x)) < tol
+  }
+
+  if (is.wholenumber(info$`Acceleration Scale`)) {
+    info$`Acceleration Scale` = as.integer(info$`Acceleration Scale`)
+  }
+
   structure(info, class = c("gt3x_info", class(info)))
 }
 

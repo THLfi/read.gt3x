@@ -1,6 +1,8 @@
 
-csvfile <- "../TAS1H30182785 (2019-09-17).csv"
-gt3xfile <- "../TAS1H30182785 (2019-09-17).gt3x"
+testthat::context("Reading New data")
+csvfile <- "../TAS1H30182785_2019-09-17.csv"
+gt3xfile <- "../TAS1H30182785_2019-09-17.gt3x"
+
 
 # Read ActiLife raw data output CSV
 csvdata <- as.data.frame(data.table::fread(csvfile))
@@ -23,4 +25,7 @@ testthat::test_that("Number of missing values correctly attributed", {
   testthat::expect_true(nrow(gt3xdata) + nmis == nrow(csvdata))
 })
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f760f6cc4169a3ada9cb59c5a2273df6738187fa
