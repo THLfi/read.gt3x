@@ -24,8 +24,3 @@ testthat::test_that("Number of missing values correctly attributed", {
   nmis <-   sum(attr(gt3xdata, "missingness")$n_missing)
   testthat::expect_true(nrow(gt3xdata) + nmis == nrow(csvdata))
 })
-
-<<<<<<< HEAD
-
-=======
->>>>>>> f760f6cc4169a3ada9cb59c5a2273df6738187fa
