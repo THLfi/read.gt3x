@@ -113,6 +113,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   }
   if (!is_old_version) {
     logpath <- file.path(path, "log.bin")
+    stopifnot(length(info$`Acceleration Scale`) > 0)
+    stopifnot(length(info$`Sample Rate`) > 0)
+    stopifnot(length(info$`Start Date`) > 0)
     accdata <- parseGT3X(
       logpath, max_samples = samples,
       scale_factor = info[["Acceleration Scale"]],
