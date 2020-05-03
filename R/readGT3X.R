@@ -101,11 +101,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   tz  <- "GMT" # used for parsing, times are actually in local timezone
   info <- parse_gt3x_info(path, tz = tz)
-  if (is_old_version) {
-    if (length(info$`Acceleration Scale`) == 0) {
-      info$`Acceleration Scale` = 341L
-    }
-  }
+
   if (verbose) {
     print(info)
   }
@@ -119,8 +115,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     logpath <- file.path(path, "log.bin")
     accdata <- parseGT3X(
       logpath, max_samples = samples,
-      scale_factor = info$`Acceleration Scale`,
-      sample_rate = info$`Sample Rate`,
+      scale_factor = info[["Acceleration Scale"]],
+      sample_rate = info[["Sample Rate"]],
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
     if (verbose > 1) {

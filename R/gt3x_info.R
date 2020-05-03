@@ -28,6 +28,12 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   info$`Last Sample Time` <- ticks2datetime(info$`Last Sample Time`, tz = tz)
   info$`Download Date` <- ticks2datetime(info$`Download Date`, tz = tz)
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
+
+  if(old_version(info)) {
+      if (length(info$`Acceleration Scale`) == 0) {
+        info$`Acceleration Scale` = 341L
+      }
+    }
   structure(info, class = c("gt3x_info", class(info)))
 }
 
