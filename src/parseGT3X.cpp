@@ -303,8 +303,9 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' @param debug Print information for every activity second
 //'
 //' @return
-//' Returns a matrix with max_samples rows and 4 columns, where the first 3 columns are the acceleration samples and
-//' the last column is timestamps in seconds (including 100th of seconds) starting from 00:00:00 1970-01-01 UTC (UNIX time)
+//' Returns a matrix with max_samples rows and 3 columns with the acceleration samples.
+//' The matrix has attributes
+//' "time_index", "missingness", "start_time_log", "sample_rate", "impute_zeroes".
 //'
 // [[Rcpp::export]]
 NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate,
@@ -327,6 +328,7 @@ NumericMatrix parseGT3X(const char* filename, const int max_samples, const doubl
   int payload_timediff;
   int total_records = 0;
   int sample_size;
+
 
   int chksum;
 
