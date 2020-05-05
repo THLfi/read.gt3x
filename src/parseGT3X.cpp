@@ -298,6 +298,7 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' not data is found.
 //' @param scale_factor Scale factor for the activity samples.
 //' @param sample_rate sampling rate for activity samples.
+//' @param start_time starting time of the sample recording.
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //' @param impute_zeroes Impute zeros in case there are missingness?
 //' @param debug Print information for every activity second

@@ -25,6 +25,8 @@ not data is found.}
 
 \item{sample_rate}{sampling rate for activity samples.}
 
+\item{start_time}{starting time of the sample recording.}
+
 \item{verbose}{Print the parameters from the log.bin file and other messages?}
 
 \item{debug}{Print information for every activity second}
