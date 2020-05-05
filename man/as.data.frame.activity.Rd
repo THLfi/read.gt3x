@@ -25,7 +25,9 @@ An object of class 'activity_df' which is also a data.frame with the following a
 Convert an activity matrix to a data.frame
 }
 \seealso{
-Other gt3x-parsers: \code{\link{parse_gt3x_info}},
-  \code{\link{print.gt3x_info}}, \code{\link{read.gt3x}}
+Other gt3x-parsers: 
+\code{\link{parse_gt3x_info}()},
+\code{\link{print.gt3x_info}()},
+\code{\link{read.gt3x}()}
 }
 \concept{gt3x-parsers}

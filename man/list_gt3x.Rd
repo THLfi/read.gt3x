@@ -16,7 +16,9 @@ List full paths to all gt3x files in a directory
 list_gt3x(gt3x_datapath())
 }
 \seealso{
-Other file manipulations: \code{\link{gt3x_datapath}},
-  \code{\link{is_gt3x}}, \code{\link{unzip.gt3x}}
+Other file manipulations: 
+\code{\link{gt3x_datapath}()},
+\code{\link{is_gt3x}()},
+\code{\link{unzip.gt3x}()}
 }
 \concept{file manipulations}

@@ -4,8 +4,7 @@
 \alias{parseLuxBin}
 \title{Parse activity samples from a GT3X file}
 \usage{
-parseLuxBin(filename, max_samples, scale_factor, max_value,
-  verbose = FALSE)
+parseLuxBin(filename, max_samples, scale_factor, max_value, verbose = FALSE)
 }
 \arguments{
 \item{filename}{(char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples}

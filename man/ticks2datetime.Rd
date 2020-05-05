@@ -18,7 +18,8 @@ Convert NET ticks to POSIXct datetime
 reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
 }
 \seealso{
-Other gt3x-utils: \code{\link{get_n_samples}},
-  \code{\link{is_gt3x}}
+Other gt3x-utils: 
+\code{\link{get_n_samples}()},
+\code{\link{is_gt3x}()}
 }
 \concept{gt3x-utils}
