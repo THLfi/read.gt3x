@@ -29,7 +29,9 @@ Checks if files have a .gt3x file extension
 
 is_gt3x("test.gt3x") # TRUE
 is_gt3x("test") # FALSE
+is_gt3x(NULL)
 
+have_log_and_info(tempfile(), verbose = TRUE)
 }
 \seealso{
 Other file manipulations: 

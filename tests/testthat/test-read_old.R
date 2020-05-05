@@ -5,8 +5,12 @@ gt3x_file = utils::unzip(destfile, exdir = tempdir())
 gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
 path = gt3x_file
 
+gz = R.utils::gzip(path, remove = FALSE, overwrite = TRUE)
+gz_file = tempfile(fileext = ".gt3x.gz")
+file.copy(gz, gz_file)
+
 testthat::test_that("Reading in Old format works", {
-  res = read.gt3x::read.gt3x(path)
+  res = read.gt3x::read.gt3x(path, verbose = 2)
   testthat::expect_is(res, "activity")
   testthat::expect_is(res, "matrix")
   testthat::expect_equal(colnames(res), c("X", "Y", "Z"))
@@ -43,3 +47,13 @@ testthat::test_that("Converting Old to Data.frame", {
   testthat::expect_equal(all_attr$sample_rate, 30)
 
 })
+
+testthat::test_that("Converting Old with .gz file", {
+  res = read.gt3x::read.gt3x(path, asDataFrame = FALSE)
+  df2 <- read.gt3x(gz_file, asDataFrame = FALSE, verbose = 2,
+                   cleanup = TRUE)
+  testthat::expect_equal(res, df2)
+
+})
+
+

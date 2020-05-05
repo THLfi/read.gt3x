@@ -103,6 +103,10 @@ unzip_single_gt3x <- function(
 #' dir <- gt3x_datapath()
 #' gt3xdirs <- unzip.gt3x(dir)
 #'
+#' tfile = tempfile()
+#' testthat::expect_error(unzip.gt3x(c(dir, tfile)))
+#' testthat::expect_error(unzip.gt3x(""))
+#'
 #' @export
 unzip.gt3x <- function(path, verbose = TRUE, ...) {
   if (length(path) == 1 & !is_gt3x(path[1])) {

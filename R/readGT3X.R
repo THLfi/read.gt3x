@@ -41,6 +41,9 @@ NULL
 #' datadir <- gt3x_datapath()
 #' gt3xfolders <- unzip.gt3x(datadir)
 #' gt3xfile <- gt3xfolders[2]
+#' is_gt3x(gt3xfile)
+#' have_log_and_info(gt3xfile, verbose = TRUE)
+#'
 #' x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
 #' verbose = TRUE)
 #' df2 <- as.data.frame(x)
@@ -53,13 +56,16 @@ NULL
 #' memory.limit()
 #' df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 #' head(df)
-#'
 #' rm(df); gc(); gc()
+#'
 #'
 #' df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = 2)
 #' head(df)
 #'
-#' \dontrun{
+#' \donttest{
+#'
+#'
+#'
 #' url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X%2B.01.day.gt3x.zip"
 #' destfile = tempfile(fileext = ".zip")
 #' dl = download.file(url, destfile = destfile)
@@ -68,6 +74,13 @@ NULL
 #' path = gt3x_file
 #'
 #' res = read.gt3x(path)
+#'
+#' gz = R.utils::gzip(path, remove = FALSE, overwrite = FALSE)
+#' df2 <- read.gt3x(gz, asDataFrame = FALSE, verbose = 2)
+#' head(df2)
+#'
+#' rm(df2); gc(); gc()
+#'
 #' }
 #' @family gt3x-parsers
 #'
@@ -82,6 +95,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   path = unzip_zipped_gt3x(path, cleanup = cleanup)
   remove_path = path
   remove_file = attr(file, "remove")
+  if (is.null(remove_file)) {
+    remove_file = FALSE
+  }
 
   has_info = have_info(path)
   if (has_info) {
@@ -173,8 +189,11 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       file.remove(remove_path)
     }
     rm_files = file.path(path,
-                         c("log.bin", "info.txt", "activity.bin"))
-    file.remove(rm_files)
+                         c("log.bin", "info.txt", "activity.bin",
+                           "lux.bin"))
+    suppressWarnings({
+      file.remove(rm_files)
+    })
   }
 
   if (verbose > 1) {

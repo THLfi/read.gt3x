@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Tuomo Nieminen" />
+
+<meta name="date" content="2020-05-05" />
+
+<title>Getting started with read.gt3x</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started with read.gt3x</h1>
+<h4 class="author">Tuomo Nieminen</h4>
+<h4 class="date">2020-05-05</h4>
+
+
+
+<p>This document describes how the <strong>read.gt3x</strong> package can be used to read binary activity data into R. To access the read.gt3x package, use:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(read.gt3x)</span></code></pre></div>
+<p>For source code and installation instructions, see the <a href="https://github.com/THLfi/read.gt3x">GitHub page</a>.</p>
+<div id="reading-.gt3x-data-into-r" class="section level2">
+<h2>Reading .gt3x data into R</h2>
+<p>The read.gt3x package includes two sample .gt3x files which I’ll use to demonstrate reading the data. First we need the path to a single gt3x file.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>gt3xfile &lt;-<span class="st"> </span><span class="kw">gt3x_datapath</span>(<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; Downloading gt3x sample data from https://github.com/THLfi/read.gt3x/releases/download/v1.0/EE_left_29.5.2017-05-30.gt3x.zip</span></span></code></pre></div>
+<div id="method-1-temporary-unzip-and-read" class="section level3">
+<h3>Method 1: Temporary unzip and read</h3>
+<p>The <code>read.gt3x()</code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>X &lt;-<span class="st"> </span><span class="kw">read.gt3x</span>(gt3xfile)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">head</span>(X)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; Sampling Rate: 100Hz</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; Firmware Version: 1.7.0</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; Serial Number Prefix: TAS</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt;           X     Y      Z</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; [1,] -0.035 0.348 -0.965</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; [2,] -0.008 0.352 -0.934</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; [3,]  0.008 0.332 -0.887</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; [4,]  0.008 0.320 -0.848</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; [5,]  0.004 0.316 -0.844</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; [6,]  0.000 0.301 -0.852</span></span></code></pre></div>
+<pre><code>#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
+#&gt; Ncells  595290 31.8    1261402   67.4         NA   1261402   67.4
+#&gt; Vcells 1255070  9.6  381576762 2911.2      16384 426165599 3251.4
+#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
+#&gt; Ncells  595287 31.8    1261402   67.4         NA   1261402   67.4
+#&gt; Vcells 1255146  9.6  305261410 2329.0      16384 426165599 3251.4</code></pre>
+</div>
+<div id="method-2-permanent-unzip-then-read" class="section level3">
+<h3>Method 2: permanent unzip, then read</h3>
+<p>.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as <em>unzipped</em> folders containing these two files, because otherwise the read.gt3x() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data.</p>
+<p><code>read.gt3x()</code> also accepts paths to unzipped gt3x folders. To demonstrate the usage, we’ll unzip the sample .gt3x files in the package, and then read them. The <code>unzip.gt3x()</code> helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named “subject001.gt3x” are extracted to a folder named “subject001”. <code>unzip.gt3x()</code> returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>datadir &lt;-<span class="st"> </span><span class="kw">gt3x_datapath</span>() <span class="co"># location of .gt3x files</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Downloading gt3x sample data from https://github.com/THLfi/read.gt3x/releases/download/v1.0/SS_left_19.5.2017-05-22.gt3x.zip</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>gt3xfolders &lt;-<span class="st"> </span><span class="kw">unzip.gt3x</span>(datadir, <span class="dt">location =</span> <span class="kw">tempdir</span>())</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; 1/2</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/EE_left_29.5.2017-05-30</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 2/2</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/SS_left_19.5.2017-05-22</span></span></code></pre></div>
+<p>The <code>read.gt3x()</code> function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>gt3xfolder &lt;-<span class="st"> </span>gt3xfolders[<span class="dv">1</span>]</span>
+<span id="cb7-2"><a href="#cb7-2"></a>X &lt;-<span class="st"> </span><span class="kw">read.gt3x</span>(gt3xfolder)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">head</span>(X)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; Sampling Rate: 100Hz</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; Firmware Version: 1.7.0</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; Serial Number Prefix: TAS</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;           X     Y      Z</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; [1,] -0.035 0.348 -0.965</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; [2,] -0.008 0.352 -0.934</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; [3,]  0.008 0.332 -0.887</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; [4,]  0.008 0.320 -0.848</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; [5,]  0.004 0.316 -0.844</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; [6,]  0.000 0.301 -0.852</span></span></code></pre></div>
+</div>
+</div>
+<div id="activity-data-matrix" class="section level2">
+<h2>Activity data matrix</h2>
+<p>Internally, the data matrix returned by read.gt3x() is a bit smarter than it looks, as it knows all the (relative) timestamps of the observations.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">str</span>(X)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt;  &#39;activity&#39; num [1:60684200, 1:3] -0.035 -0.008 0.008 0.008 0.004 0 0 -0.004 -0.02 -0.027 ...</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt;  - attr(*, &quot;dimnames&quot;)=List of 2</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt;   ..$ : NULL</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;   ..$ : chr [1:3] &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt;  - attr(*, &quot;time_index&quot;)= int [1:60684200] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;  - attr(*, &quot;missingness&quot;)=&#39;data.frame&#39;:  5 obs. of  2 variables:</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;   ..$ time     : POSIXct[1:5], format: &quot;2017-05-23 14:17:40&quot; &quot;2017-05-28 10:06:35&quot; ...</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;   ..$ n_missing: int [1:5] 100 100 100 100 8300</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  - attr(*, &quot;start_time_param&quot;)= num 1.5e+09</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  - attr(*, &quot;start_time_info&quot;)= num 1.5e+09</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  - attr(*, &quot;sample_rate&quot;)= int 100</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  - attr(*, &quot;impute_zeroes&quot;)= logi FALSE</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  - attr(*, &quot;start_time&quot;)= POSIXct[1:1], format: &quot;2017-05-23 09:15:00&quot;</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt;  - attr(*, &quot;stop_time&quot;)= POSIXct[1:1], format: &quot;0001-01-01&quot;</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt;  - attr(*, &quot;last_sample_time&quot;)= POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt;  - attr(*, &quot;subject_name&quot;)= chr &quot;EE_left_29.5.&quot;</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt;  - attr(*, &quot;time_zone&quot;)= chr &quot;03:00:00&quot;</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt;  - attr(*, &quot;firmware&quot;)= chr &quot;1.7.0&quot;</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt;  - attr(*, &quot;serial_prefix&quot;)= chr &quot;TAS&quot;</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt;  - attr(*, &quot;old_version&quot;)= logi FALSE</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a><span class="co">#&gt;  - attr(*, &quot;header&quot;)=List of 19</span></span>
+<span id="cb9-23"><a href="#cb9-23"></a><span class="co">#&gt;   ..$ Serial Number     : chr &quot;TAS1F27160060&quot;</span></span>
+<span id="cb9-24"><a href="#cb9-24"></a><span class="co">#&gt;   ..$ Device Type       : chr &quot;Link&quot;</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a><span class="co">#&gt;   ..$ Firmware          : chr &quot;1.7.0&quot;</span></span>
+<span id="cb9-26"><a href="#cb9-26"></a><span class="co">#&gt;   ..$ Battery Voltage   : chr &quot;3,86&quot;</span></span>
+<span id="cb9-27"><a href="#cb9-27"></a><span class="co">#&gt;   ..$ Sample Rate       : num 100</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a><span class="co">#&gt;   ..$ Start Date        : POSIXct[1:1], format: &quot;2017-05-23 09:15:00&quot;</span></span>
+<span id="cb9-29"><a href="#cb9-29"></a><span class="co">#&gt;   ..$ Stop Date         : POSIXct[1:1], format: &quot;0001-01-01&quot;</span></span>
+<span id="cb9-30"><a href="#cb9-30"></a><span class="co">#&gt;   ..$ Last Sample Time  : POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
+<span id="cb9-31"><a href="#cb9-31"></a><span class="co">#&gt;   ..$ TimeZone          : chr &quot;03:00:00&quot;</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a><span class="co">#&gt;   ..$ Download Date     : POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
+<span id="cb9-33"><a href="#cb9-33"></a><span class="co">#&gt;   ..$ Board Revision    : chr &quot;6&quot;</span></span>
+<span id="cb9-34"><a href="#cb9-34"></a><span class="co">#&gt;   ..$ Unexpected Resets : chr &quot;0&quot;</span></span>
+<span id="cb9-35"><a href="#cb9-35"></a><span class="co">#&gt;   ..$ Acceleration Scale: int 256</span></span>
+<span id="cb9-36"><a href="#cb9-36"></a><span class="co">#&gt;   ..$ Acceleration Min  : chr &quot;-8.0&quot;</span></span>
+<span id="cb9-37"><a href="#cb9-37"></a><span class="co">#&gt;   ..$ Acceleration Max  : chr &quot;8.0&quot;</span></span>
+<span id="cb9-38"><a href="#cb9-38"></a><span class="co">#&gt;   ..$ Limb              : chr &quot;Wrist&quot;</span></span>
+<span id="cb9-39"><a href="#cb9-39"></a><span class="co">#&gt;   ..$ Dominance         : chr &quot;Non-Dominant&quot;</span></span>
+<span id="cb9-40"><a href="#cb9-40"></a><span class="co">#&gt;   ..$ Subject Name      : chr &quot;EE_left_29.5.&quot;</span></span>
+<span id="cb9-41"><a href="#cb9-41"></a><span class="co">#&gt;   ..$ Serial Prefix     : chr &quot;TAS&quot;</span></span>
+<span id="cb9-42"><a href="#cb9-42"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;gt3x_info&quot; &quot;list&quot;</span></span></code></pre></div>
+<ul>
+<li>time_index: Time passed since start</li>
+<li>start_time: timestamp of first sample</li>
+<li>sample_rate: Samples per second.</li>
+</ul>
+</div>
+<div id="converting-to-a-data.frame" class="section level2">
+<h2>Converting to a data.frame</h2>
+<p>the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a “time” column, which gives the timestamp of each sample.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>X &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(X)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">head</span>(X)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; Sampling Rate: 100Hz</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt; Firmware Version: 1.7.0</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; Serial Number Prefix: TAS</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;        X     Y      Z                time</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt; 1 -0.035 0.348 -0.965 2017-05-23 09:15:00</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt; 2 -0.008 0.352 -0.934 2017-05-23 09:15:00</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt; 3  0.008 0.332 -0.887 2017-05-23 09:15:00</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt; 4  0.008 0.320 -0.848 2017-05-23 09:15:00</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt; 5  0.004 0.316 -0.844 2017-05-23 09:15:00</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt; 6  0.000 0.301 -0.852 2017-05-23 09:15:00</span></span></code></pre></div>
+<pre><code>#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
+#&gt; Ncells  610495 32.7    1261402   67.4         NA   1261402   67.4
+#&gt; Vcells 1297310  9.9  614609198 4689.1      16384 759942809 5798.0
+#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
+#&gt; Ncells  610492 32.7    1261402   67.4         NA   1261402   67.4
+#&gt; Vcells 1297388  9.9  491687359 3751.3      16384 759942809 5798.0</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

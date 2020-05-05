@@ -16,6 +16,7 @@
 #'
 #' is_gt3x("test.gt3x") # TRUE
 #' is_gt3x("test") # FALSE
+#' is_gt3x(NULL)
 #'
 is_gt3x <- function(path) {
   if (length(path) == 0) return(FALSE)
@@ -79,6 +80,8 @@ list_gt3x <- function(path) {
 #' @rdname is_gt3x
 #' @param verbose print diagnostic messages
 #' @export
+#' @examples
+#' have_log_and_info(tempfile(), verbose = TRUE)
 have_log_and_info <- function(path, verbose = TRUE) {
   if (is_gt3x(path)) {
     filenames <- unzip(path, list = TRUE)$Name

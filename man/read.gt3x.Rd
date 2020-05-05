@@ -56,6 +56,9 @@ represents local time.
 datadir <- gt3x_datapath()
 gt3xfolders <- unzip.gt3x(datadir)
 gt3xfile <- gt3xfolders[2]
+is_gt3x(gt3xfile)
+have_log_and_info(gt3xfile, verbose = TRUE)
+
 x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
 verbose = TRUE)
 df2 <- as.data.frame(x)
@@ -68,13 +71,16 @@ gt3xfile <- gt3x_datapath(1)
 memory.limit()
 df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 head(df)
-
 rm(df); gc(); gc()
+
 
 df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = 2)
 head(df)
 
-\dontrun{
+\donttest{
+
+
+
 url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X\%2B.01.day.gt3x.zip"
 destfile = tempfile(fileext = ".zip")
 dl = download.file(url, destfile = destfile)
@@ -83,6 +89,13 @@ gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
 path = gt3x_file
 
 res = read.gt3x(path)
+
+gz = R.utils::gzip(path, remove = FALSE, overwrite = FALSE)
+df2 <- read.gt3x(gz, asDataFrame = FALSE, verbose = 2)
+head(df2)
+
+rm(df2); gc(); gc()
+
 }
 }
 \seealso{

@@ -90,6 +90,9 @@ gt3x_dataurl <- function(
 #' @param zipped do the files have a \code{.zip} extension
 #' @return Character vector of files
 #' @export
+#' @examples
+#' testthat::expect_error(gt3x_filename(100))
+#' testthat::expect_error(gt3x_filename(0))
 gt3x_filename <- function(index = NULL, zipped = FALSE) {
   files <- c("EE_left_29.5.2017-05-30.gt3x", "SS_left_19.5.2017-05-22.gt3x")
   if (zipped) {

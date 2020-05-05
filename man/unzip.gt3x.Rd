@@ -35,6 +35,10 @@ gt3xdir <- unzip.gt3x(path)
 dir <- gt3x_datapath()
 gt3xdirs <- unzip.gt3x(dir)
 
+tfile = tempfile()
+testthat::expect_error(unzip.gt3x(c(dir, tfile)))
+testthat::expect_error(unzip.gt3x(""))
+
 }
 \seealso{
 Other file manipulations: 
