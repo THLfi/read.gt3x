@@ -3,7 +3,7 @@ Type: Package
 Title: Parse Actigraph 'GT3X'/'GT3X+' Accelerometer Data
 Version: 0.1.0.9000
 Authors@R: c(person("Tuomo", "Nieminen", 
-    email = "tuomo.a.nieminen@gmail.co", 
+    email = "tuomo.a.nieminen@gmail.com", 
     role = c("aut", "cre")),
     person(given = "John",
            family = "Muschelli",
