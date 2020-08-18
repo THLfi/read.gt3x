@@ -133,7 +133,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   if (samples <= 0) {
     warning(paste0(
       "Negative samples estimated, dates are wrong in info, using ",
-      "maximum samples (90 days)"))
+      "maximum samples (100 days)"))
     srate = info$`Sample Rate`
     if (is.null(srate)) {
       srate = 100L
@@ -142,7 +142,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     if (is.na(srate)) {
       srate = 100L
     }
-    samples = 90 * 24 * 60 * 60 * srate
+    samples = 100L * 24L * 60L * 60L * srate
   }
 
   if (verbose) {
