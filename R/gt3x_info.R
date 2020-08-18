@@ -12,7 +12,7 @@
 #'
 #' @export
 parse_gt3x_info <- function(path, tz = "GMT") {
-  path = unzip_zipped_gt3x(path, cleanup = TRUE)
+  path <- unzip_zipped_gt3x(path, cleanup = TRUE)
   if (is_gt3x(path)) {
     path <- unzip.gt3x(path, check_structure = FALSE, verbose = FALSE)
   }
@@ -48,10 +48,10 @@ parse_gt3x_info <- function(path, tz = "GMT") {
 }
 
 old_version = function(info) {
-  firmware_version = info$Firmware
-  firmware_version = package_version(firmware_version)
-  hdr = info$`Serial Prefix`
-  ret = hdr %in% c("MRA", "NEO") &
+  firmware_version <- info$Firmware
+  firmware_version <- package_version(firmware_version)
+  hdr <- info$`Serial Prefix`
+  ret <- hdr %in% c("MRA", "NEO") &
     firmware_version <= package_version("2.5.0")
   return(ret)
 }

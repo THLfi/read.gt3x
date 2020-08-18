@@ -92,22 +92,22 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   fun_start_time <- Sys.time()
 
-  path = unzip_zipped_gt3x(path, cleanup = cleanup)
-  remove_path = path
-  remove_file = attr(file, "remove")
+  path <- unzip_zipped_gt3x(path, cleanup = cleanup)
+  remove_path <- path
+  remove_file <- attr(file, "remove")
   if (is.null(remove_file)) {
-    remove_file = FALSE
+    remove_file <- FALSE
   }
 
-  has_info = have_info(path)
+  has_info <- have_info(path)
   if (has_info) {
-    info = parse_gt3x_info(path)
+    info <- parse_gt3x_info(path)
   }
-  files = c("info.txt", "log.bin")
+  files <- c("info.txt", "log.bin")
   if (has_info) {
-    is_old_version = old_version(info)
+    is_old_version <- old_version(info)
     if (is_old_version) {
-      files = c("info.txt",
+      files <- c("info.txt",
                 "activity.bin",
                 "lux.bin")
     }
@@ -130,21 +130,23 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   }
 
   samples <- get_n_samples(info)
+  bad_samples <- FALSE
   if (samples <= 0) {
-    msg = paste0(
+    msg <- paste0(
       "Negative samples estimated, dates are wrong in info, using ",
       "maximum samples (100 days)")
     message(msg)
     warning(msg)
-    srate = info$`Sample Rate`
+    srate <- info$`Sample Rate`
     if (is.null(srate)) {
-      srate = 100L
+      srate <- 100L
     }
-    srate = as.numeric(srate)
+    srate <- as.numeric(srate)
     if (is.na(srate)) {
-      srate = 100L
+      srate <- 100L
     }
-    samples = 100L * 24L * 60L * 60L * srate
+    samples <- 100L * 24L * 60L * 60L * srate
+    bad_samples <- TRUE
   }
 
   if (verbose) {
@@ -183,12 +185,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     if (file.exists(lux_path)) {
       stopifnot(info$`Serial Prefix` %in% c("NEO", "MRA"))
       if (info$`Serial Prefix` == "NEO") {
-        lux_scale_factor = 1.25
-        lux_max_value = 2500L
+        lux_scale_factor <- 1.25
+        lux_max_value <- 2500L
       }
       if (info$`Serial Prefix` == "MRA") {
-        lux_scale_factor = 3.25
-        lux_max_value = 6000L
+        lux_scale_factor <- 3.25
+        lux_max_value <- 6000L
       }
       luxdata <- parseLuxBin(
         lux_path, max_samples = samples,
@@ -204,7 +206,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     if (remove_file) {
       file.remove(remove_path)
     }
-    rm_files = file.path(path,
+    rm_files <- file.path(path,
                          c("log.bin", "info.txt", "activity.bin",
                            "lux.bin"))
     suppressWarnings({
@@ -222,11 +224,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   attr(accdata, "time_zone") <- info[["TimeZone"]]
   attr(accdata, "firmware") <- info[["Firmware"]]
   attr(accdata, "serial_prefix") <- info[["Serial Prefix"]]
+  attr(accdata, "bad_samples") <- bad_samples
   attr(accdata, "old_version") <- is_old_version
   attr(accdata, "header") <- info
   if (!is_old_version) {
     attr(accdata, "missingness") <- data.frame(
-      time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
+      time <- as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
                         origin = "1970-01-01", tz = tz),
       n_missing = attr(accdata, "missingness"),
       stringsAsFactors = FALSE)
@@ -259,7 +262,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #'
 #' @family gt3x-parsers
 #'
-#' @return An object of class 'activity_df' which is also a data.frame with the following attributes
+#' @return An object of class 'activity_df' which is also a data.frame with
+#' the following attributes
 #' #'  \itemize{
 #' \item \code{subject_name} : Subject name from info file
 #' \item \code{time_zone} : Time zone from info file
@@ -268,13 +272,13 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #'
 #' @export
 as.data.frame.activity <- function(x, ..., verbose = FALSE) {
-  dig = getOption("digits")
-  dig.sec = getOption("digits.secs")
+  dig <- getOption("digits")
+  dig.sec <- getOption("digits.secs")
   options(digits = 15, digits.secs = 3)
   on.exit({
     options(digits = dig, digits.secs = dig.sec)
   })
-  all_attributes = attributes(x)
+  all_attributes <- attributes(x)
 
   tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
@@ -290,8 +294,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
       message(paste0("First time index is: ", time_index[1]))
     }
   }
-  class(x) = "matrix"
-  attr(x, "time_index") = NULL
+  class(x) <- "matrix"
+  attr(x, "time_index") <- NULL
   # attr(x, "missingness") = NULL
   # x = as.data.frame(x)
   # x$time = start_time + time_index/sample_rate;
@@ -302,12 +306,12 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
 
   if (verbose) {
-    missingness = all_attributes$missingness
+    missingness <- all_attributes$missingness
     if (!all(as.numeric(missingness$time) %% 1 == 0)) {
-      missingness$time = round(missingness$time)
+      missingness$time <- round(missingness$time)
     }
-    dt = difftime(x$time[1], all_attributes[["start_time"]], units = "secs")
-    dt = abs(as.numeric(dt))
+    dt <- difftime(x$time[1], all_attributes[["start_time"]], units = "secs")
+    dt <- abs(as.numeric(dt))
     if (dt > 1 && !(round(x$time[1]) %in% missingness$time)) {
       warning("Start time does not match header start time")
     }
@@ -315,13 +319,13 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   if (verbose) {
     message("Done")
   }
-  x = structure(x,
+  x <- structure(x,
                 class = c("activity_df", class(x)),
                 subject_name = all_attributes[["subject_name"]],
                 time_zone = all_attributes[["time_zone"]],
                 missingness = all_attributes[["missingness"]])
-  attr(x, "light_data") = all_attributes[["light_data"]]
-  attr(x, "old_version") = all_attributes[["old_version"]]
+  attr(x, "light_data") <- all_attributes[["light_data"]]
+  attr(x, "old_version") <- all_attributes[["old_version"]]
   attr(x, "firmware") <- all_attributes[["firmware"]]
   attr(x, "last_sample_time") <- all_attributes[["last_sample_time"]]
   attr(x, "serial_prefix") <- all_attributes[["serial_prefix"]]
@@ -331,6 +335,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   attr(x, "start_time") <- all_attributes[["start_time"]]
   attr(x, "stop_time") <- all_attributes[["stop_time"]]
   attr(x, "total_records") <- all_attributes[["total_records"]]
+  attr(x, "bad_samples") <- all_attributes[["bad_samples"]]
 
   x
 }
@@ -347,23 +352,23 @@ print.activity_df <- function(x, ...) {
   cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
-  class(x) = "data.frame"
+  class(x) <- "data.frame"
   print(head(x, ...))
 }
 
 
 #' @rdname print
 #' @export
-head.activity_df = function(x, ...) {
-  all_attr = attributes(x)
-  nattr = names(all_attr)
-  nattr = setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
-  class(x) = "data.frame"
-  x = head(x, ...)
+head.activity_df <- function(x, ...) {
+  all_attr <- attributes(x)
+  nattr <- names(all_attr)
+  nattr <- setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
+  class(x) <- "data.frame"
+  x <- head(x, ...)
   for (iattr in nattr) {
-    attr(x, iattr) =  all_attr[[iattr]]
+    attr(x, iattr) <-  all_attr[[iattr]]
   }
-  class(x) = c("activity_df", class(x))
+  class(x) <- c("activity_df", class(x))
   x
 }
 
@@ -373,22 +378,22 @@ print.activity <- function(x, ...) {
   cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
-  class(x) = "matrix"
+  class(x) <- "matrix"
   print(head(x, ...))
 }
 
 #' @rdname print
 #' @importFrom utils head
 #' @export
-head.activity = function(x, ...) {
-  all_attr = attributes(x)
-  nattr = names(all_attr)
-  nattr = setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
-  class(x) = "matrix"
-  x = utils::head(x, ...)
+head.activity <- function(x, ...) {
+  all_attr <- attributes(x)
+  nattr <- names(all_attr)
+  nattr <- setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
+  class(x) <- "matrix"
+  x <- utils::head(x, ...)
   for (iattr in nattr) {
-    attr(x, iattr) =  all_attr[[iattr]]
+    attr(x, iattr) <-  all_attr[[iattr]]
   }
-  class(x) = c("activity", class(x))
+  class(x) <- c("activity", class(x))
   x
 }
