@@ -451,6 +451,7 @@ NumericMatrix parseGT3X(const char* filename,
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
   activityMatrix.attr("time_index") = timeStamps;
   activityMatrix.attr("missingness") = Missingness;
+  activityMatrix.attr("total_records") = total_records;
 
   activityMatrix.attr("start_time_param") = param_start_time;
   activityMatrix.attr("start_time_info") = start_time;

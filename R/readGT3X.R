@@ -131,9 +131,11 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   samples <- get_n_samples(info)
   if (samples <= 0) {
-    warning(paste0(
+    msg = paste0(
       "Negative samples estimated, dates are wrong in info, using ",
-      "maximum samples (100 days)"))
+      "maximum samples (100 days)")
+    message(msg)
+    warning(msg)
     srate = info$`Sample Rate`
     if (is.null(srate)) {
       srate = 100L
@@ -328,6 +330,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   attr(x, "header") <- all_attributes[["header"]]
   attr(x, "start_time") <- all_attributes[["start_time"]]
   attr(x, "stop_time") <- all_attributes[["stop_time"]]
+  attr(x, "total_records") <- all_attributes[["total_records"]]
 
   x
 }
