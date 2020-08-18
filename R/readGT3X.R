@@ -130,6 +130,20 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   }
 
   samples <- get_n_samples(info)
+  if (samples <= 0) {
+    warning(paste0(
+      "Negative samples estimated, dates are wrong in info, using ",
+      "maximum samples (90 days)"))
+    srate = info$`Sample Rate`
+    if (is.null(srate)) {
+      srate = 100L
+    }
+    srate = as.numeric(srate)
+    if (is.na(srate)) {
+      srate = 100L
+    }
+    samples = 90 * 24 * 60 * 60 * srate
+  }
 
   if (verbose) {
     message("Parsing GT3X data via CPP.. expected sample size: ", samples)
