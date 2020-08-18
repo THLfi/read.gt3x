@@ -375,11 +375,15 @@ NumericMatrix parseGT3X(const char* filename,
 
         if(payload_timediff > 0) {
           int n_missing = payload_timediff*sample_rate;
-          Missingness[patch::to_string(expected_payload_start)] = n_missing;
+          if (n_missing < 0) {
+            Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+          } else {
+            Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
-          if(impute_zeroes) {
-            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
-            total_records += n_missing;
+            if(impute_zeroes) {
+              ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+              total_records += n_missing;
+            }
           }
         }
 
@@ -414,7 +418,7 @@ NumericMatrix parseGT3X(const char* filename,
 
 
     } else if (std::ios::cur > 1) {
-      Rcout << "CPP parser warnng: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
+      Rcout << "CPP parser warning: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
     }
   }
 

@@ -229,7 +229,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   attr(accdata, "header") <- info
   if (!is_old_version) {
     attr(accdata, "missingness") <- data.frame(
-      time <- as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
+      time = as.POSIXct(as.numeric(names(attr(accdata, "missingness"))),
                         origin = "1970-01-01", tz = tz),
       n_missing = attr(accdata, "missingness"),
       stringsAsFactors = FALSE)
