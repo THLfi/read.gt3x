@@ -12,6 +12,7 @@
 #'
 #' @export
 parse_gt3x_info <- function(path, tz = "GMT") {
+  path = unzip_zipped_gt3x(path, cleanup = TRUE)
   if (is_gt3x(path)) {
     path <- unzip.gt3x(path, check_structure = FALSE, verbose = FALSE)
   }
