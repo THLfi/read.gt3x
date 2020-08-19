@@ -340,13 +340,13 @@ NumericMatrix parseGT3X(const char* filename,
   int chksum;
 
   if (debug)
-      Rcout << "Reading Stream...\n";
+    Rcout << "Reading Stream...\n";
   while(GT3Xstream) {
 
     item = GT3Xstream.get();
     if(!GT3Xstream) {
-    break;
-  }
+      break;
+    }
 
     if(item == RECORD_SEPARATOR) {
       ParseHeader(GT3Xstream, type, payload_start, size);
@@ -357,7 +357,7 @@ NumericMatrix parseGT3X(const char* filename,
       }
 
       // if (debug)
-        // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
+      // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
       if(sample_size + total_records > max_samples) {
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
@@ -376,7 +376,9 @@ NumericMatrix parseGT3X(const char* filename,
         if(payload_timediff > 0) {
           int n_missing = payload_timediff*sample_rate;
           if (n_missing < 0) {
-            Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+            if (verbose | debug) {
+              Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+            }
             Rf_warning("!!!CPP parser warning: likely integer overflow for imputation");
           } else {
             Missingness[patch::to_string(expected_payload_start)] = n_missing;
@@ -391,6 +393,9 @@ NumericMatrix parseGT3X(const char* filename,
         expected_payload_start = payload_start + 1;
 
         if(sample_size == 0) {
+          if (verbose | debug) {
+            Rcout << "Activity with Sample Size of 0" << "\n";
+          }
           Missingness[patch::to_string(payload_start)] = sample_rate;
           if(impute_zeroes) {
             ImputeZeroes(timeStamps, total_records, sample_rate, sample_rate, start_time, payload_start, debug);
@@ -399,15 +404,15 @@ NumericMatrix parseGT3X(const char* filename,
         }
 
 
-      if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
-        ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-        total_records += sample_size;
-      }
+        if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
+          ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+          total_records += sample_size;
+        }
 
-      else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
-        ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-        total_records += sample_size;
-      }
+        else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
+          ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+          total_records += sample_size;
+        }
 
       }
 
@@ -441,10 +446,12 @@ NumericMatrix parseGT3X(const char* filename,
       Rcout << "Sum of missingness is: " << sum(Missingness) << "\n";
     int n_missing = max_samples - (total_records + sum(Missingness));
     if (n_missing < 0) {
-      Rcout << "!!!n_missing values less than zero, skipping" << "\n";
+      if (verbose | debug) {
+        Rcout << "!!!n_missing values less than zero, skipping" << "\n";
+      }
       Rf_warning("!!!n_missing values less than zero, skipping");
     } else {
-      if(verbose)
+      if(verbose | debug)
         Rcout << "Finding missingness amount: " << n_missing << "\n";
       Missingness[patch::to_string(expected_payload_start)] = n_missing;
     }
@@ -452,7 +459,9 @@ NumericMatrix parseGT3X(const char* filename,
   } else {
     int n_missing = max_samples - total_records;
     if (n_missing < 0) {
-      Rcout << "!!!total_records > max_samples, nmissing < 0!" << "\n";
+      if (verbose | debug) {
+        Rcout << "!!!total_records > max_samples, nmissing < 0!" << "\n";
+      }
       Rf_warning("!!!total_records > max_samples, nmissing < 0!");
     } else {
       Missingness[patch::to_string(expected_payload_start)] = n_missing;
