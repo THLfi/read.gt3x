@@ -393,6 +393,10 @@ NumericMatrix parseGT3X(const char* filename,
           }
         }
 
+        if(sample_size + total_records >= max_samples) {
+          Rcout << "CPP parser warning: max_samples reached prematurely - breaking\n";
+          break;
+        }
         expected_payload_start = payload_start + 1;
 
         if(sample_size == 0) {
