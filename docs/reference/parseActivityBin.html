@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • read.gt3x</title>
+<title>Parse activity samples from a NHANES-GT3X file — parseActivityBin • read.gt3x</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Parse activity samples from a NHANES-GT3X file — parseActivityBin" />
+<meta property="og:description" content="Parse activity samples from a NHANES-GT3X file" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,18 +115,68 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Parse activity samples from a NHANES-GT3X file</h1>
+    
+    <div class="hidden name"><code>parseActivityBin.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="read.gt3x.html">Getting started with read.gt3x</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    <p>Parse activity samples from a NHANES-GT3X file</p>
     </div>
+
+    <pre class="usage"><span class='fu'>parseActivityBin</span>(
+  <span class='no'>filename</span>,
+  <span class='no'>max_samples</span>,
+  <span class='no'>scale_factor</span>,
+  <span class='no'>sample_rate</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>debug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>filename</th>
+      <td><p>path to a activity.bin file inside the unzipped gt3x
+folder, which contains the activity samples</p></td>
+    </tr>
+    <tr>
+      <th>max_samples</th>
+      <td><p>Maximum number of rows to parse.
+The returned matrix will always contain this number of rows, having zeroes if
+not data is found.</p></td>
+    </tr>
+    <tr>
+      <th>scale_factor</th>
+      <td><p>Scale factor for the activity samples.</p></td>
+    </tr>
+    <tr>
+      <th>sample_rate</th>
+      <td><p>sampling rate for activity samples.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Print the parameters from the activity.bin file and other messages?</p></td>
+    </tr>
+    <tr>
+      <th>debug</th>
+      <td><p>Print information for every activity second</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Returns a matrix with max_samples rows and 3 columns, where the first 3
+columns are the acceleration samples and
+the last column is timestamps in seconds (including 100th of seconds)
+starting from 00:00:00 1970-01-01 UTC (UNIX time)</p>
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
