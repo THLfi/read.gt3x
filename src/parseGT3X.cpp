@@ -439,14 +439,22 @@ NumericMatrix parseGT3X(const char* filename,
     if(verbose)
       Rcout << "Sum of missingness is: " << sum(Missingness) << "\n";
     int n_missing = max_samples - (total_records + sum(Missingness));
-    if(verbose)
-      Rcout << "Finding missingness amount: " << n_missing << "\n";
-    Missingness[patch::to_string(expected_payload_start)] = n_missing;
+    if (n_missing < 0) {
+      Rcout << "!!!n_missing values less than zero, skipping" << "\n";
+    } else {
+      if(verbose)
+        Rcout << "Finding missingness amount: " << n_missing << "\n";
+      Missingness[patch::to_string(expected_payload_start)] = n_missing;
+    }
 
   } else {
     int n_missing = max_samples - total_records;
-    Missingness[patch::to_string(expected_payload_start)] = n_missing;
-    ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+    if (n_missing < 0) {
+      Rcout << "!!!total_records > max_samples, nmissing < 0!" << "\n";
+    } else {
+      Missingness[patch::to_string(expected_payload_start)] = n_missing;
+      ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+    }
   }
 
   if(verbose)
