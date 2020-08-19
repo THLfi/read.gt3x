@@ -359,7 +359,10 @@ NumericMatrix parseGT3X(const char* filename,
       // if (debug)
       // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
-      if(sample_size + total_records > max_samples) {
+      // Changing to >= for cases where imputation
+      // impute_zeroes when Activity with Sample Size of 0
+      // runs into the edge case of them being last index
+      if(sample_size + total_records >= max_samples) {
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
         break;
       }
