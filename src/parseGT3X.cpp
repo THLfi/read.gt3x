@@ -377,6 +377,7 @@ NumericMatrix parseGT3X(const char* filename,
           int n_missing = payload_timediff*sample_rate;
           if (n_missing < 0) {
             Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+            Rf_warning("!!!CPP parser warning: likely integer overflow for imputation");
           } else {
             Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
@@ -441,6 +442,7 @@ NumericMatrix parseGT3X(const char* filename,
     int n_missing = max_samples - (total_records + sum(Missingness));
     if (n_missing < 0) {
       Rcout << "!!!n_missing values less than zero, skipping" << "\n";
+      Rf_warning("!!!n_missing values less than zero, skipping");
     } else {
       if(verbose)
         Rcout << "Finding missingness amount: " << n_missing << "\n";
@@ -451,6 +453,7 @@ NumericMatrix parseGT3X(const char* filename,
     int n_missing = max_samples - total_records;
     if (n_missing < 0) {
       Rcout << "!!!total_records > max_samples, nmissing < 0!" << "\n";
+      Rf_warning("!!!total_records > max_samples, nmissing < 0!");
     } else {
       Missingness[patch::to_string(expected_payload_start)] = n_missing;
       ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
