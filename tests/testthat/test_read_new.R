@@ -11,8 +11,43 @@ gt3xdata <- read.gt3x(gt3xfile)
 tfile = tempfile(fileext = ".gt3x")
 file.copy(gt3xfile, tfile)
 
+gt3xdata_full <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = TRUE)
+
+has_zoo = requireNamespace("zoo", quietly = TRUE)
+fzero = function(df) {
+  zero = rowSums(df[, c("X", "Y", "Z")] == 0) == 3
+  names(zero) = NULL
+  df$X[zero] = NA
+  df$Y[zero] = NA
+  df$Z[zero] = NA
+  df$X = zoo::na.locf(df$X, na.rm = FALSE)
+  df$Y = zoo::na.locf(df$Y, na.rm = FALSE)
+  df$Z = zoo::na.locf(df$Z, na.rm = FALSE)
+
+  df$X[ is.na(df$X)] = 0
+  df$Y[ is.na(df$Y)] = 0
+  df$Z[ is.na(df$Z)] = 0
+  df
+}
+
 testthat::test_that("read.gt3x reads the first second of data correctly", {
   testthat::expect_true(all(unlist(head(csvdata, 100)) == unlist(head(gt3xdata, 100))))
+})
+
+testthat::test_that("read.gt3x reads the fulldata correctly", {
+  if (has_zoo) {
+    csv2 = csvdata
+    colnames(csv2) = sub("Accelerometer ", "", colnames(csv2))
+    csv2[214100:214101,]
+    csv2 = fzero(csv2)
+    csv2[214100:214101,]
+    gt3xdata_full = fzero(gt3xdata_full)
+    gt3xdata_full = gt3xdata_full[, c("X", "Y", "Z")]
+    gt3xdata_full = as.matrix(gt3xdata_full)
+    d = abs(csv2 - gt3xdata_full)
+    bad = rowSums(d > 1e-8) > 0
+    testthat::expect_true(!any(bad))
+  }
 })
 
 testthat::test_that("No lags in gt3x data.frame timestamps after imputation", {
