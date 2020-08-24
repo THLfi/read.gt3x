@@ -103,6 +103,11 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       cleanup = FALSE,
                       ...) {
 
+  verbose_message <- function(..., verbose = verbose) {
+    if (verbose) {
+      message(...)
+    }
+  }
   fun_start_time <- Sys.time()
 
   path <- unzip_zipped_gt3x(path, cleanup = cleanup)
@@ -121,16 +126,16 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     is_old_version <- old_version(info)
     if (is_old_version) {
       files <- c("info.txt",
-                "activity.bin",
-                "lux.bin")
+                 "activity.bin",
+                 "lux.bin")
     }
   }
 
   if (is_gt3x(path)) {
-    if (verbose) {
-      message(paste0("Input is a .gt3x file, unzipping to a ",
-                     "temporary location first..."))
-    }
+    verbose_message(
+      paste0("Input is a .gt3x file, unzipping to a ",
+             "temporary location first..."),
+      verbose = verbose)
     path <- unzip.gt3x(path, verbose = verbose, files = files,
                        check_structure = !is_old_version)
   }
@@ -143,28 +148,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   }
 
   samples <- get_n_samples(info)
-  bad_samples <- FALSE
-  if (samples <= 0) {
-    msg <- paste0(
-      "Negative samples estimated, dates are wrong in info, using ",
-      "maximum samples (100 days)")
-    message(msg)
-    warning(msg)
-    srate <- info$`Sample Rate`
-    if (is.null(srate)) {
-      srate <- 100L
-    }
-    srate <- as.numeric(srate)
-    if (is.na(srate)) {
-      srate <- 100L
-    }
-    samples <- 100L * 24L * 60L * 60L * srate
-    bad_samples <- TRUE
-  }
+  bad_samples <- attr(samples, "bad")
 
-  if (verbose) {
-    message("Parsing GT3X data via CPP.. expected sample size: ", samples)
-  }
+  verbose_message(
+    message("Parsing GT3X data via CPP.. expected sample size: ", samples,
+            verbose = verbose)
+  )
   if (!is_old_version) {
     logpath <- file.path(path, "log.bin")
     stopifnot(length(info$`Acceleration Scale`) > 0)
@@ -181,9 +170,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       message("Activity data now in R")
     }
   } else {
-    if (verbose) {
-      message("Using NHANES-GT3X format - older format")
-    }
+    verbose_message("Using NHANES-GT3X format - older format",
+                    verbose = verbose)
     act_path <- file.path(path, "activity.bin")
     accdata <- parseActivityBin(
       act_path, max_samples = samples,
@@ -191,27 +179,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       sample_rate = info$`Sample Rate`,
       verbose = as.logical(verbose),
       debug = FALSE, ...)
-    if (verbose > 1) {
-      message("Activity data now in R")
-    }
+    verbose_message("Activity data now in R", verbose = verbose > 1)
+
     lux_path <- file.path(path, "lux.bin")
-    if (file.exists(lux_path)) {
-      stopifnot(info$`Serial Prefix` %in% c("NEO", "MRA"))
-      if (info$`Serial Prefix` == "NEO") {
-        lux_scale_factor <- 1.25
-        lux_max_value <- 2500L
-      }
-      if (info$`Serial Prefix` == "MRA") {
-        lux_scale_factor <- 3.25
-        lux_max_value <- 6000L
-      }
-      luxdata <- parseLuxBin(
-        lux_path, max_samples = samples,
-        scale_factor = lux_scale_factor,
-        max_value = lux_max_value,
-        verbose = as.logical(verbose))
-      attr(accdata, "light_data") <- luxdata
-    }
+    luxdata <- parse_lux_data(lux_path, info = info,
+                              samples = samples, verbose = TRUE)
+    attr(accdata, "light_data") <- luxdata
 
   }
 
@@ -220,16 +193,15 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       file.remove(remove_path)
     }
     rm_files <- file.path(path,
-                         c("log.bin", "info.txt", "activity.bin",
-                           "lux.bin"))
+                          c("log.bin", "info.txt", "activity.bin",
+                            "lux.bin"))
     suppressWarnings({
       file.remove(rm_files)
     })
   }
 
-  if (verbose > 1) {
-    message("Adding attributes")
-  }
+  verbose_message("Adding attributes", verbose = verbose > 1)
+
   attr(accdata, "start_time") <- info[["Start Date"]]
   attr(accdata, "stop_time") <- info[["Stop Date"]]
   attr(accdata, "last_sample_time") <- info[["Last Sample Time"]]
@@ -248,14 +220,14 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       stringsAsFactors = FALSE)
   }
 
-  if (verbose) {
-    message("Done", " (in ",
-            as.numeric(
-              difftime(Sys.time(),
-                       fun_start_time, units = "secs")),
-            " seconds)"
-    )
-  }
+  verbose_message(
+    "Done", " (in ",
+    as.numeric(
+      difftime(Sys.time(),
+               fun_start_time, units = "secs")),
+    " seconds)",
+    verbose = verbose)
+
 
   x <- structure(accdata,
                  class = c("activity", class(accdata)))
@@ -330,10 +302,10 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
     message("Done")
   }
   x <- structure(x,
-                class = c("activity_df", class(x)),
-                subject_name = all_attributes[["subject_name"]],
-                time_zone = all_attributes[["time_zone"]],
-                missingness = all_attributes[["missingness"]])
+                 class = c("activity_df", class(x)),
+                 subject_name = all_attributes[["subject_name"]],
+                 time_zone = all_attributes[["time_zone"]],
+                 missingness = all_attributes[["missingness"]])
   attr(x, "light_data") <- all_attributes[["light_data"]]
   attr(x, "old_version") <- all_attributes[["old_version"]]
   attr(x, "firmware") <- all_attributes[["firmware"]]
@@ -406,4 +378,25 @@ head.activity <- function(x, ...) {
   }
   class(x) <- c("activity", class(x))
   x
+}
+
+parse_lux_data <- function(lux_path, info, samples, verbose = TRUE) {
+  luxdata <- NULL
+  if (file.exists(lux_path)) {
+    stopifnot(info$`Serial Prefix` %in% c("NEO", "MRA"))
+    if (info$`Serial Prefix` == "NEO") {
+      lux_scale_factor <- 1.25
+      lux_max_value <- 2500L
+    }
+    if (info$`Serial Prefix` == "MRA") {
+      lux_scale_factor <- 3.25
+      lux_max_value <- 6000L
+    }
+    luxdata <- parseLuxBin(
+      lux_path, max_samples = samples,
+      scale_factor = lux_scale_factor,
+      max_value = lux_max_value,
+      verbose = as.logical(verbose))
+  }
+  luxdata
 }

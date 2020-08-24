@@ -153,5 +153,24 @@ get_n_samples <- function(x) {
     end <- x[["Stop Date"]]
   }
   seqs <- as.numeric(difftime(end, start, units = "secs"))
-  seqs*rate
+  samples <- seqs * rate
+  bad_samples <- FALSE
+  if (samples <= 0) {
+    msg <- paste0(
+      "Negative samples estimated, dates are wrong in info, using ",
+      "maximum samples (100 days)")
+    message(msg)
+    warning(msg)
+    if (is.null(rate)) {
+      rate <- 100L
+    }
+    rate <- as.numeric(rate)
+    if (is.na(rate)) {
+      rate <- 100L
+    }
+    samples <- 100L * 24L * 60L * 60L * rate
+    bad_samples <- TRUE
+  }
+  attr(samples, "bad") <- bad_samples
+  samples
 }
