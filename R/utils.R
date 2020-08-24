@@ -124,7 +124,7 @@ have_log <- function(path, verbose = TRUE) {
 }
 
 
-#' Convert NET ticks to POSIXct datetime
+#' Convert NET ticks to \code{POSIXct} datetime
 #'
 #' @details
 #' reference:

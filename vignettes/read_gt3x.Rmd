@@ -69,7 +69,7 @@ datadir <- dirname(gt3xfile) # location of .gt3x files
 gt3xfolders <- unzip.gt3x(datadir, location = tempdir())
 ```
 
-The `read.gt3x()` function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.
+The `read.gt3x()` function accepts a path to an unzipped gt3x folder. It is a bit faster if the unzip step has already been performed.
 
 ```{r}
 gt3xfolder <- gt3xfolders[1]

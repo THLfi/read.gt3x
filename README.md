@@ -12,12 +12,12 @@ status](https://ci.appveyor.com/api/projects/status/github/muschellij2/read-gt3x
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for
-actigraphs `.gt3x` data format. Read the binary accelerometer data
+ActiGraph’s `.gt3x` data format. Read the binary accelerometer data
 (.gt3x) into an R data frame in a few seconds.
 
-## Actigraph accelerometers
+## ActiGraph accelerometers
 
-Actigraph’s wearable [accelerometer
+ActiGraph’s wearable [accelerometer
 devices](https://en.wikipedia.org/wiki/Accelerometer) (e.g. GT9X Link)
 are used by both individuals and researchers to track movement. The
 devices measures [proper
@@ -25,9 +25,9 @@ acceleration](https://en.wikipedia.org/wiki/Proper_acceleration) in
 three directions: X (right-left), Y (forward-backward), Z (up-down). The
 measurement unit is the gravitational unit, \(g = 9.81 m / s^2\)
 
-Data from the wearable Actigraph devices is usually extracted and
+Data from the wearable ActiGraph devices is usually extracted and
 analyzed via a software called *ActiLife*. When data is extracted from
-the wearable Actigraph device, it is saved as a .gt3x file. A gt3x file
+the wearable ActiGraph device, it is saved as a .gt3x file. A gt3x file
 is a zip archive with two files: - info.txt  
 \- log.bin
 
@@ -42,7 +42,7 @@ a simple text file with meta information related to the device.
 ActiLife software provides a “Raw to Raw” import option, which reads the
 activity samples from a .gt3x file and writes them to a .csv file.
 However, this can be slow and the csv files can be large compared to the
-binary .gt3x format. Also, according to actigraphs customer support, “A
+binary .gt3x format. Also, according to ActiGraph’s customer support, “A
 raw file exported via ActiLife is run through a proprietary band pass
 filter that will exclude movement considered outside of the human
 spectrum”, which might not be desirable for a researcher.

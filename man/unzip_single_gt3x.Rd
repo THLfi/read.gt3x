@@ -25,7 +25,7 @@ Default is the name of the input file, sans the .gt3x extension.}
 
 \item{files}{The names of files to extract. Default is info.txt and log.bin}
 
-\item{remove_original}{Remove the zipfile after unzipping?}
+\item{remove_original}{Remove the zip file after unzipping?}
 
 \item{check_structure}{check to see if the structure is right for the file}
 
