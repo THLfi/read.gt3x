@@ -16,7 +16,7 @@
 \value{
 An object of class 'activity_df' which is also a data.frame with
 the following attributes
-#'  \itemize{
+\itemize{
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
 \item \code{missingness} : Data frame with timestamps and the number of missing values associated.

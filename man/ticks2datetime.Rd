@@ -15,7 +15,8 @@ ticks2datetime(ticks, tz = "GMT")
 Convert NET ticks to POSIXct datetime
 }
 \details{
-reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
+reference:
+\url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
 }
 \seealso{
 Other gt3x-utils: 

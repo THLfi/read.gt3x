@@ -19,7 +19,7 @@
 #'
 unzip_single_gt3x <- function(
   path,
-  dirname =  basename(gsub(".gt3x$| ","", path)),
+  dirname =  basename(gsub(".gt3x$| ", "", path)),
   location = tempdir(),
   files = c("info.txt", "log.bin"),
   remove_original = FALSE,
@@ -129,10 +129,10 @@ unzip.gt3x <- function(path, verbose = TRUE, ...) {
     stop("No .gt3x files found")
   }
 
-  args = list(...)
-  location = args$location
+  args <- list(...)
+  location <- args$location
   if (is.null(location)) {
-    location = tempdir()
+    location <- tempdir()
   }
   if (verbose) {
     message("Unzipping gt3x data to ", location)

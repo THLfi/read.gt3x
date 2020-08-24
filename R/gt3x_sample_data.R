@@ -111,4 +111,3 @@ gt3x_filename <- function(index = NULL, zipped = FALSE) {
   }
   files[index]
 }
-

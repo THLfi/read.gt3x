@@ -18,9 +18,11 @@ read.gt3x(
 
 \item{verbose}{print diagnostic messages}
 
-\item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
+\item{asDataFrame}{convert to an activity_df, see
+\code{as.data.frame.activity}}
 
-\item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
+\item{imputeZeroes}{Impute zeros in case there are missingness?
+Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
 
 \item{cleanup}{should any unzipped files be deleted?}
@@ -28,7 +30,8 @@ the time series will be incomplete in case there is missingness.}
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
 }
 \value{
-A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
+A numeric matrix with 3 columns (X, Y, Z) and the following
+attributes:
  \itemize{
 \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
 \item \code{subject_name} : Subject name from info file
@@ -39,15 +42,15 @@ timestamps and values are the number of missing values.
 }
 \description{
 Read activity samples from a GT3X file as a matrix.
-Please note that all timestamps are in local time (of the device) even though they are
-represented as \code{POSIXct} with GMT timezone.
+Please note that all timestamps are in local time (of the device)
+even though they are represented as \code{POSIXct} with GMT timezone.
 }
 \note{
 The timestamps in the .gt3x data format are saved in .NET format, which is
  nanoseconds in local time since 0001-01-01.
 This is a bit tricky to parse into an R datetime format. DateTimes are
-therefore represented as \code{POSIXct} format with the 'GMT' timezone attribute,
- which is false; the datetime actually
+therefore represented as \code{POSIXct} format with the
+'GMT' timezone attribute, which is false; the datetime actually
 represents local time.
 }
 \examples{
@@ -90,16 +93,17 @@ head(df)
 
 
 
-url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X\%2B.01.day.gt3x.zip"
-destfile = tempfile(fileext = ".zip")
-dl = download.file(url, destfile = destfile)
-gt3x_file = unzip(destfile, exdir = tempdir())
-gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
-path = gt3x_file
+url <- paste0("https://github.com/THLfi/read.gt3x/",
+"files/", "3522749/", "GT3X\%2B.01.day.gt3x.zip")
+destfile <- tempfile(fileext = ".zip")
+dl <- download.file(url, destfile = destfile)
+gt3x_file <- unzip(destfile, exdir = tempdir())
+gt3x_file <- gt3x_file[!grepl("__MACOSX", gt3x_file)]
+path <- gt3x_file
 
-res = read.gt3x(path)
+res <- read.gt3x(path)
 
-gz = R.utils::gzip(path, remove = FALSE, overwrite = FALSE)
+gz <- R.utils::gzip(path, remove = FALSE, overwrite = FALSE)
 df2 <- read.gt3x(gz, asDataFrame = FALSE, verbose = 2)
 head(df2)
 

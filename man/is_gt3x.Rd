@@ -15,12 +15,14 @@ have_log_and_info(path, verbose = TRUE)
 \item{verbose}{print diagnostic messages}
 }
 \value{
-Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.
+Logical vector of the same length as path, which is TRUE if the
+corresponding path is a .gt3x file.
 }
 \description{
 Check if files are .gt3x files
 
-Check if a .gt3x file or unzipped gt3x directory has both log.bin and info.txt
+Check if a .gt3x file or unzipped gt3x directory has both log.bin
+and info.txt
 }
 \details{
 Checks if files have a .gt3x file extension
