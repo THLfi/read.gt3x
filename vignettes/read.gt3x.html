@@ -359,11 +359,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; [5,]  0.004 0.316 -0.844</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; [6,]  0.000 0.301 -0.852</span></span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  603872 32.3    1247688   66.7         NA   1247688   66.7
-#&gt; Vcells 1266632  9.7  381587686 2911.3      16384 426176977 3251.5
+#&gt; Ncells  603882 32.3    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1267329  9.7  381588355 2911.3      16384 426177674 3251.5
 #&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  603869 32.3    1247688   66.7         NA   1247688   66.7
-#&gt; Vcells 1266708  9.7  305270149 2329.1      16384 426176977 3251.5</code></pre>
+#&gt; Ncells  603879 32.3    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1267405  9.7  305270684 2329.1      16384 426177674 3251.5</code></pre>
 </div>
 <div id="method-2-permanent-unzip-then-read" class="section level3">
 <h3>Method 2: permanent unzip, then read</h3>
@@ -372,13 +372,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>datadir &lt;-<span class="st"> </span><span class="kw">gt3x_datapath</span>() <span class="co"># location of .gt3x files</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Downloading gt3x sample data from https://github.com/THLfi/read.gt3x/releases/download/v1.0/SS_left_19.5.2017-05-22.gt3x.zip</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>gt3xfolders &lt;-<span class="st"> </span><span class="kw">unzip.gt3x</span>(datadir, <span class="dt">location =</span> <span class="kw">tempdir</span>())</span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCgVAx8</span></span>
 <span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; 1/2</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/EE_left_29.5.2017-05-30</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCgVAx8/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCgVAx8/EE_left_29.5.2017-05-30</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 2/2</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/SS_left_19.5.2017-05-22</span></span></code></pre></div>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCgVAx8/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCgVAx8/SS_left_19.5.2017-05-22</span></span></code></pre></div>
 <p>The <code>read.gt3x()</code> function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>gt3xfolder &lt;-<span class="st"> </span>gt3xfolders[<span class="dv">1</span>]</span>
 <span id="cb7-2"><a href="#cb7-2"></a>X &lt;-<span class="st"> </span><span class="kw">read.gt3x</span>(gt3xfolder)</span></code></pre></div>
@@ -464,11 +464,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt; 5  0.004 0.316 -0.844 2017-05-23 09:15:00</span></span>
 <span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt; 6  0.000 0.301 -0.852 2017-05-23 09:15:00</span></span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  619058 33.1    1247688   66.7         NA   1247688   66.7
-#&gt; Vcells 1308203 10.0  632157508 4823.0      16384 790196885 6028.8
+#&gt; Ncells  619068 33.1    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1308900 10.0  632158066 4823.0      16384 790197582 6028.8
 #&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  619055 33.1    1247688   66.7         NA   1247688   66.7
-#&gt; Vcells 1308281 10.0  505726007 3858.4      16384 790196885 6028.8</code></pre>
+#&gt; Ncells  619065 33.1    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1308978 10.0  505726453 3858.4      16384 790197582 6028.8</code></pre>
 </div>
 
 

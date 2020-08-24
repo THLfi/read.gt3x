@@ -59,14 +59,14 @@ gt3xfile <-
 is_gt3x(gt3xfile)
 have_log_and_info(gt3xfile, verbose = TRUE)
 
-x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
+x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
 verbose = TRUE)
-df2 <- as.data.frame(x)
+df2 <- as.data.frame(x, verbose = TRUE)
 head(df2)
 rm(x); gc(); gc()
 rm(df2); gc()
 
-x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
+x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = TRUE,
 verbose = TRUE)
 
 \dontrun{
