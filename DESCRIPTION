@@ -9,7 +9,7 @@ Authors@R:
              email = "tuomo.a.nieminen@gmail.com"),
       person(given = "John",
              family = "Muschelli",
-             role = "ctb",
+             role = "aut",
              email = "muschellij2@gmail.com",
              comment = c(ORCID = "0000-0001-6469-1750")))
 Description: Implements a high performance C++ parser 
