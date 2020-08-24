@@ -13,7 +13,14 @@ list_gt3x(path)
 List full paths to all gt3x files in a directory
 }
 \examples{
+path <-
+  system.file(
+    "extdata",
+    package = "read.gt3x")
+list_gt3x(path)
+\dontrun{
 list_gt3x(gt3x_datapath())
+}
 }
 \seealso{
 Other file manipulations: 

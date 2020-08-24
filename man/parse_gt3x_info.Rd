@@ -15,8 +15,16 @@ parse_gt3x_info(path, tz = "GMT")
 Parse GT3X info.txt file
 }
 \examples{
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
+parse_gt3x_info(gt3xfile)
+
+\dontrun{
 gt3xfile <- gt3x_datapath(1)
 parse_gt3x_info(gt3xfile)
+}
 
 }
 \seealso{

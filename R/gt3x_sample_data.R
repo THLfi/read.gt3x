@@ -6,8 +6,10 @@
 #' @param verbose print diagnostic messages
 #'
 #' @examples
+#' \dontrun{
 #' dir <- gt3x_datapath()
 #' gt3x_filename <- gt3x_datapath(1)
+#' }
 #'
 #' @family file manipulations
 #'

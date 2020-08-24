@@ -95,6 +95,12 @@ unzip_single_gt3x <- function(
 #'
 #' @examples
 #'
+#' gt3xfile <-
+#'   system.file(
+#'     "extdata", "TAS1H30182785_2019-09-17.gt3x",
+#'     package = "read.gt3x")
+#' gt3xdirs <- unzip.gt3x(gt3xfile)
+#' \dontrun{
 #' # unzip a single .gt3x file
 #' path <- gt3x_datapath(1)
 #' gt3xdir <- unzip.gt3x(path)
@@ -102,7 +108,7 @@ unzip_single_gt3x <- function(
 #' # unzip multiple .gt3x files
 #' dir <- gt3x_datapath()
 #' gt3xdirs <- unzip.gt3x(dir)
-#'
+#' }
 #' tfile = tempfile()
 #' testthat::expect_error(unzip.gt3x(c(dir, tfile)))
 #' testthat::expect_error(unzip.gt3x(""))

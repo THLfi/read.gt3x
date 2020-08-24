@@ -51,9 +51,9 @@ rm(X); gc(); gc()
 
 ### Method 2: permanent unzip, then read
 
-.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as *unzipped* folders containing these two files, because otherwise the read.gt3x() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data. 
+The `.gt3x` files are actually zip archives which contain two files: `log.bin` and `info.txt`. log.bin is a binary file that contains the actual samples. It might make sense to store the data as *unzipped* folders containing these two files, because otherwise the read.gt3x() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data. 
 
-`read.gt3x()` also accepts paths to unzipped gt3x folders. To demonstrate the usage, we'll unzip the sample .gt3x files in the package, and then read them. The `unzip.gt3x()` helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named "subject001.gt3x" are extracted to a folder named "subject001". `unzip.gt3x()` returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.
+The `read.gt3x()` function also accepts paths to unzipped gt3x folders. To demonstrate the usage, we'll unzip the sample .gt3x files in the package, and then read them. The `unzip.gt3x()` helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named "subject001.gt3x" are extracted to a folder named "subject001". `unzip.gt3x()` returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.
 
 ```{r}
 datadir <- gt3x_datapath() # location of .gt3x files
@@ -79,13 +79,13 @@ Internally, the data matrix returned by read.gt3x() is a bit smarter than it loo
 str(X)
 ```
 
-- time_index: Time passed since start
-- start_time: timestamp of first sample
-- sample_rate: Samples per second.
+- `time_index`: Time passed since start
+- `start_time`: timestamp of first sample
+- `sample_rate`: Samples per second.
 
 ## Converting to a data.frame
 
-the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a "time" column, which gives the timestamp of each sample.
+The **read.gt3x** package has an `as.data.frame` method for the activity matrix, which converts the matrix to a dataframe and adds a `time` column, which gives the timestamp of each sample.
 
 ```{r}
 X <- as.data.frame(X)

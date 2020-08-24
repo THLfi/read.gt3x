@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tuomo Nieminen" />
 
-<meta name="date" content="2020-05-05" />
+<meta name="date" content="2020-08-24" />
 
 <title>Getting started with read.gt3x</title>
 
@@ -26,6 +26,22 @@ document.addEventListener('DOMContentLoaded', function(e) {
     if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
     a = h.attributes;
     while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
   }
 });
 </script>
@@ -315,7 +331,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Getting started with read.gt3x</h1>
 <h4 class="author">Tuomo Nieminen</h4>
-<h4 class="date">2020-05-05</h4>
+<h4 class="date">2020-08-24</h4>
 
 
 
@@ -343,11 +359,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; [5,]  0.004 0.316 -0.844</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; [6,]  0.000 0.301 -0.852</span></span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  595290 31.8    1261402   67.4         NA   1261402   67.4
-#&gt; Vcells 1255070  9.6  381576762 2911.2      16384 426165599 3251.4
+#&gt; Ncells  603872 32.3    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1266632  9.7  381587686 2911.3      16384 426176977 3251.5
 #&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  595287 31.8    1261402   67.4         NA   1261402   67.4
-#&gt; Vcells 1255146  9.6  305261410 2329.0      16384 426165599 3251.4</code></pre>
+#&gt; Ncells  603869 32.3    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1266708  9.7  305270149 2329.1      16384 426176977 3251.5</code></pre>
 </div>
 <div id="method-2-permanent-unzip-then-read" class="section level3">
 <h3>Method 2: permanent unzip, then read</h3>
@@ -356,13 +372,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>datadir &lt;-<span class="st"> </span><span class="kw">gt3x_datapath</span>() <span class="co"># location of .gt3x files</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Downloading gt3x sample data from https://github.com/THLfi/read.gt3x/releases/download/v1.0/SS_left_19.5.2017-05-22.gt3x.zip</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>gt3xfolders &lt;-<span class="st"> </span><span class="kw">unzip.gt3x</span>(datadir, <span class="dt">location =</span> <span class="kw">tempdir</span>())</span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU</span></span>
 <span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; 1/2</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/EE_left_29.5.2017-05-30</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/EE_left_29.5.2017-05-30</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 2/2</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp8itUF0/SS_left_19.5.2017-05-22</span></span></code></pre></div>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpp4SwkU/SS_left_19.5.2017-05-22</span></span></code></pre></div>
 <p>The <code>read.gt3x()</code> function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>gt3xfolder &lt;-<span class="st"> </span>gt3xfolders[<span class="dv">1</span>]</span>
 <span id="cb7-2"><a href="#cb7-2"></a>X &lt;-<span class="st"> </span><span class="kw">read.gt3x</span>(gt3xfolder)</span></code></pre></div>
@@ -391,39 +407,41 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;  - attr(*, &quot;missingness&quot;)=&#39;data.frame&#39;:  5 obs. of  2 variables:</span></span>
 <span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;   ..$ time     : POSIXct[1:5], format: &quot;2017-05-23 14:17:40&quot; &quot;2017-05-28 10:06:35&quot; ...</span></span>
 <span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;   ..$ n_missing: int [1:5] 100 100 100 100 8300</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  - attr(*, &quot;start_time_param&quot;)= num 1.5e+09</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  - attr(*, &quot;start_time_info&quot;)= num 1.5e+09</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  - attr(*, &quot;sample_rate&quot;)= int 100</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  - attr(*, &quot;impute_zeroes&quot;)= logi FALSE</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  - attr(*, &quot;start_time&quot;)= POSIXct[1:1], format: &quot;2017-05-23 09:15:00&quot;</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt;  - attr(*, &quot;stop_time&quot;)= POSIXct[1:1], format: &quot;0001-01-01&quot;</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt;  - attr(*, &quot;last_sample_time&quot;)= POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt;  - attr(*, &quot;subject_name&quot;)= chr &quot;EE_left_29.5.&quot;</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt;  - attr(*, &quot;time_zone&quot;)= chr &quot;03:00:00&quot;</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt;  - attr(*, &quot;firmware&quot;)= chr &quot;1.7.0&quot;</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt;  - attr(*, &quot;serial_prefix&quot;)= chr &quot;TAS&quot;</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt;  - attr(*, &quot;old_version&quot;)= logi FALSE</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="co">#&gt;  - attr(*, &quot;header&quot;)=List of 19</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="co">#&gt;   ..$ Serial Number     : chr &quot;TAS1F27160060&quot;</span></span>
-<span id="cb9-24"><a href="#cb9-24"></a><span class="co">#&gt;   ..$ Device Type       : chr &quot;Link&quot;</span></span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="co">#&gt;   ..$ Firmware          : chr &quot;1.7.0&quot;</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a><span class="co">#&gt;   ..$ Battery Voltage   : chr &quot;3,86&quot;</span></span>
-<span id="cb9-27"><a href="#cb9-27"></a><span class="co">#&gt;   ..$ Sample Rate       : num 100</span></span>
-<span id="cb9-28"><a href="#cb9-28"></a><span class="co">#&gt;   ..$ Start Date        : POSIXct[1:1], format: &quot;2017-05-23 09:15:00&quot;</span></span>
-<span id="cb9-29"><a href="#cb9-29"></a><span class="co">#&gt;   ..$ Stop Date         : POSIXct[1:1], format: &quot;0001-01-01&quot;</span></span>
-<span id="cb9-30"><a href="#cb9-30"></a><span class="co">#&gt;   ..$ Last Sample Time  : POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
-<span id="cb9-31"><a href="#cb9-31"></a><span class="co">#&gt;   ..$ TimeZone          : chr &quot;03:00:00&quot;</span></span>
-<span id="cb9-32"><a href="#cb9-32"></a><span class="co">#&gt;   ..$ Download Date     : POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
-<span id="cb9-33"><a href="#cb9-33"></a><span class="co">#&gt;   ..$ Board Revision    : chr &quot;6&quot;</span></span>
-<span id="cb9-34"><a href="#cb9-34"></a><span class="co">#&gt;   ..$ Unexpected Resets : chr &quot;0&quot;</span></span>
-<span id="cb9-35"><a href="#cb9-35"></a><span class="co">#&gt;   ..$ Acceleration Scale: int 256</span></span>
-<span id="cb9-36"><a href="#cb9-36"></a><span class="co">#&gt;   ..$ Acceleration Min  : chr &quot;-8.0&quot;</span></span>
-<span id="cb9-37"><a href="#cb9-37"></a><span class="co">#&gt;   ..$ Acceleration Max  : chr &quot;8.0&quot;</span></span>
-<span id="cb9-38"><a href="#cb9-38"></a><span class="co">#&gt;   ..$ Limb              : chr &quot;Wrist&quot;</span></span>
-<span id="cb9-39"><a href="#cb9-39"></a><span class="co">#&gt;   ..$ Dominance         : chr &quot;Non-Dominant&quot;</span></span>
-<span id="cb9-40"><a href="#cb9-40"></a><span class="co">#&gt;   ..$ Subject Name      : chr &quot;EE_left_29.5.&quot;</span></span>
-<span id="cb9-41"><a href="#cb9-41"></a><span class="co">#&gt;   ..$ Serial Prefix     : chr &quot;TAS&quot;</span></span>
-<span id="cb9-42"><a href="#cb9-42"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;gt3x_info&quot; &quot;list&quot;</span></span></code></pre></div>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  - attr(*, &quot;total_records&quot;)= int 60684200</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  - attr(*, &quot;start_time_param&quot;)= num 1.5e+09</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  - attr(*, &quot;start_time_info&quot;)= num 1.5e+09</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  - attr(*, &quot;sample_rate&quot;)= int 100</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  - attr(*, &quot;impute_zeroes&quot;)= logi FALSE</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt;  - attr(*, &quot;start_time&quot;)= POSIXct[1:1], format: &quot;2017-05-23 09:15:00&quot;</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt;  - attr(*, &quot;stop_time&quot;)= POSIXct[1:1], format: &quot;0001-01-01&quot;</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt;  - attr(*, &quot;last_sample_time&quot;)= POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt;  - attr(*, &quot;subject_name&quot;)= chr &quot;EE_left_29.5.&quot;</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt;  - attr(*, &quot;time_zone&quot;)= chr &quot;03:00:00&quot;</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt;  - attr(*, &quot;firmware&quot;)= chr &quot;1.7.0&quot;</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt;  - attr(*, &quot;serial_prefix&quot;)= chr &quot;TAS&quot;</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a><span class="co">#&gt;  - attr(*, &quot;bad_samples&quot;)= logi FALSE</span></span>
+<span id="cb9-23"><a href="#cb9-23"></a><span class="co">#&gt;  - attr(*, &quot;old_version&quot;)= logi FALSE</span></span>
+<span id="cb9-24"><a href="#cb9-24"></a><span class="co">#&gt;  - attr(*, &quot;header&quot;)=List of 19</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a><span class="co">#&gt;   ..$ Serial Number     : chr &quot;TAS1F27160060&quot;</span></span>
+<span id="cb9-26"><a href="#cb9-26"></a><span class="co">#&gt;   ..$ Device Type       : chr &quot;Link&quot;</span></span>
+<span id="cb9-27"><a href="#cb9-27"></a><span class="co">#&gt;   ..$ Firmware          : chr &quot;1.7.0&quot;</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a><span class="co">#&gt;   ..$ Battery Voltage   : chr &quot;3,86&quot;</span></span>
+<span id="cb9-29"><a href="#cb9-29"></a><span class="co">#&gt;   ..$ Sample Rate       : num 100</span></span>
+<span id="cb9-30"><a href="#cb9-30"></a><span class="co">#&gt;   ..$ Start Date        : POSIXct[1:1], format: &quot;2017-05-23 09:15:00&quot;</span></span>
+<span id="cb9-31"><a href="#cb9-31"></a><span class="co">#&gt;   ..$ Stop Date         : POSIXct[1:1], format: &quot;0001-01-01&quot;</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a><span class="co">#&gt;   ..$ Last Sample Time  : POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
+<span id="cb9-33"><a href="#cb9-33"></a><span class="co">#&gt;   ..$ TimeZone          : chr &quot;03:00:00&quot;</span></span>
+<span id="cb9-34"><a href="#cb9-34"></a><span class="co">#&gt;   ..$ Download Date     : POSIXct[1:1], format: &quot;2017-05-30 09:50:29&quot;</span></span>
+<span id="cb9-35"><a href="#cb9-35"></a><span class="co">#&gt;   ..$ Board Revision    : chr &quot;6&quot;</span></span>
+<span id="cb9-36"><a href="#cb9-36"></a><span class="co">#&gt;   ..$ Unexpected Resets : chr &quot;0&quot;</span></span>
+<span id="cb9-37"><a href="#cb9-37"></a><span class="co">#&gt;   ..$ Acceleration Scale: int 256</span></span>
+<span id="cb9-38"><a href="#cb9-38"></a><span class="co">#&gt;   ..$ Acceleration Min  : chr &quot;-8.0&quot;</span></span>
+<span id="cb9-39"><a href="#cb9-39"></a><span class="co">#&gt;   ..$ Acceleration Max  : chr &quot;8.0&quot;</span></span>
+<span id="cb9-40"><a href="#cb9-40"></a><span class="co">#&gt;   ..$ Limb              : chr &quot;Wrist&quot;</span></span>
+<span id="cb9-41"><a href="#cb9-41"></a><span class="co">#&gt;   ..$ Dominance         : chr &quot;Non-Dominant&quot;</span></span>
+<span id="cb9-42"><a href="#cb9-42"></a><span class="co">#&gt;   ..$ Subject Name      : chr &quot;EE_left_29.5.&quot;</span></span>
+<span id="cb9-43"><a href="#cb9-43"></a><span class="co">#&gt;   ..$ Serial Prefix     : chr &quot;TAS&quot;</span></span>
+<span id="cb9-44"><a href="#cb9-44"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;gt3x_info&quot; &quot;list&quot;</span></span></code></pre></div>
 <ul>
 <li>time_index: Time passed since start</li>
 <li>start_time: timestamp of first sample</li>
@@ -446,11 +464,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt; 5  0.004 0.316 -0.844 2017-05-23 09:15:00</span></span>
 <span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt; 6  0.000 0.301 -0.852 2017-05-23 09:15:00</span></span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  610495 32.7    1261402   67.4         NA   1261402   67.4
-#&gt; Vcells 1297310  9.9  614609198 4689.1      16384 759942809 5798.0
+#&gt; Ncells  619058 33.1    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1308203 10.0  632157508 4823.0      16384 790196885 6028.8
 #&gt;           used (Mb) gc trigger   (Mb) limit (Mb)  max used   (Mb)
-#&gt; Ncells  610492 32.7    1261402   67.4         NA   1261402   67.4
-#&gt; Vcells 1297388  9.9  491687359 3751.3      16384 759942809 5798.0</code></pre>
+#&gt; Ncells  619055 33.1    1247688   66.7         NA   1247688   66.7
+#&gt; Vcells 1308281 10.0  505726007 3858.4      16384 790196885 6028.8</code></pre>
 </div>
 
 

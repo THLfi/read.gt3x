@@ -1,7 +1,13 @@
 
 testthat::context("Reading New data")
-csvfile <- "../TAS1H30182785_2019-09-17.csv"
-gt3xfile <- "../TAS1H30182785_2019-09-17.gt3x"
+
+csvfile <- system.file(
+  "extdata", "TAS1H30182785_2019-09-17.csv.gz",
+  package = "read.gt3x")
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
 
 
 # Read ActiLife raw data output CSV

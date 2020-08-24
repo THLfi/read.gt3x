@@ -52,10 +52,10 @@ represents local time.
 }
 \examples{
 
-# first unzip, then read
-datadir <- gt3x_datapath()
-gt3xfolders <- unzip.gt3x(datadir)
-gt3xfile <- gt3xfolders[2]
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
 is_gt3x(gt3xfile)
 have_log_and_info(gt3xfile, verbose = TRUE)
 
@@ -66,6 +66,14 @@ head(df2)
 rm(x); gc(); gc()
 rm(df2); gc()
 
+x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
+verbose = TRUE)
+
+\dontrun{
+# first unzip, then read
+datadir <- gt3x_datapath()
+gt3xfolders <- unzip.gt3x(datadir)
+gt3xfile <- gt3xfolders[2]
 # temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
 memory.limit()
@@ -76,8 +84,9 @@ rm(df); gc(); gc()
 
 df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = 2)
 head(df)
+}
 
-\donttest{
+\dontrun{
 
 
 
