@@ -151,8 +151,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   bad_samples <- attr(samples, "bad")
 
   verbose_message(
-    message("Parsing GT3X data via CPP.. expected sample size: ", samples,
-            verbose = verbose)
+    "Parsing GT3X data via CPP.. expected sample size: ", samples,
+            verbose = verbose
   )
   if (!is_old_version) {
     logpath <- file.path(path, "log.bin")
