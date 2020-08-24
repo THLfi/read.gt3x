@@ -1,0 +1,108 @@
+---
+title: "Getting started with read.gt3x"
+author: "Tuomo Nieminen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with read.gt3x}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document describes how the **read.gt3x** package can be used to read binary activity data into R. To access the read.gt3x package, use:
+
+```{r}
+library(read.gt3x)
+```
+
+For source code and installation instructions, see the [GitHub page](https://github.com/THLfi/read.gt3x).
+
+## Reading .gt3x data into R
+
+The read.gt3x package includes two sample .gt3x files which I'll use to demonstrate reading the data. First we need the path to a single gt3x file. We will use data embedded in the package:
+
+```{r}
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
+```
+
+but longer and more extensive data can be downloaded via `gt3x_datapath`:
+
+```{r download, eval = FALSE}
+gt3xfile <- gt3x_datapath(1)
+```
+
+
+### Method 1: Temporary unzip and read
+
+The `read.gt3x()` function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.
+
+```{r}
+X <- read.gt3x(gt3xfile)
+```
+
+```{r}
+head(X)
+```
+
+```{r, echo = FALSE}
+rm(X); gc(); gc()
+```
+
+### Method 2: permanent unzip, then read
+
+.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as *unzipped* folders containing these two files, because otherwise the read.gt3x() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data. 
+
+`read.gt3x()` also accepts paths to unzipped gt3x folders. To demonstrate the usage, we'll unzip the sample .gt3x files in the package, and then read them. The `unzip.gt3x()` helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named "subject001.gt3x" are extracted to a folder named "subject001". `unzip.gt3x()` returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.
+
+```{r}
+datadir <- dirname(gt3xfile) # location of .gt3x files
+gt3xfolders <- unzip.gt3x(datadir, location = tempdir())
+```
+
+The `read.gt3x()` function accepts a path to an uzipped gt3x folder. It is a bit faster if the unzip step has already been performed.
+
+```{r}
+gt3xfolder <- gt3xfolders[1]
+X <- read.gt3x(gt3xfolder)
+```
+
+```{r}
+head(X)
+```
+
+## Activity data matrix
+
+Internally, the data matrix returned by read.gt3x() is a bit smarter than it looks, as it knows all the (relative) timestamps of the observations.  
+
+```{r}
+str(X)
+```
+
+- time_index: Time passed since start
+- start_time: timestamp of first sample
+- sample_rate: Samples per second.
+
+## Converting to a data.frame
+
+the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a "time" column, which gives the timestamp of each sample.
+
+```{r}
+X <- as.data.frame(X)
+head(X)
+```
+
+
+```{r, echo = FALSE}
+rm(X); gc(); gc()
+```
+
