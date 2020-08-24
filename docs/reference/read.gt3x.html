@@ -89,6 +89,9 @@ represented as POSIXct with GMT timezone." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -186,10 +189,10 @@ represents local time.</p>
   <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(
     <span class='st'>"extdata"</span>, <span class='st'>"TAS1H30182785_2019-09-17.gt3x"</span>,
     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"read.gt3x"</span>)
-<span class='fu'><a href='is_gt3x.html'>is_gt3x</a></span>(<span class='no'>gt3xfile</span>)</div><div class='output co'>#&gt; /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpxK4yIH/temp_libpath78da1656e4dc/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x 
+<span class='fu'><a href='is_gt3x.html'>is_gt3x</a></span>(<span class='no'>gt3xfile</span>)</div><div class='output co'>#&gt; /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpaWuek6/temp_libpath7a425d900070/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x 
 #&gt;                                                                                                                                         TRUE </div><div class='input'><span class='fu'><a href='is_gt3x.html'>have_log_and_info</a></span>(<span class='no'>gt3xfile</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp5X5m0J</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpxK4yIH/temp_libpath78da1656e4dc/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp5X5m0J/TAS1H30182785_2019-09-17</span></div><div class='output co'>#&gt; GT3X information
+<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpK0VnEy</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpaWuek6/temp_libpath7a425d900070/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpK0VnEy/TAS1H30182785_2019-09-17</span></div><div class='output co'>#&gt; GT3X information
 #&gt;  $ Serial Number     :"TAS1H30182785"
 #&gt;  $ Device Type       :"Link"
 #&gt;  $ Firmware          :"1.7.2"
@@ -277,7 +280,7 @@ represents local time.</p>
 #&gt; Sum of missingness is: 183000
 #&gt; Finding missingness amount: 24500
 #&gt; Creating dimnames 
-#&gt; CPP returning </div><div class='output co'>#&gt; <span class='message'>Done (in 0.149831771850586 seconds)</span></div><div class='input'><span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Converting to a data.frame ...</span></div><div class='output co'>#&gt; <span class='message'>Done</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df2</span>)</div><div class='output co'>#&gt; Sampling Rate: 100Hz
+#&gt; CPP returning </div><div class='output co'>#&gt; <span class='message'>Done (in 0.035330057144165 seconds)</span></div><div class='input'><span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Converting to a data.frame ...</span></div><div class='output co'>#&gt; <span class='message'>Done</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df2</span>)</div><div class='output co'>#&gt; Sampling Rate: 100Hz
 #&gt; Firmware Version: 1.7.2
 #&gt; Serial Number Prefix: TAS
 #&gt;       X      Y     Z                time
@@ -287,14 +290,14 @@ represents local time.</p>
 #&gt; 4 0.016 -0.012 1.012 2019-09-17 18:40:00
 #&gt; 5 0.016 -0.008 1.008 2019-09-17 18:40:00
 #&gt; 6 0.008 -0.008 1.008 2019-09-17 18:40:00</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>x</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>(); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  769928 41.2    1272571   68         NA  1272571 68.0
-#&gt; Vcells 1578140 12.1    8388608   64      16384  3733931 28.5</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  769895 41.2    1272571   68         NA  1272571 68.0
-#&gt; Vcells 1578130 12.1    8388608   64      16384  3733931 28.5</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>df2</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  769792 41.2    1272571   68         NA  1272571 68.0
-#&gt; Vcells 1445941 11.1    8388608   64      16384  3733931 28.5</div><div class='input'>
+#&gt; Ncells  769898 41.2    1263948 67.6         NA  1263948 67.6
+#&gt; Vcells 1578088 12.1    8388608 64.0      16384  3698512 28.3</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  769895 41.2    1263948 67.6         NA  1263948 67.6
+#&gt; Vcells 1578128 12.1    8388608 64.0      16384  3698512 28.3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>df2</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  769792 41.2    1263948 67.6         NA  1263948 67.6
+#&gt; Vcells 1445939 11.1    8388608 64.0      16384  3698512 28.3</div><div class='input'>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp5X5m0J</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpxK4yIH/temp_libpath78da1656e4dc/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp5X5m0J/TAS1H30182785_2019-09-17</span></div><div class='output co'>#&gt; GT3X information
+<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpK0VnEy</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpaWuek6/temp_libpath7a425d900070/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpK0VnEy/TAS1H30182785_2019-09-17</span></div><div class='output co'>#&gt; GT3X information
 #&gt;  $ Serial Number     :"TAS1H30182785"
 #&gt;  $ Device Type       :"Link"
 #&gt;  $ Firmware          :"1.7.2"
@@ -379,7 +382,7 @@ represents local time.</p>
 #&gt; Total Records: 216000
 #&gt; Scaling...
 #&gt; Creating dimnames 
-#&gt; CPP returning </div><div class='output co'>#&gt; <span class='message'>Done (in 0.0376510620117188 seconds)</span></div><div class='input'>
+#&gt; CPP returning </div><div class='output co'>#&gt; <span class='message'>Done (in 0.0440239906311035 seconds)</span></div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># first unzip, then read</span>
 <span class='no'>datadir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>()

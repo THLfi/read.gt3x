@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse activity samples from a GT3X file — parseGT3X • read.gt3x</title>
+<title>Changelog • read.gt3x</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,7 @@
 
 
 
-<meta property="og:title" content="Parse activity samples from a GT3X file — parseGT3X" />
-<meta property="og:description" content="Parse activity samples from a GT3X file" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -106,76 +105,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse activity samples from a GT3X file</h1>
-    
-    <div class="hidden name"><code>parseGT3X.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    <p>Parse activity samples from a GT3X file</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>parseGT3X</span>(
-  <span class='no'>filename</span>,
-  <span class='no'>max_samples</span>,
-  <span class='no'>scale_factor</span>,
-  <span class='no'>sample_rate</span>,
-  <span class='no'>start_time</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>debug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>impute_zeroes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>filename</th>
-      <td><p>(char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples</p></td>
-    </tr>
-    <tr>
-      <th>max_samples</th>
-      <td><p>Maximum number of rows to parse. The returned matrix will always contain this number of rows, having zeroes if
-not data is found.</p></td>
-    </tr>
-    <tr>
-      <th>scale_factor</th>
-      <td><p>Scale factor for the activity samples.</p></td>
-    </tr>
-    <tr>
-      <th>sample_rate</th>
-      <td><p>sampling rate for activity samples.</p></td>
-    </tr>
-    <tr>
-      <th>start_time</th>
-      <td><p>starting time of the sample recording.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Print the parameters from the log.bin file and other messages?</p></td>
-    </tr>
-    <tr>
-      <th>debug</th>
-      <td><p>Print information for every activity second</p></td>
-    </tr>
-    <tr>
-      <th>impute_zeroes</th>
-      <td><p>Impute zeros in case there are missingness?</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Returns a matrix with max_samples rows and 3 columns with the acceleration samples.
-The matrix has attributes
-"time_index", "missingness", "start_time_log", "sample_rate", "impute_zeroes".</p>
-
+    <div id="readgt3x-020" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#readgt3x-020" class="anchor"></a>read.gt3x 0.2.0</h1>
+<ul>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+<li>Checked and ensured that imputation worked in specific cases.</li>
+<li>Reads in old (NHANES) and newer versions of <code>gt3x</code> files.</li>
+<li>First CRAN release candidate.</li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 
