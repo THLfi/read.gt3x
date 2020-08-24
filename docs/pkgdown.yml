@@ -1,6 +1,7 @@
 pandoc: 2.9.2
 pkgdown: 1.5.1
 pkgdown_sha: ~
-articles: {}
-last_built: 2020-08-24T19:51Z
+articles:
+  read_gt3x: read_gt3x.html
+last_built: 2020-08-24T22:06Z
 

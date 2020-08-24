@@ -13,7 +13,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Parse Actigraph GT3X/GT3X+ Accelerometer Data">
 <meta property="og:description" content="Implements a high performance C++ parser 
-    for AcitGraph GT3X/GT3X+ data format (with extension .gt3x) 
+    for ActiGraph GT3X/GT3X+ data format (with extension .gt3x) 
     for accelerometer samples. Activity samples can be easily read into a
     matrix or data.frame.  This allows for storing the raw accelerometer 
     samples in the original binary format to reserve space.">
@@ -50,6 +50,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/read_gt3x.html">Getting started with read.gt3x</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
@@ -71,19 +83,19 @@
 <a href="#readgt3x" class="anchor"></a>read.gt3x</h1></div>
 <!-- badges: start -->
 
-<p>The <code>read.gt3x</code> R package implements a high performance C++ parser for actigraphs <code>.gt3x</code> data format. Read the binary accelerometer data (.gt3x) into an R data frame in a few seconds.</p>
+<p>The <code>read.gt3x</code> R package implements a high performance C++ parser for ActiGraph’s <code>.gt3x</code> data format. Read the binary accelerometer data (.gt3x) into an R data frame in a few seconds.</p>
 <div id="actigraph-accelerometers" class="section level2">
 <h2 class="hasAnchor">
-<a href="#actigraph-accelerometers" class="anchor"></a>Actigraph accelerometers</h2>
-<p>Actigraph’s wearable <a href="https://en.wikipedia.org/wiki/Accelerometer">accelerometer devices</a> (e.g. GT9X Link) are used by both individuals and researchers to track movement. The devices measures <a href="https://en.wikipedia.org/wiki/Proper_acceleration">proper acceleration</a> in three directions: X (right-left), Y (forward-backward), Z (up-down). The measurement unit is the gravitational unit, <span class="math inline"><em>g</em> = 9.81<em>m</em>/<em>s</em><sup>2</sup></span></p>
-<p>Data from the wearable Actigraph devices is usually extracted and analyzed via a software called <em>ActiLife</em>. When data is extracted from the wearable Actigraph device, it is saved as a .gt3x file. A gt3x file is a zip archive with two files: - info.txt<br>
+<a href="#actigraph-accelerometers" class="anchor"></a>ActiGraph accelerometers</h2>
+<p>ActiGraph’s wearable <a href="https://en.wikipedia.org/wiki/Accelerometer">accelerometer devices</a> (e.g. GT9X Link) are used by both individuals and researchers to track movement. The devices measures <a href="https://en.wikipedia.org/wiki/Proper_acceleration">proper acceleration</a> in three directions: X (right-left), Y (forward-backward), Z (up-down). The measurement unit is the gravitational unit, <span class="math inline"><em>g</em> = 9.81<em>m</em>/<em>s</em><sup>2</sup></span></p>
+<p>Data from the wearable ActiGraph devices is usually extracted and analyzed via a software called <em>ActiLife</em>. When data is extracted from the wearable ActiGraph device, it is saved as a .gt3x file. A gt3x file is a zip archive with two files: - info.txt<br>
 - log.bin</p>
 <p>The log.bin file is a binary file which includes the raw activity samples, written to the wearable device during usage. The format of the binary file is described in detail in the <a href="https://github.com/actigraph/GT3X-File-Format">GT3X github repository</a>. info.txt is a simple text file with meta information related to the device.</p>
 </div>
 <div id="motivation-for-the-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#motivation-for-the-package" class="anchor"></a>Motivation for the package</h2>
-<p>ActiLife software provides a “Raw to Raw” import option, which reads the activity samples from a .gt3x file and writes them to a .csv file. However, this can be slow and the csv files can be large compared to the binary .gt3x format. Also, according to actigraphs customer support, “A raw file exported via ActiLife is run through a proprietary band pass filter that will exclude movement considered outside of the human spectrum”, which might not be desirable for a researcher.</p>
+<p>ActiLife software provides a “Raw to Raw” import option, which reads the activity samples from a .gt3x file and writes them to a .csv file. However, this can be slow and the csv files can be large compared to the binary .gt3x format. Also, according to ActiGraph’s customer support, “A raw file exported via ActiLife is run through a proprietary band pass filter that will exclude movement considered outside of the human spectrum”, which might not be desirable for a researcher.</p>
 <p>This package makes it easier and faster to read the raw accelerometer samples into R after extracting the data from the wearable device. No modification is done to the raw data. The package implements an efficient C++ parser which reads activity samples directly from the binary log.bin file inside the .gt3x archive. This allows for</p>
 <ul>
 <li>Storing of the data in original binary format to reserve space<br>
