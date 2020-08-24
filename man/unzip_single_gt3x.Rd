@@ -21,7 +21,7 @@ unzip_single_gt3x(
  <path> are extracted.
 Default is the name of the input file, sans the .gt3x extension.}
 
-\item{location}{A path to an output directory. Default is a tempdir().}
+\item{location}{A path to an output directory. Default is a `tempdir()`.}
 
 \item{files}{The names of files to extract. Default is info.txt and log.bin}
 

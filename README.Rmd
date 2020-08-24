@@ -24,7 +24,7 @@ The `read.gt3x` R package implements a high performance C++ parser for actigraph
 
 ## Actigraph accelerometers
 
-Actigraph's wearable [accelerometer devices](https://en.wikipedia.org/wiki/Accelerometer) (e.g. GT9X Link) are used by both individuals and reasearchers to track movement. The devices measures [proper acceloration](https://en.wikipedia.org/wiki/Proper_acceleration) in three directions:  X (right-left), Y (forward-backward), Z (up-down). The measurement unit is the gravitational unit, $g = 9.81 m / s^2$
+Actigraph's wearable [accelerometer devices](https://en.wikipedia.org/wiki/Accelerometer) (e.g. GT9X Link) are used by both individuals and researchers to track movement. The devices measures [proper acceleration](https://en.wikipedia.org/wiki/Proper_acceleration) in three directions:  X (right-left), Y (forward-backward), Z (up-down). The measurement unit is the gravitational unit, $g = 9.81 m / s^2$
 
 Data from the wearable Actigraph devices is usually extracted and analyzed via a software called *ActiLife*.  When data is extracted from the wearable Actigraph device, it is saved as a .gt3x file. A gt3x file is a zip archive with two files: 
 - info.txt  
@@ -41,14 +41,14 @@ This package makes it easier and faster to read the raw accelerometer samples in
 
 - Storing of the data in original binary format to reserve space  
 - Fast access to the accelerometer's measurements  
-- Circumvent ActiLifes filtering algorithms  
+- Circumvent ActiLife's filtering algorithms  
 
 ## Installation
 
-You can install the read.gt3x package from GitHub, using the devtools-package (available in CRAN).
+You can install the read.gt3x package from GitHub, using the `remotes` package (available in CRAN).
 
 ```
-devtools::install_github("THLfi/read.gt3x")
+remotes::install_github("THLfi/read.gt3x")
 ```
 
 
@@ -60,10 +60,17 @@ The read.gt3x package includes two sample .gt3x files which can be used to demon
 library(read.gt3x)
 ```
 
-First we need the path to a single gt3x file.
+First we need the path to a single gt3x file.  We have one file included in the package:
 
+```{r embedded}
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
+```
 
-```{r download}
+And you can download larger and more extensive `gt3x` files if desired:
+```{r download, eval = FALSE}
 gt3xfile <- gt3x_datapath(1)
 ```
 

@@ -87,18 +87,6 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/read.gt3x.html">Getting started with read.gt3x</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -161,12 +149,19 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+<span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(
+    <span class='st'>"extdata"</span>, <span class='st'>"TAS1H30182785_2019-09-17.gt3x"</span>,
+    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"read.gt3x"</span>)
+<span class='no'>gt3xdirs</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>gt3xfile</span>)</div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp5X5m0J</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpxK4yIH/temp_libpath78da1656e4dc/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmp5X5m0J/TAS1H30182785_2019-09-17</span></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># unzip a single .gt3x file</span>
 <span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>(<span class='fl'>1</span>)
-<span class='no'>gt3xdir</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>path</span>)</div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf/EE_left_29.5.2017-05-30</span></div><div class='input'>
+<span class='no'>gt3xdir</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>path</span>)
+
 <span class='co'># unzip multiple .gt3x files</span>
 <span class='no'>dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>()
-<span class='no'>gt3xdirs</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>dir</span>)</div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf</span></div><div class='output co'>#&gt; <span class='message'>1/2 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf/EE_left_29.5.2017-05-30</span></div><div class='output co'>#&gt; <span class='message'>2/2 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpbIvyOf/SS_left_19.5.2017-05-22</span></div><div class='input'>
+<span class='no'>gt3xdirs</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>dir</span>)
+}
 <span class='no'>tfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
 <span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span>(<span class='fu'>unzip.gt3x</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>dir</span>, <span class='no'>tfile</span>)))
 <span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span>(<span class='fu'>unzip.gt3x</span>(<span class='st'>""</span>))</div></pre>

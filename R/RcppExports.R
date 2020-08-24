@@ -58,7 +58,7 @@ parseActivityBin <- function(filename, max_samples, scale_factor, sample_rate, v
 #' @param verbose Print the parameters from the log.bin file and other messages?
 #'
 #' @return
-#' Returns a vector with max_samples eleements
+#' Returns a vector with max_samples elements
 #'
 parseLuxBin <- function(filename, max_samples, scale_factor, max_value, verbose = FALSE) {
     .Call('_read_gt3x_parseLuxBin', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, max_value, verbose)

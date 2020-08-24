@@ -33,20 +33,20 @@ A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
 \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
-\item \code{missingness} : Named integer vector. Names are Posixct
+\item \code{missingness} : Named integer vector. Names are \code{POSIXct}
 timestamps and values are the number of missing values.
 }
 }
 \description{
 Read activity samples from a GT3X file as a matrix.
-Please note that all timestams are in local time (of the device) even though they are
-represented as POSIXct with GMT timezone.
+Please note that all timestamps are in local time (of the device) even though they are
+represented as \code{POSIXct} with GMT timezone.
 }
 \note{
 The timestamps in the .gt3x data format are saved in .NET format, which is
  nanoseconds in local time since 0001-01-01.
 This is a bit tricky to parse into an R datetime format. DateTimes are
-therefore represented as POSIXct format with the 'GMT' timezone attribute,
+therefore represented as \code{POSIXct} format with the 'GMT' timezone attribute,
  which is false; the datetime actually
 represents local time.
 }

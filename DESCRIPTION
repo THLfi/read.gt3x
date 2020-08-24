@@ -12,7 +12,7 @@ Authors@R: c(person("Tuomo", "Nieminen",
            comment = c(ORCID = "0000-0001-6469-1750"))
     )
 Description: Implements a high performance C++ parser 
-    for actigraphs 'GT3X'/'GT3X+' data format (with extension '.gt3x') 
+    for AcitGraph 'GT3X'/'GT3X+' data format (with extension '.gt3x') 
     for accelerometer samples. Activity samples can be easily read into a
     matrix or data.frame.  This allows for storing the raw accelerometer 
     samples in the original binary format to reserve space.

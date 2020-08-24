@@ -593,7 +593,7 @@ void ParseLux(ifstream& stream, NumericVector& luxvec, double LuxScaleFactor, do
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //'
 //' @return
-//' Returns a vector with max_samples eleements
+//' Returns a vector with max_samples elements
 //'
 // [[Rcpp::export]]
 NumericVector parseLuxBin(const char* filename,

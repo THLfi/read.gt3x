@@ -37,7 +37,7 @@ gt3x_datapath <- function(index = NULL, verbose = TRUE) {
 }
 
 
-#' Download and unzip a zipped gt3xfile
+#' Download and unzip a zipped `gt3x` file
 #'
 #' @family sample-data
 #' @param url url of the file to download

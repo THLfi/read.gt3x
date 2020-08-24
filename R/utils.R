@@ -81,7 +81,7 @@ list_gt3x <- function(path) {
 }
 
 
-#' Check if a .gt3x file or unzipped gt3x directory has both log.bin adn info.txt
+#' Check if a .gt3x file or unzipped gt3x directory has both log.bin and info.txt
 #'
 #' @family gt3x-utils
 #' @rdname is_gt3x
