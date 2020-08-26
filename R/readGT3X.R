@@ -178,7 +178,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       scale_factor = info$`Acceleration Scale`,
       sample_rate = info$`Sample Rate`,
       verbose = as.logical(verbose),
-      debug = FALSE, ...)
+      ...)
     verbose_message("Activity data now in R", verbose = verbose > 1)
 
     lux_path <- file.path(path, "lux.bin")
