@@ -43,7 +43,7 @@ testthat::test_that("Converting Old to Data.frame", {
     -0.228402625555557, 0.11958707074074
   ))
   testthat::expect_equal(
-    res$time[48], structure(1340794445.23333,
+    res$time[48], structure(1340794445.23333333,
                             class = c("POSIXct", "POSIXt"), tzone = "GMT"
     )
   )
