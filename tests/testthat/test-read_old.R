@@ -40,15 +40,16 @@ testthat::test_that("Converting Old to Data.frame", {
 
   cm <- unname(colMeans(res[, 1:3]))
   testthat::expect_equal(cm, c(
+    -0.228402625555557,
     0.447592941851854,
-    -0.228402625555557, 0.11958707074074
+    0.11958707074074
   ))
   testthat::expect_equal(
     res$time[48], structure(1340794445.23333333,
                             class = c("POSIXct", "POSIXt"), tzone = "GMT"
     )
   )
-  testthat::expect_equal(res$X[4823], 0.528)
+  testthat::expect_equal(res$Y[4823], 0.528)
 
   all_attr <- attributes(res)
   testthat::expect_true(all_attr$old_version)
