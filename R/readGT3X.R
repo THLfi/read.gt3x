@@ -136,8 +136,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       paste0("Input is a .gt3x file, unzipping to a ",
              "temporary location first..."),
       verbose = verbose)
-    path <- unzip.gt3x(path, verbose = verbose, files = files,
-                       check_structure = !is_old_version)
+    path <- unzip.gt3x(path,
+                       verbose = verbose,
+                       files = files,
+                       check_structure = !is_old_version,
+                       location = tempdir())
+    on.exit(unlink(path, recursive = TRUE))
   }
 
   tz  <- "GMT" # used for parsing, times are actually in local timezone
@@ -179,6 +183,11 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       sample_rate = info$`Sample Rate`,
       verbose = as.logical(verbose),
       ...)
+    tmp_at = attributes(accdata)
+    accdata = accdata[, c("X", "Y", "Z")]
+    tmp_at$dimnames[[2]] = c("X", "Y", "Z")
+    attributes(accdata) = tmp_at
+    rm(tmp_at)
     verbose_message("Activity data now in R", verbose = verbose > 1)
 
     lux_path <- file.path(path, "lux.bin")
@@ -268,6 +277,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
   time_index <- all_attributes[["time_index"]]
+  stopifnot(!is.null(time_index))
   sample_rate <- all_attributes[["sample_rate"]]
 
   if (verbose) {

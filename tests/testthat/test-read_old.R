@@ -19,10 +19,11 @@ testthat::test_that("Reading in Old format works", {
 
   cm <- unname(colMeans(res))
   testthat::expect_equal(cm, c(
+    -0.228402625555557,
     0.447592941851854,
-    -0.228402625555557, 0.11958707074074
+    0.11958707074074
   ))
-  testthat::expect_equal(unname(res[4823, "X"]), 0.528)
+  testthat::expect_equal(unname(res[4823, "Y"]), 0.528)
 
   all_attr <- attributes(res)
   testthat::expect_true(all_attr$old_version)

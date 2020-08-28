@@ -22,7 +22,12 @@
 parse_gt3x_info <- function(path, tz = "GMT") {
   path <- unzip_zipped_gt3x(path, cleanup = TRUE)
   if (is_gt3x(path)) {
-    path <- unzip.gt3x(path, check_structure = FALSE, verbose = FALSE)
+    path <- unzip.gt3x(
+      path,
+      check_structure = FALSE,
+      location = tempdir(),
+      verbose = FALSE)
+    on.exit(unlink(path, recursive = TRUE))
   }
   infotxt <- readLines(file.path(path, "info.txt"))
   infotxt <- strsplit(infotxt, split = ": ")
@@ -39,9 +44,9 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
 
   if (old_version(info)) {
-      if (length(info$`Acceleration Scale`) == 0) {
-        info$`Acceleration Scale` <- 341L
-      }
+    if (length(info$`Acceleration Scale`) == 0) {
+      info$`Acceleration Scale` <- 341L
+    }
   }
 
   is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  {

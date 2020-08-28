@@ -545,7 +545,9 @@ NumericMatrix parseActivityBin(const char* filename,
     Rcout << "Scaling...\n";
   scaleAndRoundActivity(activityMatrix, scale_factor, sample_size);
 
-  colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  // Changed as indicated that it's Y, X, Z as in :
+  // https://github.com/actigraph/NHANES-GT3X-File-Format/blob/master/fileformats/activity.bin.md
+  colnames(activityMatrix) = CharacterVector::create("Y", "X", "Z");
   activityMatrix.attr("time_index") = timeStamps[Range(0, sample_size - 1)];
 
   activityMatrix.attr("start_time_log") = start_time;
