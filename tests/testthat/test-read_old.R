@@ -22,7 +22,7 @@ testthat::test_that("Reading in Old format works", {
     -0.228402625555557,
     0.447592941851854,
     0.11958707074074
-  ))
+  ), tolerance = 1e-5)
   testthat::expect_equal(unname(res[4823, "Y"]), 0.528)
 
   all_attr <- attributes(res)
@@ -43,7 +43,7 @@ testthat::test_that("Converting Old to Data.frame", {
     -0.228402625555557,
     0.447592941851854,
     0.11958707074074
-  ))
+  ), tolerance = 1e-5)
   testthat::expect_equal(
     res$time[48], structure(1340794445.23333333,
                             class = c("POSIXct", "POSIXt"), tzone = "GMT"

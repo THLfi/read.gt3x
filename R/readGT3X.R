@@ -177,6 +177,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     verbose_message("Using NHANES-GT3X format - older format",
                     verbose = verbose)
     act_path <- file.path(path, "activity.bin")
+    est_n_samples <- file.size(act_path) * 8 / 36
     accdata <- parseActivityBin(
       act_path, max_samples = samples,
       scale_factor = info$`Acceleration Scale`,
@@ -184,7 +185,10 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       verbose = as.logical(verbose),
       ...)
     tmp_at = attributes(accdata)
+    accdata = accdata[seq(est_n_samples),]
+    tmp_at$time_index = tmp_at$time_index[seq(est_n_samples)]
     accdata = accdata[, c("X", "Y", "Z")]
+    tmp_at$dim = dim(accdata)
     tmp_at$dimnames[[2]] = c("X", "Y", "Z")
     attributes(accdata) = tmp_at
     rm(tmp_at)
@@ -192,8 +196,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
     lux_path <- file.path(path, "lux.bin")
     luxdata <- parse_lux_data(lux_path, info = info,
-                              samples = samples, verbose = TRUE)
-    attr(accdata, "light_data") <- luxdata
+                              samples = samples, verbose = verbose > 1)
+    attr(accdata, "light_data") <- luxdata[seq(est_n_samples)]
 
   }
 
