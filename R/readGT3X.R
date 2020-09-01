@@ -177,7 +177,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     verbose_message("Using NHANES-GT3X format - older format",
                     verbose = verbose)
     act_path <- file.path(path, "activity.bin")
-    est_n_samples <- file.size(act_path) * 8 / 36
+    est_n_samples <- floor(file.size(act_path) * 8 / 36)
     accdata <- parseActivityBin(
       act_path, max_samples = samples,
       scale_factor = info$`Acceleration Scale`,
