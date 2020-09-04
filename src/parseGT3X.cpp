@@ -335,7 +335,8 @@ NumericMatrix parseGT3X(const char* filename,
   int payload_timediff;
   int total_records = 0;
   int sample_size;
-
+  bool have_activity = false;
+  bool have_activity2 = false;
 
   int chksum;
 
@@ -414,11 +415,13 @@ NumericMatrix parseGT3X(const char* filename,
 
 
         if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
+          have_activity = true;
           ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
           total_records += sample_size;
         }
 
         else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
+          have_activity2 = true;
           ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
           total_records += sample_size;
         }
@@ -482,6 +485,14 @@ NumericMatrix parseGT3X(const char* filename,
     Rcout << "Creating dimnames \n";
 
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  if ( have_activity && have_activity2 ) {
+    Rcout << "CPP parser warning: ACTIVITY and ACTIVITY2 Packets found!\n";
+    Rcout << "Please report file to https://github.com/THLfi/read.gt3x/issues\n";
+  }
+
+  if ( have_activity && !have_activity2 ) {
+    colnames(activityMatrix) = CharacterVector::create("Y", "X", "Z");
+  }
   activityMatrix.attr("time_index") = timeStamps;
   activityMatrix.attr("missingness") = Missingness;
   activityMatrix.attr("total_records") = total_records;

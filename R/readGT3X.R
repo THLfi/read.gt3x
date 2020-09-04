@@ -170,6 +170,14 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       start_time = as.numeric(info[["Start Date"]]),
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
+    # need reordering for Y X Z ACTIVITY PACKETS
+    tmp_at = attributes(accdata)
+    accdata = accdata[, c("X", "Y", "Z")]
+    tmp_at$dim = dim(accdata)
+    tmp_at$dimnames[[2]] = c("X", "Y", "Z")
+    attributes(accdata) = tmp_at
+    rm(tmp_at)
+
     if (verbose > 1) {
       message("Activity data now in R")
     }
