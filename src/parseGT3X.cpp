@@ -363,7 +363,10 @@ NumericMatrix parseGT3X(const char* filename,
       // Changing to >= for cases where imputation
       // impute_zeroes when Activity with Sample Size of 0
       // runs into the edge case of them being last index
-      if(sample_size + total_records >= max_samples) {
+      if (sample_size + total_records > max_samples) {
+        Rcout << "sample_size: " << sample_size << " total_records:" << total_records << "\n";
+        Rcout << "sample_size + total_records: " << sample_size + total_records << "\n";
+        Rcout << "max_samples: " << max_samples << "\n";
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
         break;
       }
@@ -394,7 +397,9 @@ NumericMatrix parseGT3X(const char* filename,
           }
         }
 
-        if(sample_size + total_records >= max_samples) {
+        if(sample_size + total_records > max_samples) {
+          Rcout << "sample_size: " << sample_size << " total_records:" << total_records << "\n";
+          Rcout << "max_samples: " << max_samples << "\n";
           Rcout << "CPP parser warning: max_samples reached prematurely - breaking\n";
           break;
         }
