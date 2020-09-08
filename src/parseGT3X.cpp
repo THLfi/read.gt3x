@@ -405,11 +405,12 @@ NumericMatrix parseGT3X(const char* filename,
         }
         expected_payload_start = payload_start + 1;
 
-        if(sample_size == 0) {
+        if(sample_size == 0 && total_records < max_samples) {
           if (verbose | debug) {
             Rcout << "Activity with Sample Size of 0" << "\n";
             Rcout << "payload start: " << patch::to_string(payload_start) << "\n";
             Rcout << "total_records: " << total_records << "\n";
+            Rcout << "max_samples: " << max_samples << "\n";
           }
           Missingness[patch::to_string(payload_start)] = sample_rate;
           if(impute_zeroes) {
