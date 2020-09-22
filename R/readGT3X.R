@@ -156,7 +156,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   verbose_message(
     "Parsing GT3X data via CPP.. expected sample size: ", samples,
-            verbose = verbose
+    verbose = verbose
   )
   if (!is_old_version) {
     logpath <- file.path(path, "log.bin")
@@ -186,6 +186,13 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                     verbose = verbose)
     act_path <- file.path(path, "activity.bin")
     est_n_samples <- floor(file.size(act_path) * 8 / 36)
+    if (est_n_samples > samples) {
+      warning(
+        paste0("Estimated samples is larger than from get_n_samples",
+               " from time data, using estimated size.  If this errors,",
+               " please file an issue."))
+      samples = est_n_samples
+    }
     accdata <- parseActivityBin(
       act_path, max_samples = samples,
       scale_factor = info$`Acceleration Scale`,
@@ -193,8 +200,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       verbose = as.logical(verbose),
       ...)
     tmp_at = attributes(accdata)
-    accdata = accdata[seq(est_n_samples),]
-    tmp_at$time_index = tmp_at$time_index[seq(est_n_samples)]
+    index = min(est_n_samples, nrow(accdata))
+    accdata = accdata[seq(index),]
+    tmp_at$time_index = tmp_at$time_index[seq(index)]
     accdata = accdata[, c("X", "Y", "Z")]
     tmp_at$dim = dim(accdata)
     tmp_at$dimnames[[2]] = c("X", "Y", "Z")

@@ -12,7 +12,9 @@ gz_file <- tempfile(fileext = ".gt3x.gz")
 file.copy(gz, gz_file)
 
 testthat::test_that("Reading in Old format works", {
+  testthat::expect_warning({
   res <- read.gt3x::read.gt3x(path, verbose = 2)
+  }, regexp = NA)
   testthat::expect_is(res, "activity")
   testthat::expect_is(res, "matrix")
   testthat::expect_equal(colnames(res), c("X", "Y", "Z"))

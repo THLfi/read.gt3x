@@ -151,6 +151,12 @@ get_n_samples <- function(x) {
   rate <- x[["Sample Rate"]]
   if (length(end) == 0) {
     end <- x[["Stop Date"]]
+    sdate_zero <- as.character(x[["Stop Date"]]) == "0001-01-01"
+    if (sdate_zero && !is.null(x[["Download Date"]])) {
+      msg <- paste0("Stop Date is 0, using Download Date")
+      warning(msg)
+      end <- x[["Download Date"]]
+    }
   }
   seqs <- as.numeric(difftime(end, start, units = "secs"))
   samples <- seqs * rate
