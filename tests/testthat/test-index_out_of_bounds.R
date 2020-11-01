@@ -25,7 +25,7 @@ test_that("Negative Missing values  fixed", {
   testthat::skip_on_cran()
 
   destfile = tempfile(fileext = ".gt3x.gz")
-  curl::curl_download("https://ndownloader.figshare.com/files/24319343",
+  download.file("https://ndownloader.figshare.com/files/24319343",
                       destfile = destfile, quiet = FALSE)
   x = read.gt3x(destfile)
   at = attributes(x)
