@@ -16,9 +16,21 @@ gt3xdataZeroes <- read.gt3x(gt3xfile, imputeZeroes = TRUE)
 gt3xdata <- read.gt3x(gt3xfile)
 tfile <- tempfile(fileext = ".gt3x")
 file.copy(gt3xfile, tfile)
-
 gt3xdata_full <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = TRUE)
 
+testthat::test_that("has_log_info", {
+  testthat::expect_message({
+    out <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = TRUE,
+                     debug = TRUE, verbose = 2)
+  })
+
+  testthat::expect_true(have_log_and_info(gt3xfile))
+  tfile = tempfile()
+  res =  unzip(gt3xfile, exdir = tfile)
+  testthat::expect_true(have_log_and_info(tfile))
+  testthat::expect_error(unzip.gt3x(tfile))
+  unzip.gt3x(dirname(gt3xfile))
+})
 has_zoo <- requireNamespace("zoo", quietly = TRUE)
 fzero <- function(df) {
   zero <- rowSums(df[, c("X", "Y", "Z")] == 0) == 3
@@ -39,7 +51,7 @@ fzero <- function(df) {
 testthat::test_that("read.gt3x reads the first second of data correctly", {
   testthat::expect_true({
     all(unlist(head(csvdata, 100)) == unlist(head(gt3xdata, 100)))
-    })
+  })
 })
 
 testthat::test_that("read.gt3x reads the fulldata correctly", {

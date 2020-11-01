@@ -12,12 +12,15 @@ gz_file <- tempfile(fileext = ".gt3x.gz")
 file.copy(gz, gz_file)
 
 testthat::test_that("Reading in Old format works", {
+  have_log_and_info(path)
   testthat::expect_warning({
-  res <- read.gt3x::read.gt3x(path, verbose = 2)
+    res <- read.gt3x::read.gt3x(path, verbose = 2, debug = TRUE)
   }, regexp = NA)
   testthat::expect_is(res, "activity")
   testthat::expect_is(res, "matrix")
   testthat::expect_equal(colnames(res), c("X", "Y", "Z"))
+  print(res)
+  head(res)
 
   cm <- unname(colMeans(res))
   testthat::expect_equal(cm, c(
@@ -30,6 +33,9 @@ testthat::test_that("Reading in Old format works", {
   all_attr <- attributes(res)
   testthat::expect_true(all_attr$old_version)
   testthat::expect_equal(all_attr$sample_rate, 30)
+  res = as.data.frame(res, verbose = TRUE)
+  print(res)
+  head(res)
   rm(res)
 })
 
