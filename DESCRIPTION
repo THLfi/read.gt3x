@@ -1,21 +1,22 @@
 Package: read.gt3x
 Type: Package
-Title: Parse Actigraph Accelerometer Data (.gt3x)
-Version: 0.1.0.9000
-Authors@R: c(person("Tuomo", "Nieminen", 
-    email = "tuomo.a.nieminen@gmail.co", 
-    role = c("aut", "cre")),
-    person(given = "John",
-           family = "Muschelli",
-           email = "muschellij2@gmail.com",
-           role = c("ctb"),
-           comment = c(ORCID = "0000-0001-6469-1750"))
-    )
+Title: Parse 'Actigraph' 'GT3X'/'GT3X+' Accelerometer Data
+Version: 0.3.1
+Authors@R: 
+    c(person(given = "Tuomo",
+             family = "Nieminen",
+             role = c("aut", "cre"),
+             email = "tuomo.a.nieminen@gmail.com"),
+      person(given = "John",
+             family = "Muschelli",
+             role = "aut",
+             email = "muschellij2@gmail.com",
+             comment = c(ORCID = "0000-0001-6469-1750")))
 Description: Implements a high performance C++ parser 
-    for actigraphs .gt3x data format for accelerometer samples. 
-    Activity samples can be easily read into an R matrix. 
-    This allows for storing the raw accelerometer samples in the original 
-    binary format to reserve space.
+    for 'ActiGraph' 'GT3X'/'GT3X+' data format (with extension '.gt3x') 
+    for accelerometer samples. Activity samples can be easily read into a
+    matrix or data.frame.  This allows for storing the raw accelerometer 
+    samples in the original binary format to reserve space.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -25,10 +26,11 @@ Imports:
     utils,
     R.utils,
     tools
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
-    data.table
+    data.table,
+    zoo
 VignetteBuilder: knitr

@@ -19,7 +19,8 @@ file path
 Get url of gt3x sample file
 }
 \seealso{
-Other sample-data: \code{\link{gt3x_dataurl}},
-  \code{\link{gt3x_download}}
+Other sample-data: 
+\code{\link{gt3x_dataurl}()},
+\code{\link{gt3x_download}()}
 }
 \concept{sample-data}

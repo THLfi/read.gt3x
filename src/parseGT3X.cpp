@@ -298,6 +298,7 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' not data is found.
 //' @param scale_factor Scale factor for the activity samples.
 //' @param sample_rate sampling rate for activity samples.
+//' @param start_time starting time of the sample recording.
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //' @param impute_zeroes Impute zeros in case there are missingness?
 //' @param debug Print information for every activity second
@@ -334,18 +335,19 @@ NumericMatrix parseGT3X(const char* filename,
   int payload_timediff;
   int total_records = 0;
   int sample_size;
-
+  bool have_activity = false;
+  bool have_activity2 = false;
 
   int chksum;
 
   if (debug)
-      Rcout << "Reading Stream...\n";
+    Rcout << "Reading Stream...\n";
   while(GT3Xstream) {
 
     item = GT3Xstream.get();
     if(!GT3Xstream) {
-    break;
-  }
+      break;
+    }
 
     if(item == RECORD_SEPARATOR) {
       ParseHeader(GT3Xstream, type, payload_start, size);
@@ -356,9 +358,15 @@ NumericMatrix parseGT3X(const char* filename,
       }
 
       // if (debug)
-        // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
+      // Rcout << "Type: " << LogRecordType(type) << " bytes: " << size << " sampleSize:" << sample_size << "\n";
 
-      if(sample_size + total_records > max_samples) {
+      // Changing to >= for cases where imputation
+      // impute_zeroes when Activity with Sample Size of 0
+      // runs into the edge case of them being last index
+      if (sample_size + total_records > max_samples) {
+        Rcout << "sample_size: " << sample_size << " total_records:" << total_records << "\n";
+        Rcout << "sample_size + total_records: " << sample_size + total_records << "\n";
+        Rcout << "max_samples: " << max_samples << "\n";
         Rcout << "CPP parser warning: max_samples reached prematurely\n";
         break;
       }
@@ -374,17 +382,36 @@ NumericMatrix parseGT3X(const char* filename,
 
         if(payload_timediff > 0) {
           int n_missing = payload_timediff*sample_rate;
-          Missingness[patch::to_string(expected_payload_start)] = n_missing;
+          if (n_missing < 0) {
+            if (verbose | debug) {
+              Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+            }
+            Rf_warning("!!!CPP parser warning: likely integer overflow for imputation");
+          } else {
+            Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
-          if(impute_zeroes) {
-            ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
-            total_records += n_missing;
+            if(impute_zeroes) {
+              ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+              total_records += n_missing;
+            }
           }
         }
 
+        if(sample_size + total_records > max_samples) {
+          Rcout << "sample_size: " << sample_size << " total_records:" << total_records << "\n";
+          Rcout << "max_samples: " << max_samples << "\n";
+          Rcout << "CPP parser warning: max_samples reached prematurely - breaking\n";
+          break;
+        }
         expected_payload_start = payload_start + 1;
 
-        if(sample_size == 0) {
+        if(sample_size == 0 && total_records < max_samples) {
+          if (verbose | debug) {
+            Rcout << "Activity with Sample Size of 0" << "\n";
+            Rcout << "payload start: " << patch::to_string(payload_start) << "\n";
+            Rcout << "total_records: " << total_records << "\n";
+            Rcout << "max_samples: " << max_samples << "\n";
+          }
           Missingness[patch::to_string(payload_start)] = sample_rate;
           if(impute_zeroes) {
             ImputeZeroes(timeStamps, total_records, sample_rate, sample_rate, start_time, payload_start, debug);
@@ -393,15 +420,17 @@ NumericMatrix parseGT3X(const char* filename,
         }
 
 
-      if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
-        ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-        total_records += sample_size;
-      }
+        if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
+          have_activity = true;
+          ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+          total_records += sample_size;
+        }
 
-      else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
-        ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-        total_records += sample_size;
-      }
+        else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
+          have_activity2 = true;
+          ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+          total_records += sample_size;
+        }
 
       }
 
@@ -413,7 +442,7 @@ NumericMatrix parseGT3X(const char* filename,
 
 
     } else if (std::ios::cur > 1) {
-      Rcout << "CPP parser warnng: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
+      Rcout << "CPP parser warning: Stream nro: " << std::ios::cur << ". First item: " << item << " was not a record separator\n";
     }
   }
 
@@ -434,22 +463,45 @@ NumericMatrix parseGT3X(const char* filename,
     if(verbose)
       Rcout << "Sum of missingness is: " << sum(Missingness) << "\n";
     int n_missing = max_samples - (total_records + sum(Missingness));
-    if(verbose)
-      Rcout << "Finding missingness amount: " << n_missing << "\n";
-    Missingness[patch::to_string(expected_payload_start)] = n_missing;
+    if (n_missing < 0) {
+      if (verbose | debug) {
+        Rcout << "!!!n_missing values less than zero, skipping" << "\n";
+      }
+      Rf_warning("!!!n_missing values less than zero, skipping");
+    } else {
+      if(verbose | debug)
+        Rcout << "Finding missingness amount: " << n_missing << "\n";
+      Missingness[patch::to_string(expected_payload_start)] = n_missing;
+    }
 
   } else {
     int n_missing = max_samples - total_records;
-    Missingness[patch::to_string(expected_payload_start)] = n_missing;
-    ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+    if (n_missing < 0) {
+      if (verbose | debug) {
+        Rcout << "!!!total_records > max_samples, nmissing < 0!" << "\n";
+      }
+      Rf_warning("!!!total_records > max_samples, nmissing < 0!");
+    } else {
+      Missingness[patch::to_string(expected_payload_start)] = n_missing;
+      ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
+    }
   }
 
   if(verbose)
     Rcout << "Creating dimnames \n";
 
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  if ( have_activity && have_activity2 ) {
+    Rcout << "CPP parser warning: ACTIVITY and ACTIVITY2 Packets found!\n";
+    Rcout << "Please report file to https://github.com/THLfi/read.gt3x/issues\n";
+  }
+
+  if ( have_activity && !have_activity2 ) {
+    colnames(activityMatrix) = CharacterVector::create("Y", "X", "Z");
+  }
   activityMatrix.attr("time_index") = timeStamps;
   activityMatrix.attr("missingness") = Missingness;
+  activityMatrix.attr("total_records") = total_records;
 
   activityMatrix.attr("start_time_param") = param_start_time;
   activityMatrix.attr("start_time_info") = start_time;
@@ -510,7 +562,9 @@ NumericMatrix parseActivityBin(const char* filename,
     Rcout << "Scaling...\n";
   scaleAndRoundActivity(activityMatrix, scale_factor, sample_size);
 
-  colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  // Changed as indicated that it's Y, X, Z as in :
+  // https://github.com/actigraph/NHANES-GT3X-File-Format/blob/master/fileformats/activity.bin.md
+  colnames(activityMatrix) = CharacterVector::create("Y", "X", "Z");
   activityMatrix.attr("time_index") = timeStamps[Range(0, sample_size - 1)];
 
   activityMatrix.attr("start_time_log") = start_time;
@@ -558,7 +612,7 @@ void ParseLux(ifstream& stream, NumericVector& luxvec, double LuxScaleFactor, do
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //'
 //' @return
-//' Returns a vector with max_samples eleements
+//' Returns a vector with max_samples elements
 //'
 // [[Rcpp::export]]
 NumericVector parseLuxBin(const char* filename,

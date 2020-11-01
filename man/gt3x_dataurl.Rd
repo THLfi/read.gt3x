@@ -4,8 +4,10 @@
 \alias{gt3x_dataurl}
 \title{Get url of github release}
 \usage{
-gt3x_dataurl(version = "v1.0",
-  baseurl = "https://github.com/THLfi/read.gt3x/releases/download")
+gt3x_dataurl(
+  version = "v1.0",
+  baseurl = "https://github.com/THLfi/read.gt3x/releases/download"
+)
 }
 \arguments{
 \item{version}{release version}
@@ -19,7 +21,8 @@ URL to file
 Get url of github release
 }
 \seealso{
-Other sample-data: \code{\link{gt3x_download}},
-  \code{\link{gt3x_url}}
+Other sample-data: 
+\code{\link{gt3x_download}()},
+\code{\link{gt3x_url}()}
 }
 \concept{sample-data}

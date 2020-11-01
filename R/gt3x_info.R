@@ -7,13 +7,27 @@
 #' @family gt3x-parsers
 #'
 #' @examples
+#' gt3xfile <-
+#'   system.file(
+#'     "extdata", "TAS1H30182785_2019-09-17.gt3x",
+#'     package = "read.gt3x")
+#' parse_gt3x_info(gt3xfile)
+#'
+#' \dontrun{
 #' gt3xfile <- gt3x_datapath(1)
 #' parse_gt3x_info(gt3xfile)
+#' }
 #'
 #' @export
 parse_gt3x_info <- function(path, tz = "GMT") {
+  path <- unzip_zipped_gt3x(path, cleanup = TRUE)
   if (is_gt3x(path)) {
-    path <- unzip.gt3x(path, check_structure = FALSE, verbose = FALSE)
+    path <- unzip.gt3x(
+      path,
+      check_structure = FALSE,
+      location = tempdir(),
+      verbose = FALSE)
+    on.exit(unlink(path, recursive = TRUE))
   }
   infotxt <- readLines(file.path(path, "info.txt"))
   infotxt <- strsplit(infotxt, split = ": ")
@@ -21,7 +35,7 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   values <- infomatrix[, 2]
   names(values) <- infomatrix[, 1]
   info <- as.list(values)
-  info$`Serial Prefix` = substr(info$`Serial Number`, 1, 3)
+  info$`Serial Prefix` <- substr(info$`Serial Number`, 1, 3)
   info$`Sample Rate` <- as.numeric(info$`Sample Rate`)
   info$`Start Date` <- ticks2datetime(info$`Start Date`, tz = tz)
   info$`Stop Date` <- ticks2datetime(info$`Stop Date`, tz = tz)
@@ -29,10 +43,10 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   info$`Download Date` <- ticks2datetime(info$`Download Date`, tz = tz)
   info$`Acceleration Scale` <- as.numeric(info$`Acceleration Scale`)
 
-  if(old_version(info)) {
-      if (length(info$`Acceleration Scale`) == 0) {
-        info$`Acceleration Scale` = 341L
-      }
+  if (old_version(info)) {
+    if (length(info$`Acceleration Scale`) == 0) {
+      info$`Acceleration Scale` <- 341L
+    }
   }
 
   is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  {
@@ -40,17 +54,17 @@ parse_gt3x_info <- function(path, tz = "GMT") {
   }
 
   if (is.wholenumber(info$`Acceleration Scale`)) {
-    info$`Acceleration Scale` = as.integer(info$`Acceleration Scale`)
+    info$`Acceleration Scale` <- as.integer(info$`Acceleration Scale`)
   }
 
   structure(info, class = c("gt3x_info", class(info)))
 }
 
-old_version = function(info) {
-  firmware_version = info$Firmware
-  firmware_version = package_version(firmware_version)
-  hdr = info$`Serial Prefix`
-  ret = hdr %in% c("MRA", "NEO") &
+old_version <- function(info) {
+  firmware_version <- info$Firmware
+  firmware_version <- package_version(firmware_version)
+  hdr <- info$`Serial Prefix`
+  ret <- hdr %in% c("MRA", "NEO") &
     firmware_version <= package_version("2.5.0")
   return(ret)
 }

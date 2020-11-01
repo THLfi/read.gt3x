@@ -9,9 +9,9 @@
 #' @param dirname The name of the resulting directory where the content of
 #'  <path> are extracted.
 #' Default is the name of the input file, sans the .gt3x extension.
-#' @param location A path to an output directory. Default is a tempdir().
+#' @param location A path to an output directory. Default is a `tempdir()`.
 #' @param files The names of files to extract. Default is info.txt and log.bin
-#' @param remove_original Remove the zipfile after unzipping?
+#' @param remove_original Remove the zip file after unzipping?
 #' @param check_structure check to see if the structure is right for the file
 #' @param verbose print diagnostic messages
 #'
@@ -19,7 +19,7 @@
 #'
 unzip_single_gt3x <- function(
   path,
-  dirname =  basename(gsub(".gt3x$| ","", path)),
+  dirname =  basename(gsub(".gt3x$| ", "", path)),
   location = tempdir(),
   files = c("info.txt", "log.bin"),
   remove_original = FALSE,
@@ -95,6 +95,12 @@ unzip_single_gt3x <- function(
 #'
 #' @examples
 #'
+#' gt3xfile <-
+#'   system.file(
+#'     "extdata", "TAS1H30182785_2019-09-17.gt3x",
+#'     package = "read.gt3x")
+#' gt3xdirs <- unzip.gt3x(gt3xfile)
+#' \dontrun{
 #' # unzip a single .gt3x file
 #' path <- gt3x_datapath(1)
 #' gt3xdir <- unzip.gt3x(path)
@@ -102,6 +108,10 @@ unzip_single_gt3x <- function(
 #' # unzip multiple .gt3x files
 #' dir <- gt3x_datapath()
 #' gt3xdirs <- unzip.gt3x(dir)
+#' }
+#' tfile = tempfile()
+#' testthat::expect_error(unzip.gt3x(c(dir, tfile)))
+#' testthat::expect_error(unzip.gt3x(""))
 #'
 #' @export
 unzip.gt3x <- function(path, verbose = TRUE, ...) {
@@ -119,10 +129,10 @@ unzip.gt3x <- function(path, verbose = TRUE, ...) {
     stop("No .gt3x files found")
   }
 
-  args = list(...)
-  location = args$location
+  args <- list(...)
+  location <- args$location
   if (is.null(location)) {
-    location = tempdir()
+    location <- tempdir()
   }
   if (verbose) {
     message("Unzipping gt3x data to ", location)

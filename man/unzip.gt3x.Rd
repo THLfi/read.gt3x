@@ -27,6 +27,12 @@ A .gt3x file is a zipped directory with two files: log.bin and info.txt.
 }
 \examples{
 
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
+gt3xdirs <- unzip.gt3x(gt3xfile)
+\dontrun{
 # unzip a single .gt3x file
 path <- gt3x_datapath(1)
 gt3xdir <- unzip.gt3x(path)
@@ -34,10 +40,16 @@ gt3xdir <- unzip.gt3x(path)
 # unzip multiple .gt3x files
 dir <- gt3x_datapath()
 gt3xdirs <- unzip.gt3x(dir)
+}
+tfile = tempfile()
+testthat::expect_error(unzip.gt3x(c(dir, tfile)))
+testthat::expect_error(unzip.gt3x(""))
 
 }
 \seealso{
-Other file manipulations: \code{\link{gt3x_datapath}},
-  \code{\link{is_gt3x}}, \code{\link{list_gt3x}}
+Other file manipulations: 
+\code{\link{gt3x_datapath}()},
+\code{\link{is_gt3x}()},
+\code{\link{list_gt3x}()}
 }
 \concept{file manipulations}

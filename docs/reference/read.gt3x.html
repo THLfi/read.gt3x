@@ -8,21 +8,29 @@
 
 <title>Read GT3X — read.gt3x • read.gt3x</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,12 +38,12 @@
 
 
 
-<meta property="og:title" content="Read GT3X — read.gt3x" />
 
+<meta property="og:title" content="Read GT3X — read.gt3x" />
 <meta property="og:description" content="Read activity samples from a GT3X file as a matrix.
-Please note that all timestams are in local time (of the device) even though they are
-represented as POSIXct with GMT timezone." />
-<meta name="twitter:card" content="summary" />
+Please note that all timestamps are in local time (of the device)
+even though they are represented as POSIXct with GMT timezone." />
+
 
 
 
@@ -49,9 +57,10 @@ represented as POSIXct with GMT timezone." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -65,7 +74,7 @@ represented as POSIXct with GMT timezone." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">read.gt3x</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -73,18 +82,29 @@ represented as POSIXct with GMT timezone." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/read.gt3x.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/read_gt3x.html">Getting started with read.gt3x</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -94,6 +114,7 @@ represented as POSIXct with GMT timezone." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -105,16 +126,20 @@ represented as POSIXct with GMT timezone." />
     </div>
 
     <div class="ref-description">
-    
     <p>Read activity samples from a GT3X file as a matrix.
-Please note that all timestams are in local time (of the device) even though they are
-represented as POSIXct with GMT timezone.</p>
-    
+Please note that all timestamps are in local time (of the device)
+even though they are represented as <code>POSIXct</code> with GMT timezone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read.gt3x</span>(<span class='no'>path</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>read.gt3x</span>(
+  <span class='no'>path</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cleanup</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -128,82 +153,297 @@ represented as POSIXct with GMT timezone.</p>
     </tr>
     <tr>
       <th>asDataFrame</th>
-      <td><p>convert to an activity_df, see <code>as.data.frame.activity</code></p></td>
+      <td><p>convert to an activity_df, see
+<code>as.data.frame.activity</code></p></td>
     </tr>
     <tr>
       <th>imputeZeroes</th>
-      <td><p>Impute zeros in case there are missingness? Default is FALSE, in which case
+      <td><p>Impute zeros in case there are missingness?
+Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.</p></td>
+    </tr>
+    <tr>
+      <th>cleanup</th>
+      <td><p>should any unzipped files be deleted?</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>additional arguments to pass to <code>parseGT3X</code> C++ code</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A numeric matrix with 3 columns (X, Y, Z) and the following attributes:</p><ul>
+    <p>A numeric matrix with 3 columns (X, Y, Z) and the following
+attributes:</p><ul>
 <li><p><code>start_time</code> :  Start time from info file in <code>POSIXct</code> format.</p></li>
 <li><p><code>subject_name</code> : Subject name from info file</p></li>
 <li><p><code>time_zone</code> : Time zone from info file</p></li>
-<li><p><code>missingness</code> : Named integer vector. Names are Posixct timestamps and values are the number of missing values.</p></li>
+<li><p><code>missingness</code> : Named integer vector. Names are <code>POSIXct</code>
+timestamps and values are the number of missing values.</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The timestamps in the .gt3x data format are saved in .NET format, which is nanoseconds in local time since 0001-01-01.
-This is a bit tricky to parse into an R datetime format. DateTimes are therefore represented as POSIXct format with the 'GMT' timezone attribute, which is false; the datetime actually
+    <p>The timestamps in the .gt3x data format are saved in .NET format, which is
+ nanoseconds in local time since 0001-01-01.
+This is a bit tricky to parse into an R datetime format. DateTimes are
+therefore represented as <code>POSIXct</code> format with the
+'GMT' timezone attribute, which is false; the datetime actually
 represents local time.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other gt3x-parsers: <code><a href='as.data.frame.activity.html'>as.data.frame.activity</a></code>,
-  <code><a href='parse_gt3x_info.html'>parse_gt3x_info</a></code>,
-  <code><a href='print.gt3x_info.html'>print.gt3x_info</a></code></p></div>
-    
+    <div class='dont-index'><p>Other gt3x-parsers: 
+<code><a href='as.data.frame.activity.html'>as.data.frame.activity</a>()</code>,
+<code><a href='parse_gt3x_info.html'>parse_gt3x_info</a>()</code>,
+<code><a href='print.gt3x_info.html'>print.gt3x_info</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+<span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(
+    <span class='st'>"extdata"</span>, <span class='st'>"TAS1H30182785_2019-09-17.gt3x"</span>,
+    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"read.gt3x"</span>)
+<span class='fu'><a href='is_gt3x.html'>is_gt3x</a></span>(<span class='no'>gt3xfile</span>)</div><div class='output co'>#&gt; /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpHttJad/temp_libpath95d861dd56bf/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x 
+#&gt;                                                                                                                                         TRUE </div><div class='input'><span class='fu'><a href='is_gt3x.html'>have_log_and_info</a></span>(<span class='no'>gt3xfile</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRh14ky</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpHttJad/temp_libpath95d861dd56bf/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRh14ky/TAS1H30182785_2019-09-17</span></div><div class='output co'>#&gt; GT3X information
+#&gt;  $ Serial Number     :"TAS1H30182785"
+#&gt;  $ Device Type       :"Link"
+#&gt;  $ Firmware          :"1.7.2"
+#&gt;  $ Battery Voltage   :"4.18"
+#&gt;  $ Sample Rate       :100
+#&gt;  $ Start Date        : POSIXct, format: "2019-09-17 18:40:00"
+#&gt;  $ Stop Date         : POSIXct, format: "2019-09-18 19:00:00"
+#&gt;  $ Last Sample Time  : POSIXct, format: "2019-09-17 19:20:05"
+#&gt;  $ TimeZone          :"-04:00:00"
+#&gt;  $ Download Date     : POSIXct, format: "2019-09-17 19:20:05"
+#&gt;  $ Board Revision    :"8"
+#&gt;  $ Unexpected Resets :"0"
+#&gt;  $ Acceleration Scale:256
+#&gt;  $ Acceleration Min  :"-8.0"
+#&gt;  $ Acceleration Max  :"8.0"
+#&gt;  $ Subject Name      :"suffix_85"
+#&gt;  $ Serial Prefix     :"TAS"</div><div class='output co'>#&gt; <span class='message'>Parsing GT3X data via CPP.. expected sample size: 240500</span></div><div class='output co'>#&gt; ---GT3X PARAMETERS
+#&gt; address: 0 key: 6 value: 1
+#&gt; address: 0 key: 7 value: 54703161
+#&gt; address: 0 key: 8 value: 8
+#&gt; address: 0 key: 9 value: 1534154836
+#&gt; address: 0 key: 13 value: 17235970
+#&gt; address: 0 key: 16 value: 3791650816
+#&gt; address: 0 key: 20 value: 0
+#&gt; address: 0 key: 21 value: 0
+#&gt; address: 0 key: 22 value: 0
+#&gt; address: 0 key: 23 value: 0
+#&gt; address: 0 key: 26 value: 2
+#&gt; address: 0 key: 28 value: 262013
+#&gt; address: 0 key: 29 value: 255
+#&gt; address: 0 key: 32 value: 16908288
+#&gt; address: 0 key: 37 value: 1024
+#&gt; address: 0 key: 38 value: 0
+#&gt; address: 0 key: 49 value: 2048
+#&gt; address: 0 key: 50 value: 88181047
+#&gt; address: 0 key: 51 value: 6.82667
+#&gt; address: 0 key: 55 value: 256
+#&gt; address: 0 key: 57 value: 333.87
+#&gt; address: 0 key: 58 value: 21
+#&gt; address: 0 key: 61 value: 2
+#&gt; address: 1 key: 0 value: 0
+#&gt; address: 1 key: 1 value: 872668711
+#&gt; address: 1 key: 2 value: 388
+#&gt; address: 1 key: 3 value: 1
+#&gt; address: 1 key: 4 value: 4294967131
+#&gt; address: 1 key: 5 value: 4294967095
+#&gt; address: 1 key: 6 value: 4294967149
+#&gt; address: 1 key: 7 value: 298
+#&gt; address: 1 key: 8 value: 286
+#&gt; address: 1 key: 9 value: 300
+#&gt; address: 1 key: 10 value: 100
+#&gt; address: 1 key: 12 (start time)  value: 1568745600
+#&gt; address: 1 key: 13 value: 1568833200
+#&gt; address: 1 key: 14 value: 1568745556
+#&gt; address: 1 key: 15 value: 74
+#&gt; address: 1 key: 16 value: 40
+#&gt; address: 1 key: 17 value: 72
+#&gt; address: 1 key: 20 value: 0
+#&gt; address: 1 key: 21 value: 0
+#&gt; address: 1 key: 33 value: 60000
+#&gt; address: 1 key: 34 value: 4294965247
+#&gt; address: 1 key: 35 value: 4294965190
+#&gt; address: 1 key: 36 value: 4294965237
+#&gt; address: 1 key: 37 value: 2051
+#&gt; address: 1 key: 38 value: 2000
+#&gt; address: 1 key: 39 value: 2048
+#&gt; address: 1 key: 40 value: 0
+#&gt; address: 1 key: 41 value: 1
+#&gt; address: 1 key: 42 value: 0
+#&gt; address: 1 key: 43 value: 4294967283
+#&gt; address: 1 key: 44 value: 0
+#&gt; address: 1 key: 45 value: 0
+#&gt; address: 1 key: 46 value: 0
+#&gt; ---END PARAMETERS
+#&gt; 
+#&gt; Activity with Sample Size of 0
+#&gt; payload start: 1568747741
+#&gt; total_records: 31800
+#&gt; Activity with Sample Size of 0
+#&gt; payload start: 1568747759
+#&gt; total_records: 33000
+#&gt; Total Records: 33000
+#&gt; Scaling...
+#&gt; Removing excess rows 
+#&gt; Sum of missingness is: 183000
+#&gt; Finding missingness amount: 24500
+#&gt; Creating dimnames 
+#&gt; CPP returning </div><div class='output co'>#&gt; <span class='message'>Done (in 0.0528750419616699 seconds)</span></div><div class='input'><span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Converting to a data.frame ...</span></div><div class='output co'>#&gt; <span class='message'>Done</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df2</span>)</div><div class='output co'>#&gt; Sampling Rate: 100Hz
+#&gt; Firmware Version: 1.7.2
+#&gt; Serial Number Prefix: TAS
+#&gt;       X      Y     Z                time
+#&gt; 1 0.000  0.008 0.996 2019-09-17 18:40:00
+#&gt; 2 0.016  0.000 1.008 2019-09-17 18:40:00
+#&gt; 3 0.020 -0.008 1.004 2019-09-17 18:40:00
+#&gt; 4 0.016 -0.012 1.012 2019-09-17 18:40:00
+#&gt; 5 0.016 -0.008 1.008 2019-09-17 18:40:00
+#&gt; 6 0.008 -0.008 1.008 2019-09-17 18:40:00</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>x</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>(); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  769882 41.2    1245177 66.5         NA  1245177 66.5
+#&gt; Vcells 1578049 12.1    8388608 64.0      16384  3413238 26.1</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  769873 41.2    1245177 66.5         NA  1245177 66.5
+#&gt; Vcells 1578079 12.1    8388608 64.0      16384  3413238 26.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>df2</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  769770 41.2    1245177 66.5         NA  1245177 66.5
+#&gt; Vcells 1445890 11.1    8388608 64.0      16384  3413238 26.1</div><div class='input'>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRh14ky</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpHttJad/temp_libpath95d861dd56bf/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRh14ky/TAS1H30182785_2019-09-17</span></div><div class='output co'>#&gt; GT3X information
+#&gt;  $ Serial Number     :"TAS1H30182785"
+#&gt;  $ Device Type       :"Link"
+#&gt;  $ Firmware          :"1.7.2"
+#&gt;  $ Battery Voltage   :"4.18"
+#&gt;  $ Sample Rate       :100
+#&gt;  $ Start Date        : POSIXct, format: "2019-09-17 18:40:00"
+#&gt;  $ Stop Date         : POSIXct, format: "2019-09-18 19:00:00"
+#&gt;  $ Last Sample Time  : POSIXct, format: "2019-09-17 19:20:05"
+#&gt;  $ TimeZone          :"-04:00:00"
+#&gt;  $ Download Date     : POSIXct, format: "2019-09-17 19:20:05"
+#&gt;  $ Board Revision    :"8"
+#&gt;  $ Unexpected Resets :"0"
+#&gt;  $ Acceleration Scale:256
+#&gt;  $ Acceleration Min  :"-8.0"
+#&gt;  $ Acceleration Max  :"8.0"
+#&gt;  $ Subject Name      :"suffix_85"
+#&gt;  $ Serial Prefix     :"TAS"</div><div class='output co'>#&gt; <span class='message'>Parsing GT3X data via CPP.. expected sample size: 240500</span></div><div class='output co'>#&gt; ---GT3X PARAMETERS
+#&gt; address: 0 key: 6 value: 1
+#&gt; address: 0 key: 7 value: 54703161
+#&gt; address: 0 key: 8 value: 8
+#&gt; address: 0 key: 9 value: 1534154836
+#&gt; address: 0 key: 13 value: 17235970
+#&gt; address: 0 key: 16 value: 3791650816
+#&gt; address: 0 key: 20 value: 0
+#&gt; address: 0 key: 21 value: 0
+#&gt; address: 0 key: 22 value: 0
+#&gt; address: 0 key: 23 value: 0
+#&gt; address: 0 key: 26 value: 2
+#&gt; address: 0 key: 28 value: 262013
+#&gt; address: 0 key: 29 value: 255
+#&gt; address: 0 key: 32 value: 16908288
+#&gt; address: 0 key: 37 value: 1024
+#&gt; address: 0 key: 38 value: 0
+#&gt; address: 0 key: 49 value: 2048
+#&gt; address: 0 key: 50 value: 88181047
+#&gt; address: 0 key: 51 value: 6.82667
+#&gt; address: 0 key: 55 value: 256
+#&gt; address: 0 key: 57 value: 333.87
+#&gt; address: 0 key: 58 value: 21
+#&gt; address: 0 key: 61 value: 2
+#&gt; address: 1 key: 0 value: 0
+#&gt; address: 1 key: 1 value: 872668711
+#&gt; address: 1 key: 2 value: 388
+#&gt; address: 1 key: 3 value: 1
+#&gt; address: 1 key: 4 value: 4294967131
+#&gt; address: 1 key: 5 value: 4294967095
+#&gt; address: 1 key: 6 value: 4294967149
+#&gt; address: 1 key: 7 value: 298
+#&gt; address: 1 key: 8 value: 286
+#&gt; address: 1 key: 9 value: 300
+#&gt; address: 1 key: 10 value: 100
+#&gt; address: 1 key: 12 (start time)  value: 1568745600
+#&gt; address: 1 key: 13 value: 1568833200
+#&gt; address: 1 key: 14 value: 1568745556
+#&gt; address: 1 key: 15 value: 74
+#&gt; address: 1 key: 16 value: 40
+#&gt; address: 1 key: 17 value: 72
+#&gt; address: 1 key: 20 value: 0
+#&gt; address: 1 key: 21 value: 0
+#&gt; address: 1 key: 33 value: 60000
+#&gt; address: 1 key: 34 value: 4294965247
+#&gt; address: 1 key: 35 value: 4294965190
+#&gt; address: 1 key: 36 value: 4294965237
+#&gt; address: 1 key: 37 value: 2051
+#&gt; address: 1 key: 38 value: 2000
+#&gt; address: 1 key: 39 value: 2048
+#&gt; address: 1 key: 40 value: 0
+#&gt; address: 1 key: 41 value: 1
+#&gt; address: 1 key: 42 value: 0
+#&gt; address: 1 key: 43 value: 4294967283
+#&gt; address: 1 key: 44 value: 0
+#&gt; address: 1 key: 45 value: 0
+#&gt; address: 1 key: 46 value: 0
+#&gt; ---END PARAMETERS
+#&gt; 
+#&gt; Activity with Sample Size of 0
+#&gt; payload start: 1568747741
+#&gt; total_records: 214100
+#&gt; Activity with Sample Size of 0
+#&gt; payload start: 1568747759
+#&gt; total_records: 215900
+#&gt; Total Records: 216000
+#&gt; Scaling...
+#&gt; Creating dimnames 
+#&gt; CPP returning </div><div class='output co'>#&gt; <span class='message'>Done (in 0.103379011154175 seconds)</span></div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># first unzip, then read</span>
 <span class='no'>datadir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>()
-<span class='no'>gt3xfolders</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='unzip.gt3x.html'>unzip.gt3x</a></span>(<span class='no'>datadir</span>)</div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu</span></div><div class='output co'>#&gt; <span class='message'>1/2 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt and log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu/EE_left_29.5.2017-05-30</span></div><div class='output co'>#&gt; <span class='message'>2/2 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu/.read.gt3x-data/SS_left_19.5.2017-05-22.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt and log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu/SS_left_19.5.2017-05-22</span></div><div class='input'><span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span> <span class='no'>gt3xfolders</span>[<span class='fl'>2</span>]
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>imputeZeroes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Sample size: 27489200</div><div class='input'><span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>x</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df2</span>)</div><div class='output co'>#&gt;       X     Y     Z                time
-#&gt; 1 0.984 0.031 0.180 2017-05-19 10:50:01
-#&gt; 2 0.988 0.027 0.176 2017-05-19 10:50:01
-#&gt; 3 0.988 0.027 0.172 2017-05-19 10:50:01
-#&gt; 4 0.992 0.027 0.172 2017-05-19 10:50:01
-#&gt; 5 0.992 0.027 0.172 2017-05-19 10:50:01
-#&gt; 6 0.992 0.027 0.168 2017-05-19 10:50:01</div><div class='input'>
+<span class='no'>gt3xfolders</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='unzip.gt3x.html'>unzip.gt3x</a></span>(<span class='no'>datadir</span>)
+<span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span> <span class='no'>gt3xfolders</span>[<span class='fl'>2</span>]
 <span class='co'># temporary unzip, read, convert to a data frame</span>
 <span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>(<span class='fl'>1</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Input is a .gt3x file, unzipping to a temporary location first...</span></div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu/.read.gt3x-data/EE_left_29.5.2017-05-30.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt and log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpayLZPu/EE_left_29.5.2017-05-30</span></div><div class='output co'>#&gt; Sample size: 60684100</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;        X     Y      Z                time
-#&gt; 1 -0.164 0.820 -0.637 2017-05-23 09:15:01
-#&gt; 2 -0.145 0.766 -0.594 2017-05-23 09:15:01
-#&gt; 3 -0.121 0.766 -0.527 2017-05-23 09:15:01
-#&gt; 4 -0.094 0.777 -0.441 2017-05-23 09:15:01
-#&gt; 5 -0.090 0.777 -0.422 2017-05-23 09:15:01
-#&gt; 6 -0.098 0.754 -0.465 2017-05-23 09:15:01</div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/memory.size.html'>memory.limit</a></span>()
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>df</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>(); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()
+
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gt3xfile</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df</span>)
+}
+
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+
+
+<span class='no'>url</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"https://github.com/THLfi/read.gt3x/"</span>,
+<span class='st'>"files/"</span>, <span class='st'>"3522749/"</span>, <span class='st'>"GT3X%2B.01.day.gt3x.zip"</span>)
+<span class='no'>destfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".zip"</span>)
+<span class='no'>dl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='no'>url</span>, <span class='kw'>destfile</span> <span class='kw'>=</span> <span class='no'>destfile</span>)
+<span class='no'>gt3x_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/unzip.html'>unzip</a></span>(<span class='no'>destfile</span>, <span class='kw'>exdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>())
+<span class='no'>gt3x_file</span> <span class='kw'>&lt;-</span> <span class='no'>gt3x_file</span>[!<span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"__MACOSX"</span>, <span class='no'>gt3x_file</span>)]
+<span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='no'>gt3x_file</span>
+
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>path</span>)
+
+<span class='no'>gz</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>R.utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/R.utils/man/compressFile.html'>gzip</a></span>(<span class='no'>path</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'>read.gt3x</span>(<span class='no'>gz</span>, <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>df2</span>)
+
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>df2</span>); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>(); <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()
+
+}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -211,13 +451,16 @@ represents local time.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

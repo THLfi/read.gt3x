@@ -4,17 +4,25 @@
 \alias{read.gt3x}
 \title{Read GT3X}
 \usage{
-read.gt3x(path, verbose = FALSE, asDataFrame = FALSE,
-  imputeZeroes = FALSE, cleanup = FALSE, ...)
+read.gt3x(
+  path,
+  verbose = FALSE,
+  asDataFrame = FALSE,
+  imputeZeroes = FALSE,
+  cleanup = FALSE,
+  ...
+)
 }
 \arguments{
 \item{path}{Path to gt3x folder}
 
 \item{verbose}{print diagnostic messages}
 
-\item{asDataFrame}{convert to an activity_df, see \code{as.data.frame.activity}}
+\item{asDataFrame}{convert to an activity_df, see
+\code{as.data.frame.activity}}
 
-\item{imputeZeroes}{Impute zeros in case there are missingness? Default is FALSE, in which case
+\item{imputeZeroes}{Impute zeros in case there are missingness?
+Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
 
 \item{cleanup}{should any unzipped files be deleted?}
@@ -22,66 +30,91 @@ the time series will be incomplete in case there is missingness.}
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
 }
 \value{
-A numeric matrix with 3 columns (X, Y, Z) and the following attributes:
+A numeric matrix with 3 columns (X, Y, Z) and the following
+attributes:
  \itemize{
 \item \code{start_time} :  Start time from info file in \code{POSIXct} format.
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
-\item \code{missingness} : Named integer vector. Names are Posixct
+\item \code{missingness} : Named integer vector. Names are \code{POSIXct}
 timestamps and values are the number of missing values.
 }
 }
 \description{
 Read activity samples from a GT3X file as a matrix.
-Please note that all timestams are in local time (of the device) even though they are
-represented as POSIXct with GMT timezone.
+Please note that all timestamps are in local time (of the device)
+even though they are represented as \code{POSIXct} with GMT timezone.
 }
 \note{
 The timestamps in the .gt3x data format are saved in .NET format, which is
  nanoseconds in local time since 0001-01-01.
 This is a bit tricky to parse into an R datetime format. DateTimes are
-therefore represented as POSIXct format with the 'GMT' timezone attribute,
- which is false; the datetime actually
+therefore represented as \code{POSIXct} format with the
+'GMT' timezone attribute, which is false; the datetime actually
 represents local time.
 }
 \examples{
 
-# first unzip, then read
-datadir <- gt3x_datapath()
-gt3xfolders <- unzip.gt3x(datadir)
-gt3xfile <- gt3xfolders[2]
-x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = FALSE,
+gt3xfile <-
+  system.file(
+    "extdata", "TAS1H30182785_2019-09-17.gt3x",
+    package = "read.gt3x")
+is_gt3x(gt3xfile)
+have_log_and_info(gt3xfile, verbose = TRUE)
+
+x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
 verbose = TRUE)
-df2 <- as.data.frame(x)
+df2 <- as.data.frame(x, verbose = TRUE)
 head(df2)
 rm(x); gc(); gc()
 rm(df2); gc()
 
+x <- read.gt3x(gt3xfile, imputeZeroes = TRUE, asDataFrame = TRUE,
+verbose = TRUE)
+
+\dontrun{
+# first unzip, then read
+datadir <- gt3x_datapath()
+gt3xfolders <- unzip.gt3x(datadir)
+gt3xfile <- gt3xfolders[2]
 # temporary unzip, read, convert to a data frame
 gt3xfile <- gt3x_datapath(1)
 memory.limit()
 df <- read.gt3x(gt3xfile, asDataFrame = FALSE, verbose = 2)
 head(df)
-
 rm(df); gc(); gc()
+
 
 df <- read.gt3x(gt3xfile, asDataFrame = TRUE, verbose = 2)
 head(df)
+}
 
 \dontrun{
-url = "https://github.com/THLfi/read.gt3x/files/3522749/GT3X\%2B.01.day.gt3x.zip"
-destfile = tempfile(fileext = ".zip")
-dl = download.file(url, destfile = destfile)
-gt3x_file = unzip(destfile, exdir = tempdir())
-gt3x_file = gt3x_file[!grepl("__MACOSX", gt3x_file)]
-path = gt3x_file
 
-res = read.gt3x(path)
+
+
+url <- paste0("https://github.com/THLfi/read.gt3x/",
+"files/", "3522749/", "GT3X\%2B.01.day.gt3x.zip")
+destfile <- tempfile(fileext = ".zip")
+dl <- download.file(url, destfile = destfile)
+gt3x_file <- unzip(destfile, exdir = tempdir())
+gt3x_file <- gt3x_file[!grepl("__MACOSX", gt3x_file)]
+path <- gt3x_file
+
+res <- read.gt3x(path)
+
+gz <- R.utils::gzip(path, remove = FALSE, overwrite = FALSE)
+df2 <- read.gt3x(gz, asDataFrame = FALSE, verbose = 2)
+head(df2)
+
+rm(df2); gc(); gc()
+
 }
 }
 \seealso{
-Other gt3x-parsers: \code{\link{as.data.frame.activity}},
-  \code{\link{parse_gt3x_info}},
-  \code{\link{print.gt3x_info}}
+Other gt3x-parsers: 
+\code{\link{as.data.frame.activity}()},
+\code{\link{parse_gt3x_info}()},
+\code{\link{print.gt3x_info}()}
 }
 \concept{gt3x-parsers}

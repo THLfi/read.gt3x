@@ -4,6 +4,8 @@
 .Ruserdata
 inst/doc
 src/*.o
+src/*.gcda
+src/*.gcno
 src/*.o.tmp
 R/read.old.gt3x.R
 man/read.gt3x.old.Rd

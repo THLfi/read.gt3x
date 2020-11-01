@@ -6,8 +6,10 @@
 #' @param verbose print diagnostic messages
 #'
 #' @examples
+#' \dontrun{
 #' dir <- gt3x_datapath()
 #' gt3x_filename <- gt3x_datapath(1)
+#' }
 #'
 #' @family file manipulations
 #'
@@ -35,7 +37,7 @@ gt3x_datapath <- function(index = NULL, verbose = TRUE) {
 }
 
 
-#' Download and unzip a zipped gt3xfile
+#' Download and unzip a zipped `gt3x` file
 #'
 #' @family sample-data
 #' @param url url of the file to download
@@ -90,6 +92,9 @@ gt3x_dataurl <- function(
 #' @param zipped do the files have a \code{.zip} extension
 #' @return Character vector of files
 #' @export
+#' @examples
+#' testthat::expect_error(gt3x_filename(100))
+#' testthat::expect_error(gt3x_filename(0))
 gt3x_filename <- function(index = NULL, zipped = FALSE) {
   files <- c("EE_left_29.5.2017-05-30.gt3x", "SS_left_19.5.2017-05-22.gt3x")
   if (zipped) {
@@ -106,4 +111,3 @@ gt3x_filename <- function(index = NULL, zipped = FALSE) {
   }
   files[index]
 }
-

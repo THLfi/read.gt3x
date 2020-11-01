@@ -4,8 +4,7 @@
 \alias{parseLuxBin}
 \title{Parse activity samples from a GT3X file}
 \usage{
-parseLuxBin(filename, max_samples, scale_factor, max_value,
-  verbose = FALSE)
+parseLuxBin(filename, max_samples, scale_factor, max_value, verbose = FALSE)
 }
 \arguments{
 \item{filename}{(char*) path to a log.bin file inside the unzipped gt3x folder, which contains the activity samples}
@@ -20,7 +19,7 @@ not data is found.}
 \item{verbose}{Print the parameters from the log.bin file and other messages?}
 }
 \value{
-Returns a vector with max_samples eleements
+Returns a vector with max_samples elements
 }
 \description{
 Parse activity samples from a GT3X file

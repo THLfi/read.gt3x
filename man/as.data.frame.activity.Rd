@@ -14,8 +14,9 @@
 \item{verbose}{print diagnostic messages}
 }
 \value{
-An object of class 'activity_df' which is also a data.frame with the following attributes
-#'  \itemize{
+An object of class 'activity_df' which is also a data.frame with
+the following attributes
+\itemize{
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file
 \item \code{missingness} : Data frame with timestamps and the number of missing values associated.
@@ -25,7 +26,9 @@ An object of class 'activity_df' which is also a data.frame with the following a
 Convert an activity matrix to a data.frame
 }
 \seealso{
-Other gt3x-parsers: \code{\link{parse_gt3x_info}},
-  \code{\link{print.gt3x_info}}, \code{\link{read.gt3x}}
+Other gt3x-parsers: 
+\code{\link{parse_gt3x_info}()},
+\code{\link{print.gt3x_info}()},
+\code{\link{read.gt3x}()}
 }
 \concept{gt3x-parsers}

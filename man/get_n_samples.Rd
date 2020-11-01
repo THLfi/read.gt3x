@@ -2,7 +2,8 @@
 % Please edit documentation in R/utils.R
 \name{get_n_samples}
 \alias{get_n_samples}
-\title{Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory}
+\title{Calculate the expected activity sample size from start time
+and last sample time in the info.txt of a gt3x directory}
 \usage{
 get_n_samples(x)
 }
@@ -10,10 +11,12 @@ get_n_samples(x)
 \item{x}{info out from \code{\link{parse_gt3x_info}}}
 }
 \description{
-Calculate the expected activity sample size from start time and last sample time in the info.txt of a gt3x directory
+Calculate the expected activity sample size from start time
+and last sample time in the info.txt of a gt3x directory
 }
 \seealso{
-Other gt3x-utils: \code{\link{is_gt3x}},
-  \code{\link{ticks2datetime}}
+Other gt3x-utils: 
+\code{\link{is_gt3x}()},
+\code{\link{ticks2datetime}()}
 }
 \concept{gt3x-utils}

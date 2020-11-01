@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{ticks2datetime}
 \alias{ticks2datetime}
-\title{Convert NET ticks to POSIXct datetime}
+\title{Convert NET ticks to \code{POSIXct} datetime}
 \usage{
 ticks2datetime(ticks, tz = "GMT")
 }
@@ -12,13 +12,15 @@ ticks2datetime(ticks, tz = "GMT")
 \item{tz}{timezone, passed to \code{\link{as.POSIXct}}}
 }
 \description{
-Convert NET ticks to POSIXct datetime
+Convert NET ticks to \code{POSIXct} datetime
 }
 \details{
-reference: \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
+reference:
+\url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
 }
 \seealso{
-Other gt3x-utils: \code{\link{get_n_samples}},
-  \code{\link{is_gt3x}}
+Other gt3x-utils: 
+\code{\link{get_n_samples}()},
+\code{\link{is_gt3x}()}
 }
 \concept{gt3x-utils}

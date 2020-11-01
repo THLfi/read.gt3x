@@ -15,12 +15,14 @@ have_log_and_info(path, verbose = TRUE)
 \item{verbose}{print diagnostic messages}
 }
 \value{
-Logical vector of the same length as path, which is TRUE if the corresponding path is a .gt3x file.
+Logical vector of the same length as path, which is TRUE if the
+corresponding path is a .gt3x file.
 }
 \description{
 Check if files are .gt3x files
 
-Check if a .gt3x file or unzipped gt3x directory has both log.bin adn info.txt
+Check if a .gt3x file or unzipped gt3x directory has both log.bin
+and info.txt
 }
 \details{
 Checks if files have a .gt3x file extension
@@ -29,14 +31,19 @@ Checks if files have a .gt3x file extension
 
 is_gt3x("test.gt3x") # TRUE
 is_gt3x("test") # FALSE
+is_gt3x(NULL)
 
+have_log_and_info(tempfile(), verbose = TRUE)
 }
 \seealso{
-Other file manipulations: \code{\link{gt3x_datapath}},
-  \code{\link{list_gt3x}}, \code{\link{unzip.gt3x}}
+Other file manipulations: 
+\code{\link{gt3x_datapath}()},
+\code{\link{list_gt3x}()},
+\code{\link{unzip.gt3x}()}
 
-Other gt3x-utils: \code{\link{get_n_samples}},
-  \code{\link{ticks2datetime}}
+Other gt3x-utils: 
+\code{\link{get_n_samples}()},
+\code{\link{ticks2datetime}()}
 }
 \concept{file manipulations}
 \concept{gt3x-utils}

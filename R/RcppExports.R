@@ -12,6 +12,7 @@ activityAsDataFrame <- function(m, time_index, start_time, divider) {
 #' not data is found.
 #' @param scale_factor Scale factor for the activity samples.
 #' @param sample_rate sampling rate for activity samples.
+#' @param start_time starting time of the sample recording.
 #' @param verbose Print the parameters from the log.bin file and other messages?
 #' @param impute_zeroes Impute zeros in case there are missingness?
 #' @param debug Print information for every activity second
@@ -57,7 +58,7 @@ parseActivityBin <- function(filename, max_samples, scale_factor, sample_rate, v
 #' @param verbose Print the parameters from the log.bin file and other messages?
 #'
 #' @return
-#' Returns a vector with max_samples eleements
+#' Returns a vector with max_samples elements
 #'
 parseLuxBin <- function(filename, max_samples, scale_factor, max_value, verbose = FALSE) {
     .Call('_read_gt3x_parseLuxBin', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, max_value, verbose)
