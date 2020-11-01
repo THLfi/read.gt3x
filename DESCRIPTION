@@ -32,5 +32,6 @@ Suggests:
     rmarkdown,
     testthat (>= 2.1.0),
     data.table,
-    zoo
+    zoo,
+    readr
 VignetteBuilder: knitr

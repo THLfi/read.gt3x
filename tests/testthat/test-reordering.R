@@ -1,5 +1,6 @@
 testthat::test_that("Reordering columns is right", {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("readr")
 
   idf = list(name_gt3x = "PU3_CLE2B21130054_2017-03-16.gt3x.gz",
              download_url_gt3x = "https://ndownloader.figshare.com/files/21855807",
@@ -49,6 +50,9 @@ testthat::test_that("Reordering columns is right", {
     start_date = do.call(lubridate_func, args = list(paste0(sd, " ", st)))
     srate = as.numeric(sub(".*at (\\d*) Hz.*", "\\1", hdr[1]))
 
+    if (!requireNamespace("readr", quietly = TRUE)) {
+      stop("readr must be installed for this function")
+    }
     suppressWarnings({
       df = readr::read_csv(
         file, skip = 10,
