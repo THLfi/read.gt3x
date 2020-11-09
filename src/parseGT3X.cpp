@@ -425,6 +425,7 @@ NumericMatrix parseGT3X(const char* filename,
         if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
           if ( debug & !have_activity) {
             Rcout << "First ACTIVTY packet, sample size: " << sample_size << "\n";
+            Rcout << "ACTIVTY packet size: " << size << "\n";
           }
           have_activity = true;
           num_activity = num_activity + 1;
@@ -501,6 +502,14 @@ NumericMatrix parseGT3X(const char* filename,
     Rcout << "Creating dimnames \n";
 
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  if (num_activity <= 1 && num_activity2 > 1) {
+    have_activity = false;
+    have_activity2 = true;
+  }
+  if (num_activity2 <= 1 && num_activity > 1) {
+    have_activity2 = false;
+    have_activity = true;
+  }
   if ( have_activity && have_activity2 ) {
     Rcout << "CPP parser warning: ACTIVITY and ACTIVITY2 Packets found!\n";
     Rcout << "Please report file to https://github.com/THLfi/read.gt3x/issues\n";
