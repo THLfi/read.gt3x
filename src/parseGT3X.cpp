@@ -384,7 +384,7 @@ NumericMatrix parseGT3X(const char* filename,
           int n_missing = payload_timediff*sample_rate;
           if (n_missing < 0) {
             if (verbose | debug) {
-              Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+              Rcout << "!!!CPP parser warning: likely integer overflow for imputation, n_missing:" << n_missing << "\n";
             }
             Rf_warning("!!!CPP parser warning: likely integer overflow for imputation");
           } else {

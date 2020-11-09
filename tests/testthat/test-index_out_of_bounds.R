@@ -31,6 +31,9 @@ test_that("Negative Missing values  fixed", {
   at = attributes(x)
   head(at$missingness)
   testthat::expect_false(any(at$missingness$n_missing < 0))
-  x = read.gt3x(destfile, imputeZeroes = TRUE, asDataFrame = TRUE)
+  testthat::expect_warning({
+    x = read.gt3x(destfile, imputeZeroes = TRUE, asDataFrame = TRUE)
+  })
+  x = read.gt3x(destfile, verbose = 3, debug = TRUE)
 })
 
