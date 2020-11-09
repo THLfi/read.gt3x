@@ -10,6 +10,7 @@ test_that("Index out of bounds no longer an issue", {
     res = read.gt3x(destfile, imputeZeroes = TRUE, verbose = FALSE)
   })
   hdr = attributes(res)$header
+  rm(res)
   res = read.gt3x(destfile,
                   imputeZeroes = TRUE,
                   verbose = TRUE,
@@ -17,6 +18,7 @@ test_that("Index out of bounds no longer an issue", {
   testthat::expect_true(
     abs(hdr$`Last Sample Time` -  res$time[nrow(res)]) < 1/hdr$`Sample Rate`
   )
+  rm(res)
 })
 
 
@@ -32,11 +34,13 @@ test_that("Negative Missing values fixed", {
 
   x = read.gt3x(destfile)
   at = attributes(x)
+  rm(x)
   head(at$missingness)
   testthat::expect_false(any(at$missingness$n_missing < 0))
   testthat::expect_warning({
     x = read.gt3x(destfile, imputeZeroes = TRUE, asDataFrame = TRUE)
   })
+  rm(x)
   x = read.gt3x(destfile, verbose = 3, debug = TRUE)
 })
 

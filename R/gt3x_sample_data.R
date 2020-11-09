@@ -53,7 +53,7 @@ gt3x_download <- function(url, exdir, verbose = TRUE) {
     message("Downloading gt3x sample data from ", url)
   }
   temp <- tempfile()
-  download.file(url, temp, method = "auto", quiet = !verbose)
+  download.file(url, temp, method = "auto", quiet = !verbose, mode = "wb")
   unzip(temp, exdir = exdir)
   unlink(temp)
   return(exdir)

@@ -1,7 +1,7 @@
 url <- paste0("https://ndownloader.figshare.com/files/21855801")
 path <- tempfile(fileext = ".gt3x.gz")
 # file is PU2_NEO1B41100255_2016-04-21.gt3x.gz
-dl <- utils::download.file(url, destfile = path)
+dl <- utils::download.file(url, destfile = path, mode = "wb")
 
 
 testthat::test_that("Old format file_size determines nrow", {

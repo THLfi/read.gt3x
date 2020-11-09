@@ -10,7 +10,7 @@ testthat::test_that("Reordering columns is right", {
   download = function(url, name) {
     destfile = file.path(tempdir(), name)
     if (!file.exists(destfile)) {
-      download.file(url, destfile)
+      download.file(url, destfile, mode = "wb")
     }
     destfile
   }
@@ -85,6 +85,7 @@ testthat::test_that("Reordering columns is right", {
 
 
   good = df$X == act_df$X
+  rm(df)
   testthat::expect_true(all(act_df[!good,c("X", "Y", "Z")] == 0))
 
 })
