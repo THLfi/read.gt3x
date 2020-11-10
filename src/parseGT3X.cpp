@@ -337,6 +337,8 @@ NumericMatrix parseGT3X(const char* filename,
   int sample_size;
   bool have_activity = false;
   bool have_activity2 = false;
+  int num_activity = 0;
+  int num_activity2 = 0;
 
   int chksum;
 
@@ -384,7 +386,7 @@ NumericMatrix parseGT3X(const char* filename,
           int n_missing = payload_timediff*sample_rate;
           if (n_missing < 0) {
             if (verbose | debug) {
-              Rcout << "!!!CPP parser warning: likely integer overflow for imputation" << "\n";
+              Rcout << "!!!CPP parser warning: likely integer overflow for imputation, n_missing:" << n_missing << "\n";
             }
             Rf_warning("!!!CPP parser warning: likely integer overflow for imputation");
           } else {
@@ -421,13 +423,22 @@ NumericMatrix parseGT3X(const char* filename,
 
 
         if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
+          if ( debug & !have_activity) {
+            Rcout << "First ACTIVTY packet, sample size: " << sample_size << "\n";
+            Rcout << "ACTIVTY packet size: " << size << "\n";
+          }
           have_activity = true;
+          num_activity = num_activity + 1;
           ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
           total_records += sample_size;
         }
 
         else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
+          if ( debug & !have_activity2) {
+            Rcout << "First ACTIVTY2 packet, sample size: " << sample_size << "\n";
+          }
           have_activity2 = true;
+          num_activity2 = num_activity2 + 1;
           ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
           total_records += sample_size;
         }
@@ -491,9 +502,18 @@ NumericMatrix parseGT3X(const char* filename,
     Rcout << "Creating dimnames \n";
 
   colnames(activityMatrix) = CharacterVector::create("X", "Y", "Z");
+  if (num_activity <= 1 && num_activity2 > 1) {
+    have_activity = false;
+    have_activity2 = true;
+  }
+  if (num_activity2 <= 1 && num_activity > 1) {
+    have_activity2 = false;
+    have_activity = true;
+  }
   if ( have_activity && have_activity2 ) {
     Rcout << "CPP parser warning: ACTIVITY and ACTIVITY2 Packets found!\n";
     Rcout << "Please report file to https://github.com/THLfi/read.gt3x/issues\n";
+    Rcout << "num_activity: " << num_activity << " num_activity2:" << num_activity2 << "\n";
   }
 
   if ( have_activity && !have_activity2 ) {

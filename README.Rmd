@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/muschellij2/read.gt3x.svg?branch=master)](https://travis-ci.com/muschellij2/read.gt3x)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/muschellij2/read-gt3x?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/read-gt3x)
+[![AppVeyorBuild status](https://ci.appveyor.com/api/projects/status/reoqj8ber20dnsmm/branch/master?svg=true)](https://ci.appveyor.com/project/muschellij2/read-gt3x/branch/master)
+[![R build status](https://github.com/THLfi/read.gt3x/workflows/R-CMD-check/badge.svg)](https://github.com/THLfi/read.gt3x/actions)
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for ActiGraph's `.gt3x` data format. Read the binary accelerometer data (.gt3x) into an R data frame in a few seconds.

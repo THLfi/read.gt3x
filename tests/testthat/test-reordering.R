@@ -1,6 +1,7 @@
 testthat::test_that("Reordering columns is right", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("readr")
+  testthat::skip_if_not_installed("lubridate")
 
   idf = list(name_gt3x = "PU3_CLE2B21130054_2017-03-16.gt3x.gz",
              download_url_gt3x = "https://ndownloader.figshare.com/files/21855807",
@@ -10,7 +11,7 @@ testthat::test_that("Reordering columns is right", {
   download = function(url, name) {
     destfile = file.path(tempdir(), name)
     if (!file.exists(destfile)) {
-      download.file(url, destfile)
+      download.file(url, destfile, mode = "wb")
     }
     destfile
   }
@@ -45,6 +46,9 @@ testthat::test_that("Reordering columns is right", {
     }
     all_formats = c("ydm", "dym", "ymd", "myd", "dmy", "mdy")
     stopifnot(format %in% all_formats)
+    if (!requireNamespace("lubridate", quietly = TRUE)) {
+      stop("readr must be installed for this function")
+    }
     lubridate_func = paste0(format, "_hms")
     lubridate_func = getFromNamespace(lubridate_func, "lubridate")
     start_date = do.call(lubridate_func, args = list(paste0(sd, " ", st)))
@@ -85,6 +89,7 @@ testthat::test_that("Reordering columns is right", {
 
 
   good = df$X == act_df$X
+  rm(df)
   testthat::expect_true(all(act_df[!good,c("X", "Y", "Z")] == 0))
 
 })

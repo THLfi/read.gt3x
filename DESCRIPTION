@@ -33,5 +33,6 @@ Suggests:
     testthat (>= 2.1.0),
     data.table,
     zoo,
-    readr
+    readr,
+    lubridate
 VignetteBuilder: knitr
