@@ -25,7 +25,8 @@ Imports:
     Rcpp,
     utils,
     R.utils,
-    tools
+    tools,
+    lubridate
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
