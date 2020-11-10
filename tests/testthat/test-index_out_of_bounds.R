@@ -38,7 +38,8 @@ test_that("Negative Missing values fixed", {
   head(at$missingness)
   testthat::expect_false(any(at$missingness$n_missing < 0))
   testthat::expect_warning({
-    x = read.gt3x(destfile, imputeZeroes = TRUE, asDataFrame = TRUE)
+    # if asDataFrame = TRUE, memory issues on Appveyor
+    x = read.gt3x(destfile, imputeZeroes = TRUE)
   })
   rm(x)
   x = read.gt3x(destfile, verbose = 3, debug = TRUE)
