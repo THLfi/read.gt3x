@@ -25,8 +25,7 @@ Imports:
     Rcpp,
     utils,
     R.utils,
-    tools,
-    lubridate
+    tools
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
@@ -34,5 +33,6 @@ Suggests:
     testthat (>= 2.1.0),
     data.table,
     zoo,
-    readr
+    readr,
+    lubridate
 VignetteBuilder: knitr
