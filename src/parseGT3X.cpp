@@ -379,6 +379,9 @@ NumericMatrix parseGT3X(const char* filename,
 
       if(type == RECORDTYPE_PARAMETERS) {
         ParseParameters(GT3Xstream, size, param_start_time, verbose);
+        if (debug) {
+          Rcout << "param_start_time: " << param_start_time << "\n";
+        }
         expected_payload_start = param_start_time ;
       }
 
