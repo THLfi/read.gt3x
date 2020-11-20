@@ -4,7 +4,7 @@ using namespace std;
 
 
 // [[Rcpp::export]]
-DataFrame activityAsDataFrame(NumericMatrix &m, IntegerVector &time_index, double start_time, int divider) {
+DataFrame activityAsDataFrame(NumericMatrix &m, NumericVector &time_index, double start_time, int divider) {
 
   NumericVector timestamp = NumericVector(m.nrow());
   for(int i = 0; i < m.nrow(); i++)

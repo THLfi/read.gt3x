@@ -161,14 +161,18 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
 
 
 // number of time units passed since start_time for i:th sample in payload
-uint32_t createTimeStamp(uint32_t payload_start, int i, int sample_rate, uint32_t start_time) {
-  return round( ( (double_t)(payload_start - start_time) + (double_t)i * (1.0 / sample_rate ) ) * TIME_UNIT) ;
+// uint32_t createTimeStamp(uint32_t payload_start, int i, int sample_rate, uint32_t start_time) {
+//   return round( ( (double_t)(payload_start - start_time) + (double_t)i * (1.0 / sample_rate ) ) * TIME_UNIT) ;
+// }
+
+double createTimeStamp(uint32_t payload_start, int i, int sample_rate, uint32_t start_time) {
+  return ( (double_t)(payload_start - start_time) + (double_t)i * (1.0 / sample_rate ) ) * TIME_UNIT ;
 }
 
 
 // Parse second of activity data (type 2) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity2.md
-void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
+void ParseActivity2(ifstream& stream, NumericMatrix& activity, NumericVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
   int16_t item;
 
   for(int i = 0; i < sample_size; ++i) {
@@ -183,7 +187,7 @@ void ParseActivity2(ifstream& stream, NumericMatrix& activity, IntegerVector& ti
 
 // Parse a second of activity data (type 1) and insert into matrix 'out'
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Activity.md
-void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
+void ParseActivity(ifstream& stream, NumericMatrix& activity, NumericVector& timeStamps, int start, int sample_size, uint32_t payload_start, int sample_rate, uint32_t start_time, bool debug) {
 
   bool odd = 0;
   int current = 0;
@@ -236,7 +240,7 @@ void ParseActivity(ifstream& stream, NumericMatrix& activity, IntegerVector& tim
 // the data matrix is initialized with zeroes
 // to 'impute' zeroes, simply go forward in time stamps
 // ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, debug);
-void ImputeZeroes(IntegerVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, uint32_t expected_payload_start, bool debug) {
+void ImputeZeroes(NumericVector& timeStamps, int total_records, int sample_size, int sample_rate, uint32_t start_time, uint32_t expected_payload_start, bool debug) {
 
   if(debug)
     Rcout << "imputing " << sample_size << " values at index " << total_records << " \n";
@@ -321,7 +325,7 @@ NumericMatrix parseGT3X(const char* filename,
   GT3Xstream.open(filename,  std::ios_base::binary);
   // Rcpp::NumericMatrix activityMatrix = Rcpp::no_init(max_samples, N_ACTIVITYCOLUMNS);
   NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
-  IntegerVector timeStamps(max_samples);
+  NumericVector timeStamps(max_samples);
   IntegerVector Missingness;
 
   const uint8_t RECORD_SEPARATOR = 30;
@@ -565,7 +569,7 @@ NumericMatrix parseActivityBin(const char* filename,
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
   NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
-  IntegerVector timeStamps(max_samples);
+  NumericVector timeStamps(max_samples);
 
   uint32_t payload_start = 0;
   uint32_t start_time = 0;
