@@ -18,12 +18,12 @@ unzip_single_gt3x(
 \item{path}{Path to a .gt3x file}
 
 \item{dirname}{The name of the resulting directory where the content of
- <path> are extracted.
+\code{path} are extracted.
 Default is the name of the input file, sans the .gt3x extension.}
 
-\item{location}{A path to an output directory. Default is a `tempdir()`.}
+\item{location}{A path to an output directory. Default is a \code{tempdir}.}
 
-\item{files}{The names of files to extract. Default is info.txt and log.bin}
+\item{files}{The names of files to extract. Default is \code{info.txt} and \code{log.bin}}
 
 \item{remove_original}{Remove the zip file after unzipping?}
 

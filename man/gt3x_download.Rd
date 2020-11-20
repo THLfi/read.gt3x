@@ -2,7 +2,7 @@
 % Please edit documentation in R/gt3x_sample_data.R
 \name{gt3x_download}
 \alias{gt3x_download}
-\title{Download and unzip a zipped `gt3x` file}
+\title{Download and unzip a zipped \code{gt3x} file}
 \usage{
 gt3x_download(url, exdir, verbose = TRUE)
 }
@@ -17,7 +17,7 @@ gt3x_download(url, exdir, verbose = TRUE)
 file path of \code{exdir}
 }
 \description{
-Download and unzip a zipped `gt3x` file
+Download and unzip a zipped \code{gt3x} file
 }
 \seealso{
 Other sample-data: 

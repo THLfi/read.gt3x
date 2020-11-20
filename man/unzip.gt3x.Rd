@@ -23,7 +23,7 @@ unzip.gt3x() makes it convenient to unzip multiple .gt3x files.
 }
 \details{
 A .gt3x file is a zipped directory with two files: log.bin and info.txt.
- This function simply unzips the contents of the directories.
+This function simply unzips the contents of the directories.
 }
 \examples{
 
