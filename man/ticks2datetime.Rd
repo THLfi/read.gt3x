@@ -2,14 +2,19 @@
 % Please edit documentation in R/utils.R
 \name{ticks2datetime}
 \alias{ticks2datetime}
+\alias{datetime2ticks}
 \title{Convert NET ticks to \code{POSIXct} datetime}
 \usage{
 ticks2datetime(ticks, tz = "GMT")
+
+datetime2ticks(x)
 }
 \arguments{
 \item{ticks}{values in NET ticks format}
 
 \item{tz}{timezone, passed to \code{\link{as.POSIXct}}}
+
+\item{x}{values in date-time format coerced to ticks}
 }
 \description{
 Convert NET ticks to \code{POSIXct} datetime
@@ -18,7 +23,21 @@ Convert NET ticks to \code{POSIXct} datetime
 reference:
 \url{https://stackoverflow.com/questions/35240874/r-net-ticks-to-timestamp-in-r}
 }
+\examples{
+mystr = "599633592352500000"
+x = read.gt3x:::ticks2datetime(mystr)
+x
+out = read.gt3x:::datetime2ticks(as.POSIXct("1901-03-02 08:40:35.25", tz = "UTC"))
+out = as.character(out)
+out
+stopifnot(out == mystr)
+
+}
 \seealso{
+Other gt3x-utils: 
+\code{\link{get_n_samples}()},
+\code{\link{is_gt3x}()}
+
 Other gt3x-utils: 
 \code{\link{get_n_samples}()},
 \code{\link{is_gt3x}()}
