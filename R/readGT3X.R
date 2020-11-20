@@ -313,7 +313,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   attr(x, "time_index") <- NULL
 
   # datetime parsing currently different for old and new formats
-  divider <- if (all_attributes[["old_version"]]) sample_rate else 100
+  # divider <- if (all_attributes[["old_version"]]) sample_rate else 100
+  divider = 100
   x <- activityAsDataFrame(x, time_index, start_time, divider)
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
 
