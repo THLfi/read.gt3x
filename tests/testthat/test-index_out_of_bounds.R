@@ -1,4 +1,4 @@
-test_that("Index out of bounds no longer an issue", {
+testthat::test_that("Index out of bounds no longer an issue", {
   # Fixes https://github.com/THLfi/read.gt3x/issues/19
   # check
   testthat::skip_on_cran()
@@ -22,7 +22,7 @@ test_that("Index out of bounds no longer an issue", {
 })
 
 
-test_that("Negative Missing values fixed", {
+testthat::test_that("Negative Missing values fixed", {
   # Fixes https://github.com/THLfi/read.gt3x/issues/18
   # check
   testthat::skip_on_cran()

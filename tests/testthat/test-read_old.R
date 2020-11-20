@@ -22,7 +22,7 @@ testthat::test_that("Reading in Old format works", {
   print(res)
   head(res)
 
-  cm <- unname(colMeans(res))
+  cm <- unname(apply(res, 2, mean))
   testthat::expect_equal(cm, c(
     -0.228402625555557,
     0.447592941851854,
@@ -33,6 +33,7 @@ testthat::test_that("Reading in Old format works", {
   all_attr <- attributes(res)
   testthat::expect_true(all_attr$old_version)
   testthat::expect_equal(all_attr$sample_rate, 30)
+  rm(all_attr)
   res = as.data.frame(res, verbose = TRUE)
   print(res)
   head(res)
@@ -46,22 +47,24 @@ testthat::test_that("Converting Old to Data.frame", {
   testthat::expect_is(res, "data.frame")
   testthat::expect_equal(colnames(res), c("X", "Y", "Z", "time"))
 
-  cm <- unname(colMeans(res[, 1:3]))
+  cm <- unname(apply(res[, 1:3], 2, mean))
   testthat::expect_equal(cm, c(
     -0.228402625555557,
     0.447592941851854,
     0.11958707074074
   ), tolerance = 1e-5)
   testthat::expect_equal(
-    res$time[48], structure(1340794445.23333333,
+    res$time[48], structure(1340794441.56667,
                             class = c("POSIXct", "POSIXt"), tzone = "GMT"
     )
   )
   testthat::expect_equal(res$Y[4823], 0.528)
 
   all_attr <- attributes(res)
+  rm(res)
   testthat::expect_true(all_attr$old_version)
   testthat::expect_equal(all_attr$sample_rate, 30)
+  rm(all_attr)
 })
 
 testthat::test_that("Converting Old with .gz file", {
