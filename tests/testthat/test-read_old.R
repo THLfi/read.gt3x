@@ -1,4 +1,3 @@
-if (.Platform$OS.type != "unix")  memory.limit(10000)
 url <- paste0("https://github.com/THLfi/read.gt3x/",
               "files/", "3522749/",
               "GT3X%2B.01.day.gt3x.zip")
