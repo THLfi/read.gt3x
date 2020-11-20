@@ -7,10 +7,10 @@
 #'
 #' @param path Path to a .gt3x file
 #' @param dirname The name of the resulting directory where the content of
-#'  <path> are extracted.
+#' `path` are extracted.
 #' Default is the name of the input file, sans the .gt3x extension.
-#' @param location A path to an output directory. Default is a `tempdir()`.
-#' @param files The names of files to extract. Default is info.txt and log.bin
+#' @param location A path to an output directory. Default is a `tempdir`.
+#' @param files The names of files to extract. Default is `info.txt` and `log.bin`
 #' @param remove_original Remove the zip file after unzipping?
 #' @param check_structure check to see if the structure is right for the file
 #' @param verbose print diagnostic messages
