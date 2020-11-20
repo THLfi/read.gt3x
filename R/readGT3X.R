@@ -293,6 +293,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
     options(digits = dig, digits.secs = dig.sec)
   })
   all_attributes <- attributes(x)
+  attr(x, "time_index") <- NULL
 
   tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
@@ -310,7 +311,6 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
     }
   }
   class(x) <- "matrix"
-  attr(x, "time_index") <- NULL
 
   # datetime parsing currently different for old and new formats
   # divider <- if (all_attributes[["old_version"]]) sample_rate else 100
