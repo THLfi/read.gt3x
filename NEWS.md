@@ -1,3 +1,8 @@
+# read.gt3x 0.4.1
+
+* Fixing the time stamp problem with 30 Hz.
+
+
 # read.gt3x 0.2.0
 
 * Added a `NEWS.md` file to track changes to the package.
