@@ -48,6 +48,22 @@ parse_gt3x_info <- function(path, tz = "GMT") {
       info$`Acceleration Scale` <- 341L
     }
   }
+  # Trying to fix https://github.com/THLfi/read.gt3x/issues/22
+  if (length(info$`Acceleration Scale`) == 0) {
+    pref = info$`Serial Prefix`
+    prefs = c("NEO", "CLE", "MRA", "MOS", "TAS")
+    if (is.null(pref) || length(pref) == 0 || !pref %in% prefs) {
+      warning("Acceleration Scale unknown from prefix, using 341")
+      scale = 341L
+    }
+    if (pref %in% c("NEO", "CLE", "MRA")) {
+      scale = 341L
+    }
+    if (pref %in% c("MOS", "TAS")) {
+      scale = 256L
+    }
+    info$`Acceleration Scale` <- scale
+  }
 
   is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  {
     abs(x - round(x)) < tol
