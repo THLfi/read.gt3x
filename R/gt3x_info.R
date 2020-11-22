@@ -54,6 +54,7 @@ parse_gt3x_info <- function(path, tz = "GMT") {
     prefs = c("NEO", "CLE", "MRA", "MOS", "TAS")
     if (is.null(pref) || length(pref) == 0 || !pref %in% prefs) {
       warning("Acceleration Scale unknown from prefix, using 341")
+      pref = NA
       scale = 341L
     }
     if (pref %in% c("NEO", "CLE", "MRA")) {
