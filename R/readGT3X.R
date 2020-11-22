@@ -261,13 +261,13 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     verbose = verbose)
 
 
-  x <- structure(accdata,
+  accdata <- structure(accdata,
                  class = c("activity", class(accdata)))
 
   if (asDataFrame)
-    x <- as.data.frame(x, verbose = verbose > 1)
+    accdata <- as.data.frame(accdata, verbose = verbose > 1)
 
-  x
+  accdata
 
 }
 
