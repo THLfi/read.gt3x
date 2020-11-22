@@ -111,7 +111,7 @@ unzip_single_gt3x <- function(
 #' }
 #' tfile = tempfile()
 #' testthat::expect_error(unzip.gt3x(c(dir, tfile)))
-#' testthat::expect_error(unzip.gt3x(""))
+#' testthat::expect_error(unzip.gt3x(c("", ""))
 #'
 #' @export
 unzip.gt3x <- function(path, verbose = TRUE, ...) {

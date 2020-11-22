@@ -141,7 +141,7 @@ have_log <- function(path, verbose = TRUE) {
 #' out = as.character(out)
 #' out
 #' stopifnot(out == mystr)
-#'
+#' read.gt3x:::datetime2ticks(x = as.POSIXct(Sys.time(), tz = "EST"))
 ticks2datetime <- function(ticks, tz = "GMT") {
   ticks <- as.double(ticks)
   seconds <- ticks / 1e7
@@ -153,7 +153,15 @@ ticks2datetime <- function(ticks, tz = "GMT") {
 #' @rdname ticks2datetime
 datetime2ticks <- function(x) {
   timezone = attr(x, "tzone")
-  if (!timezone %in% c("GMT", "UTC")) {
+  if (is.null(timezone)) {
+    timezone = attr(as.POSIXlt(x), "tzone")
+    if (!is.null(timezone)) {
+      timezone = setdiff(timezone, "")[1]
+    }
+  }
+  if (is.null(timezone) ||
+      length(timezone) == 0 ||
+    !timezone %in% c("GMT", "UTC")) {
     warning(
       paste0(
         "date time object not in UTC/GMT, should use ",
@@ -198,13 +206,13 @@ get_n_samples <- function(x) {
   seqs <- as.numeric(difftime(end, start, units = "secs"))
   samples <- seqs * rate
   bad_samples <- FALSE
-  if (samples <= 0) {
+  if (length(samples) == 0 || samples <= 0 || is.na(samples)) {
     msg <- paste0(
       "Negative samples estimated, dates are wrong in info, using ",
       "maximum samples (100 days)")
     message(msg)
     warning(msg)
-    if (is.null(rate)) {
+    if (is.null(rate) || length(rate) == 0) {
       rate <- 100L
     }
     rate <- as.numeric(rate)
