@@ -45,9 +45,9 @@ testthat::test_that("Converting Old to Data.frame", {
   res <- read.gt3x::read.gt3x(path, asDataFrame = TRUE)
   testthat::expect_is(res, "activity_df")
   testthat::expect_is(res, "data.frame")
-  testthat::expect_equal(colnames(res), c("X", "Y", "Z", "time"))
+  testthat::expect_equal(colnames(res), c("time", "X", "Y", "Z"))
 
-  cm <- unname(apply(res[, 1:3], 2, mean))
+  cm <- unname(apply(res[, c("X", "Y", "Z")], 2, mean))
   testthat::expect_equal(cm, c(
     -0.228402625555557,
     0.447592941851854,
