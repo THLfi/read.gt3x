@@ -4,7 +4,7 @@
 \alias{as.data.frame.activity}
 \title{Convert an activity matrix to a data.frame}
 \usage{
-\method{as.data.frame}{activity}(x, ..., verbose = FALSE)
+\method{as.data.frame}{activity}(x, ..., verbose = FALSE, add_light = FALSE)
 }
 \arguments{
 \item{x}{Object of class 'activity' (returned by read.gt3x)}
@@ -12,6 +12,9 @@
 \item{...}{not used}
 
 \item{verbose}{print diagnostic messages}
+
+\item{add_light}{add light data to the \code{data.frame} if data exists in the
+GT3X}
 }
 \value{
 An object of class 'activity_df' which is also a data.frame with

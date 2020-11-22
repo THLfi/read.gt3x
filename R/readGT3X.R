@@ -18,6 +18,8 @@ NULL
 #' @param ... additional arguments to pass to \code{parseGT3X} C++ code
 #' @param verbose print diagnostic messages
 #' @param cleanup should any unzipped files be deleted?
+#' @param add_light add light data to the `data.frame` if data exists in the
+#' GT3X
 #'
 #' @note
 #'
@@ -81,7 +83,7 @@ NULL
 #' url <- paste0("https://github.com/THLfi/read.gt3x/",
 #' "files/", "3522749/", "GT3X%2B.01.day.gt3x.zip")
 #' destfile <- tempfile(fileext = ".zip")
-#' dl <- download.file(url, destfile = destfile)
+#' dl <- download.file(url, destfile = destfile, mode = "wb")
 #' gt3x_file <- unzip(destfile, exdir = tempdir())
 #' gt3x_file <- gt3x_file[!grepl("__MACOSX", gt3x_file)]
 #' path <- gt3x_file
@@ -101,7 +103,8 @@ NULL
 read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       imputeZeroes = FALSE,
                       cleanup = FALSE,
-                      ...) {
+                      ...,
+                      add_light = FALSE) {
 
   verbose_message <- function(..., verbose = verbose) {
     if (verbose) {
@@ -273,6 +276,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #' @param x Object of class 'activity' (returned by read.gt3x)
 #' @param ... not used
 #' @param verbose print diagnostic messages
+#' @param add_light add light data to the `data.frame` if data exists in the
+#' GT3X
 #'
 #' @family gt3x-parsers
 #'
@@ -285,7 +290,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #' }
 #'
 #' @export
-as.data.frame.activity <- function(x, ..., verbose = FALSE) {
+as.data.frame.activity <- function(x, ..., verbose = FALSE,
+                                   add_light = FALSE) {
   dig <- getOption("digits")
   dig.sec <- getOption("digits.secs")
   options(digits = 15, digits.secs = 3)
@@ -294,6 +300,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   })
   all_attributes <- attributes(x)
   attr(x, "time_index") <- NULL
+
 
   tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
@@ -314,10 +321,13 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
 
   # datetime parsing currently different for old and new formats
   # divider <- if (all_attributes[["old_version"]]) sample_rate else 100
-  divider = 100
+  divider = 100L
   x <- activityAsDataFrame(x, time_index, start_time, divider)
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
-
+  if (add_light) {
+    x$lux = all_attributes$light_data
+    all_attributes$light_data = NULL
+  }
   if (verbose) {
     missingness <- all_attributes$missingness
     if (!all(as.numeric(missingness$time) %% 1 == 0)) {
