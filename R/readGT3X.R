@@ -320,12 +320,19 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
       message(paste0("First time index is: ", time_index[1]))
     }
   }
-  class(x) <- "matrix"
+  divider = 100L
+
 
   # datetime parsing currently different for old and new formats
   # divider <- if (all_attributes[["old_version"]]) sample_rate else 100
-  divider = 100L
+  # class(x) <- "matrix"
+  x = as.matrix(x)
   x <- activityAsDataFrame(x, time_index, start_time, divider)
+  # x = as.data.frame(x)
+  # x$time = start_time + time_index/divider;
+
+  x = x[, c("time", setdiff(colnames(x), "time"))]
+
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (add_light) {
     x$lux = all_attributes$light_data
