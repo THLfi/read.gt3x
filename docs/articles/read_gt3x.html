@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">read.gt3x</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -72,13 +72,14 @@
 
       
 
-      </header><script src="read_gt3x_files/header-attrs-2.3/header-attrs.js"></script><script src="read_gt3x_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="read_gt3x_files/header-attrs-2.5/header-attrs.js"></script><link href="read_gt3x_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="read_gt3x_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with read.gt3x</h1>
                         <h4 class="author">Tuomo Nieminen</h4>
             
-            <h4 class="date">2020-08-24</h4>
+            <h4 class="date">2020-11-23</h4>
       
       
       <div class="hidden name"><code>read_gt3x.Rmd</code></div>
@@ -88,24 +89,29 @@
     
     
 <p>This document describes how the <strong>read.gt3x</strong> package can be used to read binary activity data into R. To access the read.gt3x package, use:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">read.gt3x</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">read.gt3x</span><span class="op">)</span></code></pre></div>
 <p>For source code and installation instructions, see the <a href="https://github.com/THLfi/read.gt3x">GitHub page</a>.</p>
 <div id="reading--gt3x-data-into-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading--gt3x-data-into-r" class="anchor"></a>Reading .gt3x data into R</h2>
 <p>The read.gt3x package includes two sample .gt3x files which I’ll use to demonstrate reading the data. First we need the path to a single gt3x file. We will use data embedded in the package:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">gt3xfile</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gt3xfile</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
     <span class="st">"extdata"</span>, <span class="st">"TAS1H30182785_2019-09-17.gt3x"</span>,
-    <span class="kw">package</span> <span class="kw">=</span> <span class="st">"read.gt3x"</span>)</pre></body></html></div>
+    package <span class="op">=</span> <span class="st">"read.gt3x"</span><span class="op">)</span></code></pre></div>
 <p>but longer and more extensive data can be downloaded via <code>gt3x_datapath</code>:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">gt3xfile</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span>(<span class="fl">1</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gt3xfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <div id="method-1-temporary-unzip-and-read" class="section level3">
 <h3 class="hasAnchor">
 <a href="#method-1-temporary-unzip-and-read" class="anchor"></a>Method 1: Temporary unzip and read</h3>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">X</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span>(<span class="no">gt3xfile</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">X</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt; Sampling Rate: 100Hz</span>
 <span class="co">#&gt; Firmware Version: 1.7.2</span>
 <span class="co">#&gt; Serial Number Prefix: TAS</span>
@@ -115,29 +121,32 @@
 <span class="co">#&gt; [3,] 0.020 -0.008 1.004</span>
 <span class="co">#&gt; [4,] 0.016 -0.012 1.012</span>
 <span class="co">#&gt; [5,] 0.016 -0.008 1.008</span>
-<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></pre></body></html></div>
+<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  552184 29.5    1224765 65.5         NA   750915 40.2
-#&gt; Vcells 1000879  7.7    8388608 64.0      16384  2352373 18.0
+#&gt; Ncells  551344 29.5    1221318 65.3         NA   724831 38.8
+#&gt; Vcells 1003926  7.7    8388608 64.0      65536  2441155 18.7
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  552166 29.5    1224765 65.5         NA   750915 40.2
-#&gt; Vcells 1000904  7.7    8388608 64.0      16384  2352373 18.0</code></pre>
+#&gt; Ncells  551353 29.5    1221318 65.3         NA   724831 38.8
+#&gt; Vcells 1003996  7.7    8388608 64.0      65536  2441155 18.7</code></pre>
 </div>
 <div id="method-2-permanent-unzip-then-read" class="section level3">
 <h3 class="hasAnchor">
 <a href="#method-2-permanent-unzip-then-read" class="anchor"></a>Method 2: permanent unzip, then read</h3>
 <p>.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as <em>unzipped</em> folders containing these two files, because otherwise the read.gt3x() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data.</p>
 <p><code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> also accepts paths to unzipped gt3x folders. To demonstrate the usage, we’ll unzip the sample .gt3x files in the package, and then read them. The <code><a href="../reference/unzip.gt3x.html">unzip.gt3x()</a></code> helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named “subject001.gt3x” are extracted to a folder named “subject001”. <code><a href="../reference/unzip.gt3x.html">unzip.gt3x()</a></code> returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">datadir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="no">gt3xfile</span>) <span class="co"># location of .gt3x files</span>
-<span class="no">gt3xfolders</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span>(<span class="no">datadir</span>, <span class="kw">location</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
-<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpThVDs5</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span> <span class="co"># location of .gt3x files</span>
+<span class="va">gt3xfolders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span><span class="op">(</span><span class="va">datadir</span>, location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCM1AQ8</span>
 <span class="co">#&gt; 1/1</span>
-<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpHttJad/temp_libpath95d861dd56bf/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
-<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpThVDs5/TAS1H30182785_2019-09-17</span></pre></body></html></div>
+<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpyPHypn/temp_libpath6d83527452b6/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
+<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpCM1AQ8/TAS1H30182785_2019-09-17</span></code></pre></div>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function accepts a path to an unzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">gt3xfolder</span> <span class="kw">&lt;-</span> <span class="no">gt3xfolders</span>[<span class="fl">1</span>]
-<span class="no">X</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span>(<span class="no">gt3xfolder</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">X</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gt3xfolder</span> <span class="op">&lt;-</span> <span class="va">gt3xfolders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span><span class="op">(</span><span class="va">gt3xfolder</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt; Sampling Rate: 100Hz</span>
 <span class="co">#&gt; Firmware Version: 1.7.2</span>
 <span class="co">#&gt; Serial Number Prefix: TAS</span>
@@ -147,19 +156,20 @@
 <span class="co">#&gt; [3,] 0.020 -0.008 1.004</span>
 <span class="co">#&gt; [4,] 0.016 -0.012 1.012</span>
 <span class="co">#&gt; [5,] 0.016 -0.008 1.008</span>
-<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></pre></body></html></div>
+<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></code></pre></div>
 </div>
 </div>
 <div id="activity-data-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#activity-data-matrix" class="anchor"></a>Activity data matrix</h2>
 <p>Internally, the data matrix returned by read.gt3x() is a bit smarter than it looks, as it knows all the (relative) timestamps of the observations.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">X</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt;  'activity' num [1:33000, 1:3] 0 0.016 0.02 0.016 0.016 0.008 0.016 0.02 0.016 0.012 ...</span>
 <span class="co">#&gt;  - attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   ..$ : NULL</span>
 <span class="co">#&gt;   ..$ : chr [1:3] "X" "Y" "Z"</span>
-<span class="co">#&gt;  - attr(*, "time_index")= int [1:33000] 0 1 2 3 4 5 6 7 8 9 ...</span>
+<span class="co">#&gt;  - attr(*, "time_index")= num [1:33000] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="co">#&gt;  - attr(*, "missingness")='data.frame':  10 obs. of  2 variables:</span>
 <span class="co">#&gt;   ..$ time     : POSIXct[1:10], format: "2019-09-17 18:40:10" "2019-09-17 18:44:21" ...</span>
 <span class="co">#&gt;   ..$ n_missing: int [1:10] 400 10500 55400 112600 3300 100 100 500 100 24500</span>
@@ -168,6 +178,7 @@
 <span class="co">#&gt;  - attr(*, "start_time_info")= num 1.57e+09</span>
 <span class="co">#&gt;  - attr(*, "sample_rate")= int 100</span>
 <span class="co">#&gt;  - attr(*, "impute_zeroes")= logi FALSE</span>
+<span class="co">#&gt;  - attr(*, "add_light")= logi FALSE</span>
 <span class="co">#&gt;  - attr(*, "start_time")= POSIXct[1:1], format: "2019-09-17 18:40:00"</span>
 <span class="co">#&gt;  - attr(*, "stop_time")= POSIXct[1:1], format: "2019-09-18 19:00:00"</span>
 <span class="co">#&gt;  - attr(*, "last_sample_time")= POSIXct[1:1], format: "2019-09-17 19:20:05"</span>
@@ -195,7 +206,7 @@
 <span class="co">#&gt;   ..$ Acceleration Max  : chr "8.0"</span>
 <span class="co">#&gt;   ..$ Subject Name      : chr "suffix_85"</span>
 <span class="co">#&gt;   ..$ Serial Prefix     : chr "TAS"</span>
-<span class="co">#&gt;   ..- attr(*, "class")= chr [1:2] "gt3x_info" "list"</span></pre></body></html></div>
+<span class="co">#&gt;   ..- attr(*, "class")= chr [1:2] "gt3x_info" "list"</span></code></pre></div>
 <ul>
 <li>time_index: Time passed since start</li>
 <li>start_time: timestamp of first sample</li>
@@ -206,24 +217,25 @@
 <h2 class="hasAnchor">
 <a href="#converting-to-a-data-frame" class="anchor"></a>Converting to a data.frame</h2>
 <p>the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a “time” column, which gives the timestamp of each sample.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">X</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="no">X</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">X</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt; Sampling Rate: 100Hz</span>
 <span class="co">#&gt; Firmware Version: 1.7.2</span>
 <span class="co">#&gt; Serial Number Prefix: TAS</span>
-<span class="co">#&gt;       X      Y     Z                time</span>
-<span class="co">#&gt; 1 0.000  0.008 0.996 2019-09-17 18:40:00</span>
-<span class="co">#&gt; 2 0.016  0.000 1.008 2019-09-17 18:40:00</span>
-<span class="co">#&gt; 3 0.020 -0.008 1.004 2019-09-17 18:40:00</span>
-<span class="co">#&gt; 4 0.016 -0.012 1.012 2019-09-17 18:40:00</span>
-<span class="co">#&gt; 5 0.016 -0.008 1.008 2019-09-17 18:40:00</span>
-<span class="co">#&gt; 6 0.008 -0.008 1.008 2019-09-17 18:40:00</span></pre></body></html></div>
+<span class="co">#&gt;                  time     X      Y     Z</span>
+<span class="co">#&gt; 1 2019-09-17 18:40:00 0.000  0.008 0.996</span>
+<span class="co">#&gt; 2 2019-09-17 18:40:00 0.016  0.000 1.008</span>
+<span class="co">#&gt; 3 2019-09-17 18:40:00 0.020 -0.008 1.004</span>
+<span class="co">#&gt; 4 2019-09-17 18:40:00 0.016 -0.012 1.012</span>
+<span class="co">#&gt; 5 2019-09-17 18:40:00 0.016 -0.008 1.008</span>
+<span class="co">#&gt; 6 2019-09-17 18:40:00 0.008 -0.008 1.008</span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568689 30.4    1224765 65.5         NA   923268 49.4
-#&gt; Vcells 1038646  8.0    8388608 64.0      16384  2917109 22.3
+#&gt; Ncells  568043 30.4    1221318 65.3         NA   836132 44.7
+#&gt; Vcells 1042105  8.0    8388608 64.0      65536  2441155 18.7
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568665 30.4    1224765 65.5         NA   923268 49.4
-#&gt; Vcells 1038663  8.0    8388608 64.0      16384  2917109 22.3</code></pre>
+#&gt; Ncells  568037 30.4    1221318 65.3         NA   836132 44.7
+#&gt; Vcells 1042152  8.0    8388608 64.0      65536  2441155 18.7</code></pre>
 </div>
   </div>
 
@@ -238,11 +250,11 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Tuomo Nieminen.</p>
+  <p>Developed by Tuomo Nieminen, John Muschelli.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

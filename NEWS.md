@@ -1,3 +1,7 @@
+# read.gt3x 0.4.2
+
+* Memory issues with Windows cloud systems is solved for now.
+
 # read.gt3x 0.4.1
 
 * Fixing the time stamp problem with 30 Hz.

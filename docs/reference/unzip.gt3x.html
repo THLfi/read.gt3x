@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">read.gt3x</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
     <p>unzip.gt3x() makes it convenient to unzip multiple .gt3x files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>unzip.gt3x</span>(<span class='no'>path</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>unzip.gt3x</span><span class='op'>(</span><span class='va'>path</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,7 +154,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A .gt3x file is a zipped directory with two files: log.bin and info.txt.
- This function simply unzips the contents of the directories.</p>
+This function simply unzips the contents of the directories.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other file manipulations: 
@@ -164,22 +164,25 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>gt3xfile</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(
+<span class='va'>gt3xfile</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span>
     <span class='st'>"extdata"</span>, <span class='st'>"TAS1H30182785_2019-09-17.gt3x"</span>,
-    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"read.gt3x"</span>)
-<span class='no'>gt3xdirs</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>gt3xfile</span>)</div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRh14ky</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpHttJad/temp_libpath95d861dd56bf/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRh14ky/TAS1H30182785_2019-09-17</span></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    package <span class='op'>=</span> <span class='st'>"read.gt3x"</span><span class='op'>)</span>
+<span class='va'>gt3xdirs</span> <span class='op'>&lt;-</span> <span class='fu'>unzip.gt3x</span><span class='op'>(</span><span class='va'>gt3xfile</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpcKXrLc</span></div><div class='output co'>#&gt; <span class='message'>1/1 </span></div><div class='output co'>#&gt; <span class='message'>Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpyPHypn/temp_libpath6d83527452b6/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span></div><div class='output co'>#&gt; <span class='message'> === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpcKXrLc/TAS1H30182785_2019-09-17</span></div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># unzip a single .gt3x file</span>
-<span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>(<span class='fl'>1</span>)
-<span class='no'>gt3xdir</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>path</span>)
+<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>gt3xdir</span> <span class='op'>&lt;-</span> <span class='fu'>unzip.gt3x</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
 
 <span class='co'># unzip multiple .gt3x files</span>
-<span class='no'>dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span>()
-<span class='no'>gt3xdirs</span> <span class='kw'>&lt;-</span> <span class='fu'>unzip.gt3x</span>(<span class='no'>dir</span>)
-}
-<span class='no'>tfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
-<span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span>(<span class='fu'>unzip.gt3x</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>dir</span>, <span class='no'>tfile</span>)))
-<span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span>(<span class='fu'>unzip.gt3x</span>(<span class='st'>""</span>))</div></pre>
+<span class='va'>dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gt3x_datapath.html'>gt3x_datapath</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>gt3xdirs</span> <span class='op'>&lt;-</span> <span class='fu'>unzip.gt3x</span><span class='op'>(</span><span class='va'>dir</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>tfile</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>testthat</span><span class='fu'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span><span class='op'>(</span><span class='fu'>unzip.gt3x</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>dir</span>, <span class='va'>tfile</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>testthat</span><span class='fu'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span><span class='op'>(</span><span class='fu'>unzip.gt3x</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>""</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -191,11 +194,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tuomo Nieminen.</p>
+  <p>Developed by Tuomo Nieminen, John Muschelli.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">read.gt3x</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -127,9 +127,9 @@
     <p>Path to read.gt3x package sample data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gt3x_datapath</span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>gt3x_datapath</span><span class='op'>(</span>index <span class='op'>=</span> <span class='cn'>NULL</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>gt3x_filename</span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zipped</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>gt3x_filename</span><span class='op'>(</span>index <span class='op'>=</span> <span class='cn'>NULL</span>, zipped <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,13 +161,14 @@ including the sample files will be returned.</p></td>
 <code><a href='unzip.gt3x.html'>unzip.gt3x</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>dir</span> <span class='kw'>&lt;-</span> <span class='fu'>gt3x_datapath</span>()
-<span class='no'>gt3x_filename</span> <span class='kw'>&lt;-</span> <span class='fu'>gt3x_datapath</span>(<span class='fl'>1</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>dir</span> <span class='op'>&lt;-</span> <span class='fu'>gt3x_datapath</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>gt3x_filename</span> <span class='op'>&lt;-</span> <span class='fu'>gt3x_datapath</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span>(<span class='fu'>gt3x_filename</span>(<span class='fl'>100</span>))
-<span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span>(<span class='fu'>gt3x_filename</span>(<span class='fl'>0</span>))</div></pre>
+<span class='fu'>testthat</span><span class='fu'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span><span class='op'>(</span><span class='fu'>gt3x_filename</span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>testthat</span><span class='fu'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_error.html'>expect_error</a></span><span class='op'>(</span><span class='fu'>gt3x_filename</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -179,11 +180,11 @@ including the sample files will be returned.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tuomo Nieminen.</p>
+  <p>Developed by Tuomo Nieminen, John Muschelli.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
