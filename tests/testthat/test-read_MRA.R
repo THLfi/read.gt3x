@@ -4,6 +4,10 @@ path <- tempfile(fileext = ".gt3x.gz")
 dl <- utils::download.file(url, destfile = path, mode = "wb")
 
 testthat::test_that("Reading in Old MRA", {
+  testthat::expect_error({
+    res <- read.gt3x::read.gt3x(path = character(0))
+  })
+
   !have_log_and_info(path)
   testthat::expect_warning({
     res <- read.gt3x::read.gt3x(path, verbose = 2, debug = TRUE, cleanup = TRUE)
