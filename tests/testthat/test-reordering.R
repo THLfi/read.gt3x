@@ -15,17 +15,7 @@ testthat::test_that("Reordering columns is right", {
     }
     destfile
   }
-  gt3x_file = download(idf$download_url_gt3x, idf$name_gt3x)
 
-  act_df = read.gt3x(gt3x_file, verbose = TRUE,
-                     asDataFrame = TRUE, imputeZeroes = TRUE)
-
-
-  head(act_df)
-  at = attributes(act_df)
-  at$light_data = NULL
-  class(act_df) = "data.frame"
-  act_df = act_df[, c("time", "X", "Y", "Z")]
   sub_thing = function(hdr, string) {
     x = hdr[grepl(string, hdr)]
     x = gsub(string, "", x)
@@ -83,10 +73,17 @@ testthat::test_that("Reordering columns is right", {
   }
   csv_file = download(idf$download_url_csv, idf$name_csv)
   df = read_acc_csv(csv_file)
-  hdr = df$header
+  # hdr = df$header
   df = df$data
   colnames(df) = sub("Accelerometer ", "", colnames(df))
 
+  df = df[, "X", drop = FALSE]
+  gt3x_file = download(idf$download_url_gt3x, idf$name_gt3x)
+
+  act_df = read.gt3x(gt3x_file, verbose = TRUE,
+                     asDataFrame = TRUE, imputeZeroes = TRUE)
+  class(act_df) = "data.frame"
+  act_df = act_df[, c("X", "Y", "Z")]
 
   good = df$X == act_df$X
   rm(df)
