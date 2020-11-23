@@ -57,7 +57,9 @@ testthat::test_that("Trying without Acceleration Scale", {
                            field = c("Last Sample Time"),
                            replace_field = list("Stop Date" = "0",
                                                 "Sample Rate" = "Hey"))
-  result = parse_gt3x_info(run_file)
+  testthat::expect_warning({
+    result = parse_gt3x_info(run_file)
+  })
   testthat::expect_warning({
     out = get_n_samples(result)
   })
@@ -65,7 +67,13 @@ testthat::test_that("Trying without Acceleration Scale", {
   run_file = destroy_field(path, field = "all")
 
   testthat::expect_error({
-  result = unzip.gt3x(run_file, verbose = TRUE)
+    result = unzip.gt3x(run_file, verbose = TRUE)
+  })
+
+  run_file = destroy_field(path,
+                           replace_field = list("Serial Number" = ""))
+  testthat::expect_warning({
+    result = parse_gt3x_info(run_file)
   })
 
 })

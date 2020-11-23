@@ -115,7 +115,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   path <- unzip_zipped_gt3x(path, cleanup = cleanup)
   remove_path <- path
-  remove_file <- attr(file, "remove")
+  remove_file <- attr(path, "remove")
   if (is.null(remove_file)) {
     remove_file <- FALSE
   }
@@ -217,8 +217,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     luxdata <- parse_lux_data(lux_path, info = info,
                               samples = samples, verbose = verbose > 1)
     attr(accdata, "light_data") <- luxdata[seq(est_n_samples)]
-
   }
+  attr(accdata, "add_light") = add_light
 
   if (cleanup) {
     if (remove_file) {
@@ -301,6 +301,9 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   all_attributes <- attributes(x)
   attr(x, "time_index") <- NULL
 
+  if (missing(add_light)) {
+    add_light = attr(x, "add_light")
+  }
 
   tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
