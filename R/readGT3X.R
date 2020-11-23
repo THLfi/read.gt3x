@@ -330,8 +330,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   x <- activityAsDataFrame(x, time_index, start_time, divider)
   # x = as.data.frame(x)
   # x$time = start_time + time_index/divider;
-
-  x = x[, c("time", setdiff(colnames(x), "time"))]
+  # x = x[, c("time", setdiff(colnames(x), "time"))]
 
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (add_light) {
