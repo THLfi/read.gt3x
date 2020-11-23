@@ -1,26 +1,34 @@
+
+idf = list(
+  name_gt3x = "PU3_CLE2B21130054_2017-03-16.gt3x.gz",
+  download_url_gt3x = "https://ndownloader.figshare.com/files/21855807",
+  id = "PU3", serial = "CLE2B21130054",
+  name_csv = "PU3_CLE2B21130054_2017-03-16.csv.gz",
+  download_url_csv = "https://ndownloader.figshare.com/files/24488492")
+print(idf)
+download = function(url, name) {
+  destfile = file.path(tempdir(), name)
+  if (!file.exists(destfile)) {
+    download.file(url, destfile, mode = "wb")
+  }
+  destfile
+}
+
+sub_thing = function(hdr, string) {
+  x = hdr[grepl(string, hdr)]
+  x = gsub(string, "", x)
+  x = trimws(x)
+}
+
+
 testthat::test_that("Reordering columns is right", {
   testthat::skip_on_cran()
   testthat::skip_if_not_installed("readr")
   testthat::skip_if_not_installed("lubridate")
 
-  idf = list(name_gt3x = "PU3_CLE2B21130054_2017-03-16.gt3x.gz",
-             download_url_gt3x = "https://ndownloader.figshare.com/files/21855807",
-             id = "PU3", serial = "CLE2B21130054", name_csv = "PU3_CLE2B21130054_2017-03-16.csv.gz",
-             download_url_csv = "https://ndownloader.figshare.com/files/24488492")
-  print(idf)
-  download = function(url, name) {
-    destfile = file.path(tempdir(), name)
-    if (!file.exists(destfile)) {
-      download.file(url, destfile, mode = "wb")
-    }
-    destfile
-  }
 
-  sub_thing = function(hdr, string) {
-    x = hdr[grepl(string, hdr)]
-    x = gsub(string, "", x)
-    x = trimws(x)
-  }
+  gt3x_file = download(idf$download_url_gt3x, idf$name_gt3x)
+
   read_acc_csv = function(file, ...) {
     hdr = readLines(file, n = 10)
     st = sub_thing(hdr, "Start Time")
@@ -72,13 +80,13 @@ testthat::test_that("Reordering columns is right", {
     )
   }
   csv_file = download(idf$download_url_csv, idf$name_csv)
+
   df = read_acc_csv(csv_file)
   # hdr = df$header
   df = df$data
   colnames(df) = sub("Accelerometer ", "", colnames(df))
 
   df = df[, "X", drop = FALSE]
-  gt3x_file = download(idf$download_url_gt3x, idf$name_gt3x)
 
   gc(); gc()
   act_df = read.gt3x(gt3x_file, verbose = TRUE,
@@ -91,3 +99,19 @@ testthat::test_that("Reordering columns is right", {
   testthat::expect_true(all(act_df[!good,c("X", "Y", "Z")] == 0))
 
 })
+
+
+
+testthat::test_that("Reordering columns is right", {
+  testthat::skip_on_cran()
+  testthat::skip_if_not_installed("zip")
+
+  gt3x_file = download(idf$download_url_gt3x, idf$name_gt3x)
+
+  run_file = destroy_field(gt3x_file)
+  testthat::expect_silent({
+    result = parse_gt3x_info(run_file)
+  })
+  testthat::expect_equal(result$`Acceleration Scale`, 341L)
+})
+
