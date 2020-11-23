@@ -43,7 +43,7 @@ gt3xdirs <- unzip.gt3x(dir)
 }
 tfile = tempfile()
 testthat::expect_error(unzip.gt3x(c(dir, tfile)))
-testthat::expect_error(unzip.gt3x(""))
+testthat::expect_error(unzip.gt3x(c("", "")))
 
 }
 \seealso{

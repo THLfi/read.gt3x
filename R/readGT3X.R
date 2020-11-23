@@ -18,6 +18,8 @@ NULL
 #' @param ... additional arguments to pass to \code{parseGT3X} C++ code
 #' @param verbose print diagnostic messages
 #' @param cleanup should any unzipped files be deleted?
+#' @param add_light add light data to the `data.frame` if data exists in the
+#' GT3X
 #'
 #' @note
 #'
@@ -81,7 +83,7 @@ NULL
 #' url <- paste0("https://github.com/THLfi/read.gt3x/",
 #' "files/", "3522749/", "GT3X%2B.01.day.gt3x.zip")
 #' destfile <- tempfile(fileext = ".zip")
-#' dl <- download.file(url, destfile = destfile)
+#' dl <- download.file(url, destfile = destfile, mode = "wb")
 #' gt3x_file <- unzip(destfile, exdir = tempdir())
 #' gt3x_file <- gt3x_file[!grepl("__MACOSX", gt3x_file)]
 #' path <- gt3x_file
@@ -101,7 +103,8 @@ NULL
 read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       imputeZeroes = FALSE,
                       cleanup = FALSE,
-                      ...) {
+                      ...,
+                      add_light = FALSE) {
 
   verbose_message <- function(..., verbose = verbose) {
     if (verbose) {
@@ -112,7 +115,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   path <- unzip_zipped_gt3x(path, cleanup = cleanup)
   remove_path <- path
-  remove_file <- attr(file, "remove")
+  remove_file <- attr(path, "remove")
   if (is.null(remove_file)) {
     remove_file <- FALSE
   }
@@ -214,8 +217,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     luxdata <- parse_lux_data(lux_path, info = info,
                               samples = samples, verbose = verbose > 1)
     attr(accdata, "light_data") <- luxdata[seq(est_n_samples)]
-
   }
+  gc()
+  attr(accdata, "add_light") = add_light
 
   if (cleanup) {
     if (remove_file) {
@@ -258,13 +262,13 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     verbose = verbose)
 
 
-  x <- structure(accdata,
+  accdata <- structure(accdata,
                  class = c("activity", class(accdata)))
 
   if (asDataFrame)
-    x <- as.data.frame(x, verbose = verbose > 1)
+    accdata <- as.data.frame(accdata, verbose = verbose > 1)
 
-  x
+  accdata
 
 }
 
@@ -273,6 +277,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #' @param x Object of class 'activity' (returned by read.gt3x)
 #' @param ... not used
 #' @param verbose print diagnostic messages
+#' @param add_light add light data to the `data.frame` if data exists in the
+#' GT3X
 #'
 #' @family gt3x-parsers
 #'
@@ -285,7 +291,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #' }
 #'
 #' @export
-as.data.frame.activity <- function(x, ..., verbose = FALSE) {
+as.data.frame.activity <- function(x, ..., verbose = FALSE,
+                                   add_light = FALSE) {
   dig <- getOption("digits")
   dig.sec <- getOption("digits.secs")
   options(digits = 15, digits.secs = 3)
@@ -295,10 +302,15 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
   all_attributes <- attributes(x)
   attr(x, "time_index") <- NULL
 
+  if (missing(add_light)) {
+    add_light = attr(x, "add_light")
+  }
+
   tz <- "GMT" # used for parsing, timestamps are actually in local time
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
   time_index <- all_attributes[["time_index"]]
   stopifnot(!is.null(time_index))
+  all_attributes[["time_index"]] = NULL
   sample_rate <- all_attributes[["sample_rate"]]
 
   if (verbose) {
@@ -310,14 +322,22 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
       message(paste0("First time index is: ", time_index[1]))
     }
   }
-  class(x) <- "matrix"
+  divider = 100L
+
 
   # datetime parsing currently different for old and new formats
   # divider <- if (all_attributes[["old_version"]]) sample_rate else 100
-  divider = 100
-  x <- activityAsDataFrame(x, time_index, start_time, divider)
-  x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
+  class(x) <- "matrix"
+  # x <- activityAsDataFrame(x, time_index, start_time, divider)
+  x = as.data.frame(x)
+  x$time = start_time + time_index/divider;
+  x = x[, c("time", setdiff(colnames(x), "time"))]
 
+  x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
+  if (add_light) {
+    x$lux = all_attributes$light_data
+    all_attributes$light_data = NULL
+  }
   if (verbose) {
     missingness <- all_attributes$missingness
     if (!all(as.numeric(missingness$time) %% 1 == 0)) {
@@ -328,6 +348,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE) {
     if (dt > 1 && !(round(x$time[1]) %in% missingness$time)) {
       warning("Start time does not match header start time")
     }
+    rm(missingness)
+    rm(dt)
   }
   if (verbose) {
     message("Done")

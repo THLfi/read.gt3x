@@ -35,5 +35,6 @@ Suggests:
     data.table,
     zoo,
     readr,
-    lubridate
+    lubridate,
+    zip
 VignetteBuilder: knitr

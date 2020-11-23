@@ -10,7 +10,8 @@ read.gt3x(
   asDataFrame = FALSE,
   imputeZeroes = FALSE,
   cleanup = FALSE,
-  ...
+  ...,
+  add_light = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ the time series will be incomplete in case there is missingness.}
 \item{cleanup}{should any unzipped files be deleted?}
 
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
+
+\item{add_light}{add light data to the \code{data.frame} if data exists in the
+GT3X}
 }
 \value{
 A numeric matrix with 3 columns (X, Y, Z) and the following
@@ -96,7 +100,7 @@ head(df)
 url <- paste0("https://github.com/THLfi/read.gt3x/",
 "files/", "3522749/", "GT3X\%2B.01.day.gt3x.zip")
 destfile <- tempfile(fileext = ".zip")
-dl <- download.file(url, destfile = destfile)
+dl <- download.file(url, destfile = destfile, mode = "wb")
 gt3x_file <- unzip(destfile, exdir = tempdir())
 gt3x_file <- gt3x_file[!grepl("__MACOSX", gt3x_file)]
 path <- gt3x_file

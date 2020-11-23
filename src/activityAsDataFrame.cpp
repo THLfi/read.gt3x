@@ -10,10 +10,11 @@ DataFrame activityAsDataFrame(NumericMatrix &m, NumericVector &time_index, doubl
   for(int i = 0; i < m.nrow(); i++)
     timestamp(i) = start_time + time_index(i)/(double)divider;
 
-  DataFrame df = DataFrame::create(Named("X", m(_, 0)),
-                                   Named("Y", m(_, 1)),
-                                   Named("Z", m(_, 2)),
-                                   Named("time", timestamp));
+  DataFrame df = DataFrame::create(
+    Named("time", timestamp),
+    Named("X", m(_, 0)),
+    Named("Y", m(_, 1)),
+    Named("Z", m(_, 2)));
 
   return df;
 }

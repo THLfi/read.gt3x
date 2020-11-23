@@ -2,7 +2,7 @@ url <- paste0("https://github.com/THLfi/read.gt3x/",
               "files/", "3522749/",
               "GT3X%2B.01.day.gt3x.zip")
 destfile <- tempfile(fileext = ".zip")
-dl <- utils::download.file(url, destfile = destfile)
+dl <- utils::download.file(url, destfile = destfile, mode = "wb")
 gt3x_file <- utils::unzip(destfile, exdir = tempdir())
 gt3x_file <- gt3x_file[!grepl("__MACOSX", gt3x_file)]
 path <- gt3x_file
@@ -45,9 +45,9 @@ testthat::test_that("Converting Old to Data.frame", {
   res <- read.gt3x::read.gt3x(path, asDataFrame = TRUE)
   testthat::expect_is(res, "activity_df")
   testthat::expect_is(res, "data.frame")
-  testthat::expect_equal(colnames(res), c("X", "Y", "Z", "time"))
+  testthat::expect_equal(colnames(res), c("time", "X", "Y", "Z"))
 
-  cm <- unname(apply(res[, 1:3], 2, mean))
+  cm <- unname(apply(res[, c("X", "Y", "Z")], 2, mean))
   testthat::expect_equal(cm, c(
     -0.228402625555557,
     0.447592941851854,
@@ -74,4 +74,6 @@ testthat::test_that("Converting Old with .gz file", {
                    cleanup = TRUE
   )
   testthat::expect_equal(res, df2)
+  rm(res)
+  rm(df2)
 })
