@@ -218,6 +218,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                               samples = samples, verbose = verbose > 1)
     attr(accdata, "light_data") <- luxdata[seq(est_n_samples)]
   }
+  gc()
   attr(accdata, "add_light") = add_light
 
   if (cleanup) {
@@ -309,6 +310,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   start_time <- as.numeric(all_attributes[["start_time"]], tz = tz)
   time_index <- all_attributes[["time_index"]]
   stopifnot(!is.null(time_index))
+  all_attributes[["time_index"]] = NULL
   sample_rate <- all_attributes[["sample_rate"]]
 
   if (verbose) {
@@ -325,12 +327,11 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
 
   # datetime parsing currently different for old and new formats
   # divider <- if (all_attributes[["old_version"]]) sample_rate else 100
-  # class(x) <- "matrix"
-  x = as.matrix(x)
-  x <- activityAsDataFrame(x, time_index, start_time, divider)
-  # x = as.data.frame(x)
-  # x$time = start_time + time_index/divider;
-  # x = x[, c("time", setdiff(colnames(x), "time"))]
+  class(x) <- "matrix"
+  # x <- activityAsDataFrame(x, time_index, start_time, divider)
+  x = as.data.frame(x)
+  x$time = start_time + time_index/divider;
+  x = x[, c("time", setdiff(colnames(x), "time"))]
 
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (add_light) {
@@ -347,6 +348,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
     if (dt > 1 && !(round(x$time[1]) %in% missingness$time)) {
       warning("Start time does not match header start time")
     }
+    rm(missingness)
+    rm(dt)
   }
   if (verbose) {
     message("Done")

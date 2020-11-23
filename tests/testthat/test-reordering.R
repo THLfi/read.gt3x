@@ -80,6 +80,7 @@ testthat::test_that("Reordering columns is right", {
   df = df[, "X", drop = FALSE]
   gt3x_file = download(idf$download_url_gt3x, idf$name_gt3x)
 
+  gc(); gc()
   act_df = read.gt3x(gt3x_file, verbose = TRUE,
                      asDataFrame = TRUE, imputeZeroes = TRUE)
   class(act_df) = "data.frame"

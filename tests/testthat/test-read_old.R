@@ -74,4 +74,6 @@ testthat::test_that("Converting Old with .gz file", {
                    cleanup = TRUE
   )
   testthat::expect_equal(res, df2)
+  rm(res)
+  rm(df2)
 })

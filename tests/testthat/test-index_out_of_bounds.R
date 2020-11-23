@@ -47,5 +47,6 @@ testthat::test_that("Negative Missing values fixed", {
   testthat::expect_warning({
     x = read.gt3x(destfile, verbose = 3, debug = TRUE)
   })
+  rm(x)
 })
 
