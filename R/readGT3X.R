@@ -242,8 +242,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   attr(accdata, "time_zone") <- info[["TimeZone"]]
   attr(accdata, "firmware") <- info[["Firmware"]]
   attr(accdata, "serial_prefix") <- info[["Serial Prefix"]]
+  attr(accdata, "acceleration_min") <- info[["Acceleration Min"]]
+  attr(accdata, "acceleration_max") <- info[["Acceleration Max"]]
+
   attr(accdata, "bad_samples") <- bad_samples
   attr(accdata, "old_version") <- is_old_version
+
   attr(accdata, "header") <- info
   if (!is_old_version) {
     attr(accdata, "missingness") <- data.frame(
@@ -366,6 +370,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   attr(x, "serial_prefix") <- all_attributes[["serial_prefix"]]
   attr(x, "old_version") <- all_attributes[["old_version"]]
   attr(x, "sample_rate") <- all_attributes[["sample_rate"]]
+  attr(x, "acceleration_min") <- all_attributes[["acceleration_min"]]
+  attr(x, "acceleration_max") <- all_attributes[["acceleration_max"]]
   attr(x, "header") <- all_attributes[["header"]]
   attr(x, "start_time") <- all_attributes[["start_time"]]
   attr(x, "stop_time") <- all_attributes[["stop_time"]]

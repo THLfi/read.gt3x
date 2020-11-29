@@ -47,11 +47,17 @@ parse_gt3x_info <- function(path, tz = "GMT") {
     if (length(info$`Acceleration Scale`) == 0) {
       info$`Acceleration Scale` <- 341L
     }
+    if (length(info$`Acceleration Min`) == 0) {
+      info$`Acceleration Min` <- "-6.0"
+    }
+    if (length(info$`Acceleration Max`) == 0) {
+      info$`Acceleration Max` <- "6.0"
+    }
   }
+  pref = info$`Serial Prefix`
+  prefs = c("NEO", "CLE", "MRA", "MOS", "TAS")
   # Trying to fix https://github.com/THLfi/read.gt3x/issues/22
   if (length(info$`Acceleration Scale`) == 0) {
-    pref = info$`Serial Prefix`
-    prefs = c("NEO", "CLE", "MRA", "MOS", "TAS")
     if (is.null(pref) || length(pref) == 0 || !pref %in% prefs) {
       warning("Acceleration Scale unknown from prefix, using 341")
       pref = NA
@@ -64,6 +70,23 @@ parse_gt3x_info <- function(path, tz = "GMT") {
       scale = 256L
     }
     info$`Acceleration Scale` <- scale
+  }
+
+  if (length(info$`Acceleration Max`) == 0 ||
+      length(info$`Acceleration Min`) == 0
+      ) {
+    if (is.null(pref) || length(pref) == 0 || !pref %in% prefs) {
+      pref = NA
+      scale = NULL
+    }
+    if (pref %in% c("NEO", "CLE", "MRA")) {
+      scale = 6
+    }
+    if (pref %in% c("MOS", "TAS")) {
+      scale = 8
+    }
+    info$`Acceleration Min` <- as.character(-1*scale)
+    info$`Acceleration Max` <- as.character(scale)
   }
 
   is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  {
