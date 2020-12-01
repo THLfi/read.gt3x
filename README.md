@@ -133,6 +133,9 @@ columns: X,Y,Z.
     #> $impute_zeroes
     #> [1] FALSE
     #> 
+    #> $add_light
+    #> [1] FALSE
+    #> 
     #> $start_time
     #> [1] "2019-09-17 18:40:00 GMT"
     #> 
@@ -153,6 +156,12 @@ columns: X,Y,Z.
     #> 
     #> $serial_prefix
     #> [1] "TAS"
+    #> 
+    #> $acceleration_min
+    #> [1] "-8.0"
+    #> 
+    #> $acceleration_max
+    #> [1] "8.0"
     #> 
     #> $bad_samples
     #> [1] FALSE
@@ -191,13 +200,13 @@ X,Y,Z,time
     #> Sampling Rate: 100Hz
     #> Firmware Version: 1.7.2
     #> Serial Number Prefix: TAS
-    #>       X      Y     Z                time
-    #> 1 0.000  0.008 0.996 2019-09-17 18:40:00
-    #> 2 0.016  0.000 1.008 2019-09-17 18:40:00
-    #> 3 0.020 -0.008 1.004 2019-09-17 18:40:00
-    #> 4 0.016 -0.012 1.012 2019-09-17 18:40:00
-    #> 5 0.016 -0.008 1.008 2019-09-17 18:40:00
-    #> 6 0.008 -0.008 1.008 2019-09-17 18:40:00
+    #>                  time     X      Y     Z
+    #> 1 2019-09-17 18:40:00 0.000  0.008 0.996
+    #> 2 2019-09-17 18:40:00 0.016  0.000 1.008
+    #> 3 2019-09-17 18:40:00 0.020 -0.008 1.004
+    #> 4 2019-09-17 18:40:00 0.016 -0.012 1.012
+    #> 5 2019-09-17 18:40:00 0.016 -0.008 1.008
+    #> 6 2019-09-17 18:40:00 0.008 -0.008 1.008
     attributes(df)[setdiff(names(attributes(df)), c("names", "row.names"))]
     #> $class
     #> [1] "activity_df" "data.frame" 
@@ -235,6 +244,12 @@ X,Y,Z,time
     #> 
     #> $sample_rate
     #> [1] 100
+    #> 
+    #> $acceleration_min
+    #> [1] "-8.0"
+    #> 
+    #> $acceleration_max
+    #> [1] "8.0"
     #> 
     #> $header
     #> GT3X information

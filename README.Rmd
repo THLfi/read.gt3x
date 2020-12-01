@@ -48,7 +48,7 @@ This package makes it easier and faster to read the raw accelerometer samples in
 
 You can install the read.gt3x package from GitHub, using the `remotes` package (available in CRAN).
 
-```
+```r
 remotes::install_github("THLfi/read.gt3x")
 ```
 
