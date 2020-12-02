@@ -1,3 +1,7 @@
+# read.gt3x 1.0.0
+
+* Release to CRAN
+
 # read.gt3x 0.4.2
 
 * Memory issues with Windows cloud systems is solved for now.
