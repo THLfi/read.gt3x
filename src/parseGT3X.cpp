@@ -100,7 +100,7 @@ double decodeFloatParameterValue(const uint32_t value) {
 
   /* calculate the floating point value */
   return significand * pow(2.0, exponent);
-};
+}
 
 // saves the start time from log.bin parameters and prints all of the parameters (if verbose = true)
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Parameters.md
@@ -147,7 +147,7 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
   }
   if(verbose)
     Rcout << "---END PARAMETERS\n\n";
-};
+}
 
 // --------------------
 // END Parse parameters
