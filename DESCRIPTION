@@ -17,7 +17,7 @@ Description: Implements a high performance C++ parser
     for 'accelerometer' samples. Activity samples can be easily read into a
     matrix or data.frame.  This allows for storing the raw 'accelerometer' 
     samples in the original binary format to reserve space.
-License: EUPL + file LICENSE
+License: EUPL
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
