@@ -41,7 +41,7 @@ parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_ti
 #' @return
 #' Returns a matrix with max_samples rows and 3 columns, where the first 3
 #' columns are the acceleration samples and
-#' the last column is timestamps in seconds (including 100th of seconds)
+#' the last column is timestamps in seconds (including hundredth of seconds)
 #' starting from 00:00:00 1970-01-01 UTC (UNIX time)
 #'
 parseActivityBin <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE) {

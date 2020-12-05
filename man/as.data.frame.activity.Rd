@@ -17,7 +17,7 @@
 GT3X}
 }
 \value{
-An object of class 'activity_df' which is also a data.frame with
+An object of class \code{activity_df} which is also a data.frame with
 the following attributes
 \itemize{
 \item \code{subject_name} : Subject name from info file

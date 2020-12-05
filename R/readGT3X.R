@@ -10,7 +10,7 @@ NULL
 #' even though they are represented as \code{POSIXct} with GMT timezone.
 #'
 #' @param path Path to gt3x folder
-#' @param asDataFrame convert to an activity_df, see
+#' @param asDataFrame convert to an `activity_df`, see
 #' \code{as.data.frame.activity}
 #' @param imputeZeroes Impute zeros in case there are missingness?
 #' Default is FALSE, in which case
@@ -286,7 +286,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #'
 #' @family gt3x-parsers
 #'
-#' @return An object of class 'activity_df' which is also a data.frame with
+#' @return An object of class `activity_df` which is also a data.frame with
 #' the following attributes
 #' \itemize{
 #' \item \code{subject_name} : Subject name from info file

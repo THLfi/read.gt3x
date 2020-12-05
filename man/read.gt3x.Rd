@@ -19,7 +19,7 @@ read.gt3x(
 
 \item{verbose}{print diagnostic messages}
 
-\item{asDataFrame}{convert to an activity_df, see
+\item{asDataFrame}{convert to an \code{activity_df}, see
 \code{as.data.frame.activity}}
 
 \item{imputeZeroes}{Impute zeros in case there are missingness?
