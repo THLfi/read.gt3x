@@ -18,7 +18,7 @@ GT3X}
 }
 \value{
 An object of class \code{activity_df} which is also a data.frame with
-the following attributes
+the following attributes (and more)
 \itemize{
 \item \code{subject_name} : Subject name from info file
 \item \code{time_zone} : Time zone from info file

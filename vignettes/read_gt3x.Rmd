@@ -94,7 +94,7 @@ str(X)
 
 ## Converting to a data.frame
 
-the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a "time" column, which gives the timestamp of each sample.
+the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a "time" column, which gives the timestamp of each sample. The timestamps are stored in R with the GMT timezone but note that this is misleading: in reality the timestamps correspond to the local time of the device! 
 
 ```{r}
 X <- as.data.frame(X)
