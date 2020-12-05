@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">read.gt3x</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <h1 data-toc-skip>Getting started with read.gt3x</h1>
                         <h4 class="author">Tuomo Nieminen</h4>
             
-            <h4 class="date">2020-12-02</h4>
+            <h4 class="date">2020-12-05</h4>
       
       
       <div class="hidden name"><code>read_gt3x.Rmd</code></div>
@@ -123,11 +123,11 @@
 <span class="co">#&gt; [5,] 0.016 -0.008 1.008</span>
 <span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  551398 29.5    1220587 65.2         NA   724062 38.7
-#&gt; Vcells 1004296  7.7    8388608 64.0      65536  2443419 18.7
+#&gt; Ncells  551418 29.5    1220758 65.2         NA   724164 38.7
+#&gt; Vcells 1004367  7.7    8388608 64.0      65536  2443543 18.7
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  551407 29.5    1220587 65.2         NA   724062 38.7
-#&gt; Vcells 1004366  7.7    8388608 64.0      65536  2443419 18.7</code></pre>
+#&gt; Ncells  551427 29.5    1220758 65.2         NA   724164 38.7
+#&gt; Vcells 1004437  7.7    8388608 64.0      65536  2443543 18.7</code></pre>
 </div>
 <div id="method-2-permanent-unzip-then-read" class="section level3">
 <h3 class="hasAnchor">
@@ -137,10 +137,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span> <span class="co"># location of .gt3x files</span>
 <span class="va">gt3xfolders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span><span class="op">(</span><span class="va">datadir</span>, location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRpIKxI</span>
+<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpjRTZ5V</span>
 <span class="co">#&gt; 1/1</span>
-<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpBfJhDM/temp_libpath1174d6a2d3388/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
-<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpRpIKxI/TAS1H30182785_2019-09-17</span></code></pre></div>
+<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpZQU3Ix/temp_libpath1350d4a8c042/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
+<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpjRTZ5V/TAS1H30182785_2019-09-17</span></code></pre></div>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function accepts a path to an unzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gt3xfolder</span> <span class="op">&lt;-</span> <span class="va">gt3xfolders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
@@ -218,7 +218,7 @@
 <div id="converting-to-a-data-frame" class="section level2">
 <h2 class="hasAnchor">
 <a href="#converting-to-a-data-frame" class="anchor"></a>Converting to a data.frame</h2>
-<p>the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a “time” column, which gives the timestamp of each sample.</p>
+<p>the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a “time” column, which gives the timestamp of each sample. The timestamps are stored in R with the GMT timezone but note that this is misleading: in reality the timestamps correspond to the local time of the device!</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
@@ -233,11 +233,11 @@
 <span class="co">#&gt; 5 2019-09-17 18:40:00 0.016 -0.008 1.008</span>
 <span class="co">#&gt; 6 2019-09-17 18:40:00 0.008 -0.008 1.008</span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568143 30.4    1220587 65.2         NA   842722 45.1
-#&gt; Vcells 1042572  8.0    8388608 64.0      65536  2443419 18.7
+#&gt; Ncells  568163 30.4    1220758 65.2         NA   842742 45.1
+#&gt; Vcells 1042643  8.0    8388608 64.0      65536  2443543 18.7
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568137 30.4    1220587 65.2         NA   842722 45.1
-#&gt; Vcells 1042619  8.0    8388608 64.0      65536  2443419 18.7</code></pre>
+#&gt; Ncells  568157 30.4    1220758 65.2         NA   842742 45.1
+#&gt; Vcells 1042690  8.0    8388608 64.0      65536  2443543 18.7</code></pre>
 </div>
   </div>
 
