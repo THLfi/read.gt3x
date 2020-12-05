@@ -137,10 +137,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span> <span class="co"># location of .gt3x files</span>
 <span class="va">gt3xfolders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span><span class="op">(</span><span class="va">datadir</span>, location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpjRTZ5V</span>
+<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpH5jgZv</span>
 <span class="co">#&gt; 1/1</span>
-<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpZQU3Ix/temp_libpath1350d4a8c042/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
-<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpjRTZ5V/TAS1H30182785_2019-09-17</span></code></pre></div>
+<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpu8Ti2F/temp_libpath135cf43339ce/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
+<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpH5jgZv/TAS1H30182785_2019-09-17</span></code></pre></div>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function accepts a path to an unzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gt3xfolder</span> <span class="op">&lt;-</span> <span class="va">gt3xfolders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
