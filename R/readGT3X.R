@@ -222,8 +222,14 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   gc()
   attr(accdata, "add_light") = add_light
   rdata = range(c(accdata[, xyz]))
+  #!!! Need ISSUE/check
   if (any(abs(rdata) > 20)) {
     warning("Data seems too large (> 20) - checksum may be wrong - check data")
+  }
+  #!!! Need ISSUE/check
+  check = anyDuplicated(attr(accdata, "time_index")) > 0
+  if (check) {
+    warning("Duplicated time indices - usually indicative of a problem!")
   }
 
   if (cleanup) {
