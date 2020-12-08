@@ -161,6 +161,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     "Parsing GT3X data via CPP.. expected sample size: ", samples,
     verbose = verbose
   )
+  xyz = c("X", "Y", "Z")
   if (!is_old_version) {
     logpath <- file.path(path, "log.bin")
     stopifnot(length(info$`Acceleration Scale`) > 0)
@@ -175,9 +176,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       impute_zeroes = imputeZeroes, ...)
     # need reordering for Y X Z ACTIVITY PACKETS
     tmp_at = attributes(accdata)
-    accdata = accdata[, c("X", "Y", "Z")]
+    accdata = accdata[, xyz]
     tmp_at$dim = dim(accdata)
-    tmp_at$dimnames[[2]] = c("X", "Y", "Z")
+    tmp_at$dimnames[[2]] = xyz
     attributes(accdata) = tmp_at
     rm(tmp_at)
 
@@ -206,9 +207,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     index = min(est_n_samples, nrow(accdata))
     accdata = accdata[seq(index),]
     tmp_at$time_index = tmp_at$time_index[seq(index)]
-    accdata = accdata[, c("X", "Y", "Z")]
+    accdata = accdata[, xyz]
     tmp_at$dim = dim(accdata)
-    tmp_at$dimnames[[2]] = c("X", "Y", "Z")
+    tmp_at$dimnames[[2]] = xyz
     attributes(accdata) = tmp_at
     rm(tmp_at)
     verbose_message("Activity data now in R", verbose = verbose > 1)
@@ -220,6 +221,10 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   }
   gc()
   attr(accdata, "add_light") = add_light
+  rdata = range(c(accdata[, xyz]))
+  if (any(abs(rdata) > 20)) {
+    warning("Data seems too large (> 20) - checksum may be wrong - check data")
+  }
 
   if (cleanup) {
     if (remove_file) {
