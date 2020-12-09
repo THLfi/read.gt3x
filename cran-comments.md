@@ -8,3 +8,7 @@
 0 errors | 0 warnings | 1 note
 
 * This is a new release.
+
+---
+* Exported `datetime2ticks` and `ticks2datetime`.
+* Changed options reset `on.exit` order with `readGT3X`.

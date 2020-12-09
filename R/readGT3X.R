@@ -308,12 +308,11 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #' @export
 as.data.frame.activity <- function(x, ..., verbose = FALSE,
                                    add_light = FALSE) {
-  dig <- getOption("digits")
-  dig.sec <- getOption("digits.secs")
-  options(digits = 15, digits.secs = 3)
-  on.exit({
-    options(digits = dig, digits.secs = dig.sec)
-  })
+
+  old <- options()         # code line i
+  on.exit(options(old))    # code line i+1
+  options(digits = 15L, digits.secs = 3L)
+
   all_attributes <- attributes(x)
   attr(x, "time_index") <- NULL
 

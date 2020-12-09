@@ -133,11 +133,12 @@ have_log <- function(path, verbose = TRUE) {
 #' @param x values in date-time format coerced to ticks
 #' @param tz timezone, passed to \code{\link{as.POSIXct}}
 #' @family gt3x-utils
+#' @export
 #' @examples
 #' mystr = "599633592352500000"
-#' x = read.gt3x:::ticks2datetime(mystr)
+#' x = read.gt3x::ticks2datetime(mystr)
 #' x
-#' out = read.gt3x:::datetime2ticks(as.POSIXct("1901-03-02 08:40:35.25", tz = "UTC"))
+#' out = read.gt3x::datetime2ticks(as.POSIXct("1901-03-02 08:40:35.25", tz = "UTC"))
 #' out = as.character(out)
 #' out
 #' stopifnot(out == mystr)
@@ -151,6 +152,7 @@ ticks2datetime <- function(ticks, tz = "GMT") {
 
 #' @family gt3x-utils
 #' @rdname ticks2datetime
+#' @export
 datetime2ticks <- function(x) {
   timezone = attr(x, "tzone")
   if (is.null(timezone)) {

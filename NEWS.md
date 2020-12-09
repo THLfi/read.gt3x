@@ -1,3 +1,8 @@
+# read.gt3x 1.0.1
+
+* Exported `datetime2ticks` and `ticks2datetime`.
+* Changed options export with `readGT3X`.
+
 # read.gt3x 1.0.0
 
 * Release to CRAN
