@@ -401,18 +401,16 @@ print.activity_df <- function(x, ...) {
   on.exit(options(old))    # code line i+1
   options(digits = 15L, digits.secs = 3L)
 
-  n_head <- 6
-  if(! "n" %in% names(list(...))) {
+  arglist <- list(...)
+  if(! "n" %in% names(arglist)) {
     if(!is.null(attr(x, "n_head")))
-      n_head <- attr(x, "n_head")
-  } else {
-    n_head <- n
+      arglist$n <- attr(x, "n_head")
   }
   cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
   class(x) <- "data.frame"
-  print(head(x, n = n_head, ...))
+  print(do.call(head, c(list(x), arglist)))
 }
 
 
@@ -437,19 +435,17 @@ head.activity_df <- function(x, ...) {
 #' @export
 print.activity <- function(x, ...) {
 
-  n_head <- 6
-  if(! "n" %in% names(list(...))) {
+  arglist <- list(...)
+  if(! "n" %in% names(arglist)) {
     if(!is.null(attr(x, "n_head")))
-      n_head <- attr(x, "n_head")
-  } else {
-    n_head <- n
+      arglist$n <- attr(x, "n_head")
   }
 
   cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
   class(x) <- "matrix"
-  print(head(x, n = n_head, ...))
+  print(do.call(head, c(list(x), arglist)))
 }
 
 #' @rdname print
