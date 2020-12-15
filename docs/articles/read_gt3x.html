@@ -79,7 +79,7 @@
       <h1 data-toc-skip>Getting started with read.gt3x</h1>
                         <h4 class="author">Tuomo Nieminen</h4>
             
-            <h4 class="date">2020-12-09</h4>
+            <h4 class="date">2020-12-15</h4>
       
       
       <div class="hidden name"><code>read_gt3x.Rmd</code></div>
@@ -123,11 +123,11 @@
 <span class="co">#&gt; [5,] 0.016 -0.008 1.008</span>
 <span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  551559 29.5    1222740 65.4         NA   739676 39.6
-#&gt; Vcells 1004832  7.7    8388608 64.0      65536  2446497 18.7
+#&gt; Ncells  551737 29.5    1222740 65.4         NA   739685 39.6
+#&gt; Vcells 1005230  7.7    8388608 64.0      65536  2446502 18.7
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  551568 29.5    1222740 65.4         NA   739676 39.6
-#&gt; Vcells 1004902  7.7    8388608 64.0      65536  2446497 18.7</code></pre>
+#&gt; Ncells  551746 29.5    1222740 65.4         NA   739685 39.6
+#&gt; Vcells 1005300  7.7    8388608 64.0      65536  2446502 18.7</code></pre>
 </div>
 <div id="method-2-permanent-unzip-then-read" class="section level3">
 <h3 class="hasAnchor">
@@ -137,10 +137,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span> <span class="co"># location of .gt3x files</span>
 <span class="va">gt3xfolders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span><span class="op">(</span><span class="va">datadir</span>, location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpA61xwa</span>
+<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpURY1SV</span>
 <span class="co">#&gt; 1/1</span>
-<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpEaoXnd/temp_libpathd9ee53236a80/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
-<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpA61xwa/TAS1H30182785_2019-09-17</span></code></pre></div>
+<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpQulRLj/temp_libpathb955bd9403d/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
+<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpURY1SV/TAS1H30182785_2019-09-17</span></code></pre></div>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function accepts a path to an unzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gt3xfolder</span> <span class="op">&lt;-</span> <span class="va">gt3xfolders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
@@ -233,11 +233,11 @@
 <span class="co">#&gt; 5 2019-09-17 18:40:00.03 0.016 -0.008 1.008</span>
 <span class="co">#&gt; 6 2019-09-17 18:40:00.04 0.008 -0.008 1.008</span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568292 30.4    1222740 65.4         NA   843196 45.1
-#&gt; Vcells 1043090  8.0    8388608 64.0      65536  2446497 18.7
+#&gt; Ncells  568559 30.4    1222740 65.4         NA   843623 45.1
+#&gt; Vcells 1043713  8.0    8388608 64.0      65536  2446502 18.7
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568286 30.4    1222740 65.4         NA   843196 45.1
-#&gt; Vcells 1043137  8.0    8388608 64.0      65536  2446497 18.7</code></pre>
+#&gt; Ncells  568553 30.4    1222740 65.4         NA   843623 45.1
+#&gt; Vcells 1043760  8.0    8388608 64.0      65536  2446502 18.7</code></pre>
 </div>
   </div>
 
