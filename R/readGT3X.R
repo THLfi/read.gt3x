@@ -278,7 +278,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
 
   accdata <- structure(accdata,
-                 class = c("activity", class(accdata)))
+                       class = c("activity", class(accdata)))
 
   if (asDataFrame)
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
@@ -308,10 +308,6 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 #' @export
 as.data.frame.activity <- function(x, ..., verbose = FALSE,
                                    add_light = FALSE) {
-
-  old <- options()         # code line i
-  on.exit(options(old))    # code line i+1
-  options(digits = 15L, digits.secs = 3L)
 
   all_attributes <- attributes(x)
   attr(x, "time_index") <- NULL
@@ -400,11 +396,21 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
 #' @export
 #' @rdname print
 print.activity_df <- function(x, ...) {
+
+  old <- options()         # code line i
+  on.exit(options(old))    # code line i+1
+  options(digits = 15L, digits.secs = 3L)
+
+  arglist <- list(...)
+  if(! "n" %in% names(arglist)) {
+    if(!is.null(attr(x, "n_head")))
+      arglist$n <- attr(x, "n_head")
+  }
   cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
   class(x) <- "data.frame"
-  print(head(x, ...))
+  print(do.call(head, c(list(x), arglist)))
 }
 
 
@@ -420,17 +426,26 @@ head.activity_df <- function(x, ...) {
     attr(x, iattr) <-  all_attr[[iattr]]
   }
   class(x) <- c("activity_df", class(x))
+
+  attr(x, "n_head") <- get_n_head(...)
   x
 }
 
 #' @rdname print
 #' @export
 print.activity <- function(x, ...) {
+
+  arglist <- list(...)
+  if(! "n" %in% names(arglist)) {
+    if(!is.null(attr(x, "n_head")))
+      arglist$n <- attr(x, "n_head")
+  }
+
   cat(paste0("Sampling Rate: ", attr(x, "sample_rate"), "Hz\n"))
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
   class(x) <- "matrix"
-  print(head(x, ...))
+  print(do.call(head, c(list(x), arglist)))
 }
 
 #' @rdname print
@@ -446,7 +461,21 @@ head.activity <- function(x, ...) {
     attr(x, iattr) <-  all_attr[[iattr]]
   }
   class(x) <- c("activity", class(x))
+
+  attr(x, "n_head") <- get_n_head(...)
+
   x
+}
+
+get_n_head <- function(...) {
+  arglist <- list(...)
+  n_head <- NULL
+  if("n" %in% names(arglist)) {
+    n_head<- arglist[["n"]]
+  } else if(is.null(names(arglist)) & length(arglist) == 1) {
+    n_head<- arglist[[1]]
+  }
+  n_head
 }
 
 parse_lux_data <- function(lux_path, info, samples, verbose = TRUE) {
