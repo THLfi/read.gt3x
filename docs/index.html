@@ -78,9 +78,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="readgt3x" class="section level1">
+<div id="read-gt3x" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#readgt3x" class="anchor"></a>read.gt3x</h1></div>
+<a href="#read-gt3x" class="anchor"></a>read.gt3x</h1></div>
 <!-- badges: start -->
 
 <p>The <code>read.gt3x</code> R package implements a high performance C++ parser for ActiGraph’s <code>.gt3x</code> data format. Read the binary accelerometer data (.gt3x) into an R data frame in a few seconds.</p>
@@ -111,210 +111,210 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the read.gt3x package from GitHub, using the <code>remotes</code> package (available in CRAN).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"THLfi/read.gt3x"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"THLfi/read.gt3x"</span>)</a></code></pre></div>
 </div>
 <div id="basic-usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-usage" class="anchor"></a>Basic usage</h2>
 <p>The read.gt3x package includes two sample .gt3x files which can be used to demonstrate reading the data.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">library</span>(read.gt3x)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(read.gt3x)</a></code></pre></div>
 <p>First we need the path to a single gt3x file. We have one file included in the package:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>gt3xfile &lt;-</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">system.file</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    <span class="st">"extdata"</span>, <span class="st">"TAS1H30182785_2019-09-17.gt3x"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="dt">package =</span> <span class="st">"read.gt3x"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">gt3xfile &lt;-</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">system.file</span>(</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="st">"extdata"</span>, <span class="st">"TAS1H30182785_2019-09-17.gt3x"</span>,</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="dt">package =</span> <span class="st">"read.gt3x"</span>)</a></code></pre></div>
 <p>And you can download larger and more extensive <code>gt3x</code> files if desired:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>gt3xfile &lt;-<span class="st"> </span><span class="kw">gt3x_datapath</span>(<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">gt3xfile &lt;-<span class="st"> </span><span class="kw">gt3x_datapath</span>(<span class="dv">1</span>)</a></code></pre></div>
 <p>The <code><a href="reference/read.gt3x.html">read.gt3x()</a></code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix with three columns: X,Y,Z.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>X &lt;-<span class="st"> </span><span class="kw">read.gt3x</span>(gt3xfile)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">head</span>(X)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">#&gt; Sampling Rate: 100Hz</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co">#&gt; Firmware Version: 1.7.2</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="co">#&gt; Serial Number Prefix: TAS</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="co">#&gt;          X      Y     Z</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.000  0.008 0.996</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.016  0.000 1.008</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.020 -0.008 1.004</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">#&gt; [4,] 0.016 -0.012 1.012</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; [5,] 0.016 -0.008 1.008</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="kw">head</span>(<span class="kw">attributes</span>(X)<span class="op">$</span>time_index)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="co">#&gt; [1] 0 1 2 3 4 5</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="kw">attributes</span>(X)[<span class="kw">setdiff</span>(<span class="kw">names</span>(<span class="kw">attributes</span>(X)), <span class="kw">c</span>(<span class="st">"dim"</span>, <span class="st">"dimnames"</span>, <span class="st">"time_index"</span>))]</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="co">#&gt; $missingness</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="co">#&gt;                           time n_missing</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="co">#&gt; 1568745610 2019-09-17 18:40:10       400</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="co">#&gt; 1568745861 2019-09-17 18:44:21     10500</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">#&gt; 1568745977 2019-09-17 18:46:17     55400</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="co">#&gt; 1568746545 2019-09-17 18:55:45    112600</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a><span class="co">#&gt; 1568747697 2019-09-17 19:14:57      3300</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="co">#&gt; 1568747740 2019-09-17 19:15:40       100</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a><span class="co">#&gt; 1568747741 2019-09-17 19:15:41       100</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="co">#&gt; 1568747742 2019-09-17 19:15:42       500</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="co">#&gt; 1568747759 2019-09-17 19:15:59       100</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="co">#&gt; 1568747760 2019-09-17 19:16:00     24500</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a><span class="co">#&gt; $total_records</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="co">#&gt; [1] 33000</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="co">#&gt; $start_time_param</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a><span class="co">#&gt; [1] 1568745600</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a><span class="co">#&gt; $start_time_info</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a><span class="co">#&gt; [1] 1568745600</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a><span class="co">#&gt; $sample_rate</span></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true"></a><span class="co">#&gt; [1] 100</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true"></a><span class="co">#&gt; $impute_zeroes</span></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true"></a><span class="co">#&gt; $add_light</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true"></a><span class="co">#&gt; $start_time</span></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true"></a><span class="co">#&gt; [1] "2019-09-17 18:40:00 GMT"</span></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true"></a><span class="co">#&gt; $stop_time</span></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true"></a><span class="co">#&gt; [1] "2019-09-18 19:00:00 GMT"</span></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true"></a><span class="co">#&gt; $last_sample_time</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true"></a><span class="co">#&gt; [1] "2019-09-17 19:20:05 GMT"</span></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true"></a><span class="co">#&gt; $subject_name</span></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true"></a><span class="co">#&gt; [1] "suffix_85"</span></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true"></a><span class="co">#&gt; $time_zone</span></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true"></a><span class="co">#&gt; [1] "-04:00:00"</span></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true"></a><span class="co">#&gt; $firmware</span></span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true"></a><span class="co">#&gt; [1] "1.7.2"</span></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true"></a><span class="co">#&gt; $serial_prefix</span></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true"></a><span class="co">#&gt; [1] "TAS"</span></span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true"></a><span class="co">#&gt; $acceleration_min</span></span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true"></a><span class="co">#&gt; [1] "-8.0"</span></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true"></a><span class="co">#&gt; $acceleration_max</span></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true"></a><span class="co">#&gt; [1] "8.0"</span></span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true"></a><span class="co">#&gt; $bad_samples</span></span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true"></a><span class="co">#&gt; $old_version</span></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true"></a><span class="co">#&gt; $header</span></span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true"></a><span class="co">#&gt; GT3X information</span></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true"></a><span class="co">#&gt;  $ Serial Number     :"TAS1H30182785"</span></span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true"></a><span class="co">#&gt;  $ Device Type       :"Link"</span></span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true"></a><span class="co">#&gt;  $ Firmware          :"1.7.2"</span></span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true"></a><span class="co">#&gt;  $ Battery Voltage   :"4.18"</span></span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true"></a><span class="co">#&gt;  $ Sample Rate       :100</span></span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true"></a><span class="co">#&gt;  $ Start Date        : POSIXct, format: "2019-09-17 18:40:00"</span></span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true"></a><span class="co">#&gt;  $ Stop Date         : POSIXct, format: "2019-09-18 19:00:00"</span></span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true"></a><span class="co">#&gt;  $ Last Sample Time  : POSIXct, format: "2019-09-17 19:20:05"</span></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true"></a><span class="co">#&gt;  $ TimeZone          :"-04:00:00"</span></span>
-<span id="cb5-91"><a href="#cb5-91" aria-hidden="true"></a><span class="co">#&gt;  $ Download Date     : POSIXct, format: "2019-09-17 19:20:05"</span></span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true"></a><span class="co">#&gt;  $ Board Revision    :"8"</span></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true"></a><span class="co">#&gt;  $ Unexpected Resets :"0"</span></span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true"></a><span class="co">#&gt;  $ Acceleration Scale:256</span></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true"></a><span class="co">#&gt;  $ Acceleration Min  :"-8.0"</span></span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true"></a><span class="co">#&gt;  $ Acceleration Max  :"8.0"</span></span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true"></a><span class="co">#&gt;  $ Subject Name      :"suffix_85"</span></span>
-<span id="cb5-98"><a href="#cb5-98" aria-hidden="true"></a><span class="co">#&gt;  $ Serial Prefix     :"TAS"</span></span>
-<span id="cb5-99"><a href="#cb5-99" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true"></a><span class="co">#&gt; $class</span></span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true"></a><span class="co">#&gt; [1] "activity" "matrix"   "array"</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">X &lt;-<span class="st"> </span><span class="kw">read.gt3x</span>(gt3xfile)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">head</span>(X)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Sampling Rate: 100Hz</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; Firmware Version: 1.7.2</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; Serial Number Prefix: TAS</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;          X      Y     Z</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [1,] 0.000  0.008 0.996</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; [2,] 0.016  0.000 1.008</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; [3,] 0.020 -0.008 1.004</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; [4,] 0.016 -0.012 1.012</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; [5,] 0.016 -0.008 1.008</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">head</span>(<span class="kw">attributes</span>(X)<span class="op">$</span>time_index)</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; [1] 0 1 2 3 4 5</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw">attributes</span>(X)[<span class="kw">setdiff</span>(<span class="kw">names</span>(<span class="kw">attributes</span>(X)), <span class="kw">c</span>(<span class="st">"dim"</span>, <span class="st">"dimnames"</span>, <span class="st">"time_index"</span>))]</a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; $missingness</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;                           time n_missing</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; 1568745610 2019-09-17 18:40:10       400</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; 1568745861 2019-09-17 18:44:21     10500</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt; 1568745977 2019-09-17 18:46:17     55400</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 1568746545 2019-09-17 18:55:45    112600</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; 1568747697 2019-09-17 19:14:57      3300</span></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt; 1568747740 2019-09-17 19:15:40       100</span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt; 1568747741 2019-09-17 19:15:41       100</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt; 1568747742 2019-09-17 19:15:42       500</span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt; 1568747759 2019-09-17 19:15:59       100</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt; 1568747760 2019-09-17 19:16:00     24500</span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt; $total_records</span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt; [1] 33000</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; $start_time_param</span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; [1] 1568745600</span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt; $start_time_info</span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; [1] 1568745600</span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt; $sample_rate</span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co">#&gt; [1] 100</span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="co">#&gt; $impute_zeroes</span></a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; $add_light</span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co">#&gt; $start_time</span></a>
+<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt; [1] "2019-09-17 18:40:00 GMT"</span></a>
+<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-50" data-line-number="50"><span class="co">#&gt; $stop_time</span></a>
+<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co">#&gt; [1] "2019-09-18 19:00:00 GMT"</span></a>
+<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="co">#&gt; $last_sample_time</span></a>
+<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="co">#&gt; [1] "2019-09-17 19:20:05 GMT"</span></a>
+<a class="sourceLine" id="cb5-55" data-line-number="55"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-56" data-line-number="56"><span class="co">#&gt; $subject_name</span></a>
+<a class="sourceLine" id="cb5-57" data-line-number="57"><span class="co">#&gt; [1] "suffix_85"</span></a>
+<a class="sourceLine" id="cb5-58" data-line-number="58"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-59" data-line-number="59"><span class="co">#&gt; $time_zone</span></a>
+<a class="sourceLine" id="cb5-60" data-line-number="60"><span class="co">#&gt; [1] "-04:00:00"</span></a>
+<a class="sourceLine" id="cb5-61" data-line-number="61"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-62" data-line-number="62"><span class="co">#&gt; $firmware</span></a>
+<a class="sourceLine" id="cb5-63" data-line-number="63"><span class="co">#&gt; [1] "1.7.2"</span></a>
+<a class="sourceLine" id="cb5-64" data-line-number="64"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-65" data-line-number="65"><span class="co">#&gt; $serial_prefix</span></a>
+<a class="sourceLine" id="cb5-66" data-line-number="66"><span class="co">#&gt; [1] "TAS"</span></a>
+<a class="sourceLine" id="cb5-67" data-line-number="67"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-68" data-line-number="68"><span class="co">#&gt; $acceleration_min</span></a>
+<a class="sourceLine" id="cb5-69" data-line-number="69"><span class="co">#&gt; [1] "-8.0"</span></a>
+<a class="sourceLine" id="cb5-70" data-line-number="70"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-71" data-line-number="71"><span class="co">#&gt; $acceleration_max</span></a>
+<a class="sourceLine" id="cb5-72" data-line-number="72"><span class="co">#&gt; [1] "8.0"</span></a>
+<a class="sourceLine" id="cb5-73" data-line-number="73"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-74" data-line-number="74"><span class="co">#&gt; $bad_samples</span></a>
+<a class="sourceLine" id="cb5-75" data-line-number="75"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb5-76" data-line-number="76"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-77" data-line-number="77"><span class="co">#&gt; $old_version</span></a>
+<a class="sourceLine" id="cb5-78" data-line-number="78"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb5-79" data-line-number="79"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-80" data-line-number="80"><span class="co">#&gt; $header</span></a>
+<a class="sourceLine" id="cb5-81" data-line-number="81"><span class="co">#&gt; GT3X information</span></a>
+<a class="sourceLine" id="cb5-82" data-line-number="82"><span class="co">#&gt;  $ Serial Number     :"TAS1H30182785"</span></a>
+<a class="sourceLine" id="cb5-83" data-line-number="83"><span class="co">#&gt;  $ Device Type       :"Link"</span></a>
+<a class="sourceLine" id="cb5-84" data-line-number="84"><span class="co">#&gt;  $ Firmware          :"1.7.2"</span></a>
+<a class="sourceLine" id="cb5-85" data-line-number="85"><span class="co">#&gt;  $ Battery Voltage   :"4.18"</span></a>
+<a class="sourceLine" id="cb5-86" data-line-number="86"><span class="co">#&gt;  $ Sample Rate       :100</span></a>
+<a class="sourceLine" id="cb5-87" data-line-number="87"><span class="co">#&gt;  $ Start Date        : POSIXct, format: "2019-09-17 18:40:00"</span></a>
+<a class="sourceLine" id="cb5-88" data-line-number="88"><span class="co">#&gt;  $ Stop Date         : POSIXct, format: "2019-09-18 19:00:00"</span></a>
+<a class="sourceLine" id="cb5-89" data-line-number="89"><span class="co">#&gt;  $ Last Sample Time  : POSIXct, format: "2019-09-17 19:20:05"</span></a>
+<a class="sourceLine" id="cb5-90" data-line-number="90"><span class="co">#&gt;  $ TimeZone          :"-04:00:00"</span></a>
+<a class="sourceLine" id="cb5-91" data-line-number="91"><span class="co">#&gt;  $ Download Date     : POSIXct, format: "2019-09-17 19:20:05"</span></a>
+<a class="sourceLine" id="cb5-92" data-line-number="92"><span class="co">#&gt;  $ Board Revision    :"8"</span></a>
+<a class="sourceLine" id="cb5-93" data-line-number="93"><span class="co">#&gt;  $ Unexpected Resets :"0"</span></a>
+<a class="sourceLine" id="cb5-94" data-line-number="94"><span class="co">#&gt;  $ Acceleration Scale:256</span></a>
+<a class="sourceLine" id="cb5-95" data-line-number="95"><span class="co">#&gt;  $ Acceleration Min  :"-8.0"</span></a>
+<a class="sourceLine" id="cb5-96" data-line-number="96"><span class="co">#&gt;  $ Acceleration Max  :"8.0"</span></a>
+<a class="sourceLine" id="cb5-97" data-line-number="97"><span class="co">#&gt;  $ Subject Name      :"suffix_85"</span></a>
+<a class="sourceLine" id="cb5-98" data-line-number="98"><span class="co">#&gt;  $ Serial Prefix     :"TAS"</span></a>
+<a class="sourceLine" id="cb5-99" data-line-number="99"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-100" data-line-number="100"><span class="co">#&gt; $class</span></a>
+<a class="sourceLine" id="cb5-101" data-line-number="101"><span class="co">#&gt; [1] "activity" "matrix"   "array"</span></a></code></pre></div>
 <p>You can also convert the matrix to a data.frame with 4 columns: X,Y,Z,time</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(X)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">head</span>(df)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co">#&gt; Sampling Rate: 100Hz</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="co">#&gt; Firmware Version: 1.7.2</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="co">#&gt; Serial Number Prefix: TAS</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="co">#&gt;                  time     X      Y     Z</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="co">#&gt; 1 2019-09-17 18:40:00 0.000  0.008 0.996</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="co">#&gt; 2 2019-09-17 18:40:00 0.016  0.000 1.008</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="co">#&gt; 3 2019-09-17 18:40:00 0.020 -0.008 1.004</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="co">#&gt; 4 2019-09-17 18:40:00 0.016 -0.012 1.012</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">#&gt; 5 2019-09-17 18:40:00 0.016 -0.008 1.008</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="co">#&gt; 6 2019-09-17 18:40:00 0.008 -0.008 1.008</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="kw">attributes</span>(df)[<span class="kw">setdiff</span>(<span class="kw">names</span>(<span class="kw">attributes</span>(df)), <span class="kw">c</span>(<span class="st">"names"</span>, <span class="st">"row.names"</span>))]</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="co">#&gt; $class</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a><span class="co">#&gt; [1] "activity_df" "data.frame" </span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a><span class="co">#&gt; $subject_name</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a><span class="co">#&gt; [1] "suffix_85"</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a><span class="co">#&gt; $time_zone</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a><span class="co">#&gt; [1] "-04:00:00"</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a><span class="co">#&gt; $missingness</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a><span class="co">#&gt;                           time n_missing</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="co">#&gt; 1568745610 2019-09-17 18:40:10       400</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a><span class="co">#&gt; 1568745861 2019-09-17 18:44:21     10500</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a><span class="co">#&gt; 1568745977 2019-09-17 18:46:17     55400</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a><span class="co">#&gt; 1568746545 2019-09-17 18:55:45    112600</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a><span class="co">#&gt; 1568747697 2019-09-17 19:14:57      3300</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a><span class="co">#&gt; 1568747740 2019-09-17 19:15:40       100</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a><span class="co">#&gt; 1568747741 2019-09-17 19:15:41       100</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a><span class="co">#&gt; 1568747742 2019-09-17 19:15:42       500</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a><span class="co">#&gt; 1568747759 2019-09-17 19:15:59       100</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a><span class="co">#&gt; 1568747760 2019-09-17 19:16:00     24500</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a><span class="co">#&gt; $old_version</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a><span class="co">#&gt; $firmware</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true"></a><span class="co">#&gt; [1] "1.7.2"</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true"></a><span class="co">#&gt; $last_sample_time</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true"></a><span class="co">#&gt; [1] "2019-09-17 19:20:05 GMT"</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true"></a><span class="co">#&gt; $serial_prefix</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true"></a><span class="co">#&gt; [1] "TAS"</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true"></a><span class="co">#&gt; $sample_rate</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true"></a><span class="co">#&gt; [1] 100</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true"></a><span class="co">#&gt; $acceleration_min</span></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true"></a><span class="co">#&gt; [1] "-8.0"</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true"></a><span class="co">#&gt; $acceleration_max</span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true"></a><span class="co">#&gt; [1] "8.0"</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true"></a><span class="co">#&gt; $header</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true"></a><span class="co">#&gt; GT3X information</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true"></a><span class="co">#&gt;  $ Serial Number     :"TAS1H30182785"</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true"></a><span class="co">#&gt;  $ Device Type       :"Link"</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true"></a><span class="co">#&gt;  $ Firmware          :"1.7.2"</span></span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true"></a><span class="co">#&gt;  $ Battery Voltage   :"4.18"</span></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true"></a><span class="co">#&gt;  $ Sample Rate       :100</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true"></a><span class="co">#&gt;  $ Start Date        : POSIXct, format: "2019-09-17 18:40:00"</span></span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true"></a><span class="co">#&gt;  $ Stop Date         : POSIXct, format: "2019-09-18 19:00:00"</span></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true"></a><span class="co">#&gt;  $ Last Sample Time  : POSIXct, format: "2019-09-17 19:20:05"</span></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true"></a><span class="co">#&gt;  $ TimeZone          :"-04:00:00"</span></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true"></a><span class="co">#&gt;  $ Download Date     : POSIXct, format: "2019-09-17 19:20:05"</span></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true"></a><span class="co">#&gt;  $ Board Revision    :"8"</span></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true"></a><span class="co">#&gt;  $ Unexpected Resets :"0"</span></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true"></a><span class="co">#&gt;  $ Acceleration Scale:256</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true"></a><span class="co">#&gt;  $ Acceleration Min  :"-8.0"</span></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true"></a><span class="co">#&gt;  $ Acceleration Max  :"8.0"</span></span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true"></a><span class="co">#&gt;  $ Subject Name      :"suffix_85"</span></span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true"></a><span class="co">#&gt;  $ Serial Prefix     :"TAS"</span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true"></a><span class="co">#&gt; $start_time</span></span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true"></a><span class="co">#&gt; [1] "2019-09-17 18:40:00 GMT"</span></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true"></a><span class="co">#&gt; $stop_time</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true"></a><span class="co">#&gt; [1] "2019-09-18 19:00:00 GMT"</span></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true"></a><span class="co">#&gt; $total_records</span></span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true"></a><span class="co">#&gt; [1] 33000</span></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true"></a><span class="co">#&gt; $bad_samples</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(X)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">head</span>(df)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Sampling Rate: 100Hz</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Firmware Version: 1.7.2</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; Serial Number Prefix: TAS</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;                  time     X      Y     Z</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 1 2019-09-17 18:40:00 0.000  0.008 0.996</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 2 2019-09-17 18:40:00 0.016  0.000 1.008</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 3 2019-09-17 18:40:00 0.020 -0.008 1.004</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 4 2019-09-17 18:40:00 0.016 -0.012 1.012</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 5 2019-09-17 18:40:00 0.016 -0.008 1.008</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 6 2019-09-17 18:40:00 0.008 -0.008 1.008</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="kw">attributes</span>(df)[<span class="kw">setdiff</span>(<span class="kw">names</span>(<span class="kw">attributes</span>(df)), <span class="kw">c</span>(<span class="st">"names"</span>, <span class="st">"row.names"</span>))]</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; $class</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; [1] "activity_df" "data.frame" </span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; $subject_name</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; [1] "suffix_85"</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; $time_zone</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; [1] "-04:00:00"</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; $missingness</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt;                           time n_missing</span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; 1568745610 2019-09-17 18:40:10       400</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; 1568745861 2019-09-17 18:44:21     10500</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; 1568745977 2019-09-17 18:46:17     55400</span></a>
+<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; 1568746545 2019-09-17 18:55:45    112600</span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; 1568747697 2019-09-17 19:14:57      3300</span></a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt; 1568747740 2019-09-17 19:15:40       100</span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; 1568747741 2019-09-17 19:15:41       100</span></a>
+<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt; 1568747742 2019-09-17 19:15:42       500</span></a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; 1568747759 2019-09-17 19:15:59       100</span></a>
+<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; 1568747760 2019-09-17 19:16:00     24500</span></a>
+<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt; $old_version</span></a>
+<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt; $firmware</span></a>
+<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt; [1] "1.7.2"</span></a>
+<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-42" data-line-number="42"><span class="co">#&gt; $last_sample_time</span></a>
+<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="co">#&gt; [1] "2019-09-17 19:20:05 GMT"</span></a>
+<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-45" data-line-number="45"><span class="co">#&gt; $serial_prefix</span></a>
+<a class="sourceLine" id="cb6-46" data-line-number="46"><span class="co">#&gt; [1] "TAS"</span></a>
+<a class="sourceLine" id="cb6-47" data-line-number="47"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="co">#&gt; $sample_rate</span></a>
+<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="co">#&gt; [1] 100</span></a>
+<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="co">#&gt; $acceleration_min</span></a>
+<a class="sourceLine" id="cb6-52" data-line-number="52"><span class="co">#&gt; [1] "-8.0"</span></a>
+<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-54" data-line-number="54"><span class="co">#&gt; $acceleration_max</span></a>
+<a class="sourceLine" id="cb6-55" data-line-number="55"><span class="co">#&gt; [1] "8.0"</span></a>
+<a class="sourceLine" id="cb6-56" data-line-number="56"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-57" data-line-number="57"><span class="co">#&gt; $header</span></a>
+<a class="sourceLine" id="cb6-58" data-line-number="58"><span class="co">#&gt; GT3X information</span></a>
+<a class="sourceLine" id="cb6-59" data-line-number="59"><span class="co">#&gt;  $ Serial Number     :"TAS1H30182785"</span></a>
+<a class="sourceLine" id="cb6-60" data-line-number="60"><span class="co">#&gt;  $ Device Type       :"Link"</span></a>
+<a class="sourceLine" id="cb6-61" data-line-number="61"><span class="co">#&gt;  $ Firmware          :"1.7.2"</span></a>
+<a class="sourceLine" id="cb6-62" data-line-number="62"><span class="co">#&gt;  $ Battery Voltage   :"4.18"</span></a>
+<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#&gt;  $ Sample Rate       :100</span></a>
+<a class="sourceLine" id="cb6-64" data-line-number="64"><span class="co">#&gt;  $ Start Date        : POSIXct, format: "2019-09-17 18:40:00"</span></a>
+<a class="sourceLine" id="cb6-65" data-line-number="65"><span class="co">#&gt;  $ Stop Date         : POSIXct, format: "2019-09-18 19:00:00"</span></a>
+<a class="sourceLine" id="cb6-66" data-line-number="66"><span class="co">#&gt;  $ Last Sample Time  : POSIXct, format: "2019-09-17 19:20:05"</span></a>
+<a class="sourceLine" id="cb6-67" data-line-number="67"><span class="co">#&gt;  $ TimeZone          :"-04:00:00"</span></a>
+<a class="sourceLine" id="cb6-68" data-line-number="68"><span class="co">#&gt;  $ Download Date     : POSIXct, format: "2019-09-17 19:20:05"</span></a>
+<a class="sourceLine" id="cb6-69" data-line-number="69"><span class="co">#&gt;  $ Board Revision    :"8"</span></a>
+<a class="sourceLine" id="cb6-70" data-line-number="70"><span class="co">#&gt;  $ Unexpected Resets :"0"</span></a>
+<a class="sourceLine" id="cb6-71" data-line-number="71"><span class="co">#&gt;  $ Acceleration Scale:256</span></a>
+<a class="sourceLine" id="cb6-72" data-line-number="72"><span class="co">#&gt;  $ Acceleration Min  :"-8.0"</span></a>
+<a class="sourceLine" id="cb6-73" data-line-number="73"><span class="co">#&gt;  $ Acceleration Max  :"8.0"</span></a>
+<a class="sourceLine" id="cb6-74" data-line-number="74"><span class="co">#&gt;  $ Subject Name      :"suffix_85"</span></a>
+<a class="sourceLine" id="cb6-75" data-line-number="75"><span class="co">#&gt;  $ Serial Prefix     :"TAS"</span></a>
+<a class="sourceLine" id="cb6-76" data-line-number="76"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-77" data-line-number="77"><span class="co">#&gt; $start_time</span></a>
+<a class="sourceLine" id="cb6-78" data-line-number="78"><span class="co">#&gt; [1] "2019-09-17 18:40:00 GMT"</span></a>
+<a class="sourceLine" id="cb6-79" data-line-number="79"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-80" data-line-number="80"><span class="co">#&gt; $stop_time</span></a>
+<a class="sourceLine" id="cb6-81" data-line-number="81"><span class="co">#&gt; [1] "2019-09-18 19:00:00 GMT"</span></a>
+<a class="sourceLine" id="cb6-82" data-line-number="82"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-83" data-line-number="83"><span class="co">#&gt; $total_records</span></a>
+<a class="sourceLine" id="cb6-84" data-line-number="84"><span class="co">#&gt; [1] 33000</span></a>
+<a class="sourceLine" id="cb6-85" data-line-number="85"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-86" data-line-number="86"><span class="co">#&gt; $bad_samples</span></a>
+<a class="sourceLine" id="cb6-87" data-line-number="87"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">

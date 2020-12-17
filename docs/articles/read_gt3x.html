@@ -72,14 +72,13 @@
 
       
 
-      </header><script src="read_gt3x_files/header-attrs-2.5/header-attrs.js"></script><link href="read_gt3x_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="read_gt3x_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting started with read.gt3x</h1>
                         <h4 class="author">Tuomo Nieminen</h4>
             
-            <h4 class="date">2020-12-09</h4>
+            <h4 class="date">2020-12-17</h4>
       
       
       <div class="hidden name"><code>read_gt3x.Rmd</code></div>
@@ -89,29 +88,29 @@
     
     
 <p>This document describes how the <strong>read.gt3x</strong> package can be used to read binary activity data into R. To access the read.gt3x package, use:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">read.gt3x</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">read.gt3x</span><span class="op">)</span></pre></div>
 <p>For source code and installation instructions, see the <a href="https://github.com/THLfi/read.gt3x">GitHub page</a>.</p>
 <div id="reading--gt3x-data-into-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading--gt3x-data-into-r" class="anchor"></a>Reading .gt3x data into R</h2>
 <p>The read.gt3x package includes two sample .gt3x files which I’ll use to demonstrate reading the data. First we need the path to a single gt3x file. We will use data embedded in the package:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gt3xfile</span> <span class="op">&lt;-</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">gt3xfile</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>
     <span class="st">"extdata"</span>, <span class="st">"TAS1H30182785_2019-09-17.gt3x"</span>,
-    package <span class="op">=</span> <span class="st">"read.gt3x"</span><span class="op">)</span></code></pre></div>
+    package <span class="op">=</span> <span class="st">"read.gt3x"</span><span class="op">)</span></pre></div>
 <p>but longer and more extensive data can be downloaded via <code>gt3x_datapath</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gt3xfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">gt3xfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gt3x_datapath.html">gt3x_datapath</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></pre></div>
 <div id="method-1-temporary-unzip-and-read" class="section level3">
 <h3 class="hasAnchor">
 <a href="#method-1-temporary-unzip-and-read" class="anchor"></a>Method 1: Temporary unzip and read</h3>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function can take as input a path to a single .gt3x file and will then read activity samples as an R matrix.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt; Sampling Rate: 100Hz</span>
 <span class="co">#&gt; Firmware Version: 1.7.2</span>
 <span class="co">#&gt; Serial Number Prefix: TAS</span>
@@ -121,32 +120,32 @@
 <span class="co">#&gt; [3,] 0.020 -0.008 1.004</span>
 <span class="co">#&gt; [4,] 0.016 -0.012 1.012</span>
 <span class="co">#&gt; [5,] 0.016 -0.008 1.008</span>
-<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></code></pre></div>
-<pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  551559 29.5    1222740 65.4         NA   739676 39.6
-#&gt; Vcells 1004832  7.7    8388608 64.0      65536  2446497 18.7
-#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  551568 29.5    1222740 65.4         NA   739676 39.6
-#&gt; Vcells 1004902  7.7    8388608 64.0      65536  2446497 18.7</code></pre>
+<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></pre></div>
+<pre><code>#&gt;          used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells 542338 29.0    1213190 64.8         NA   667214 35.7
+#&gt; Vcells 995773  7.6    8388608 64.0      16384  2222935 17.0
+#&gt;          used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells 542347 29.0    1213190 64.8         NA   667214 35.7
+#&gt; Vcells 995843  7.6    8388608 64.0      16384  2222935 17.0</code></pre>
 </div>
 <div id="method-2-permanent-unzip-then-read" class="section level3">
 <h3 class="hasAnchor">
 <a href="#method-2-permanent-unzip-then-read" class="anchor"></a>Method 2: permanent unzip, then read</h3>
 <p>.gt3x files are actually zip archives which contain two files: log.bin and info.txt. log.bin is a binary file that contains the actual samples. It might make sense to store the data as <em>unzipped</em> folders containing these two files, because otherwise the read.gt3x() function will have to unzip each .gt3x archive to a temporary location, every time you need to access the data.</p>
 <p><code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> also accepts paths to unzipped gt3x folders. To demonstrate the usage, we’ll unzip the sample .gt3x files in the package, and then read them. The <code><a href="../reference/unzip.gt3x.html">unzip.gt3x()</a></code> helper function unzips all .gt3x files in a given directory. By default, the contents of a .gt3x file named “subject001.gt3x” are extracted to a folder named “subject001”. <code><a href="../reference/unzip.gt3x.html">unzip.gt3x()</a></code> returns a vector of paths to the unzipped gt3x folders. The location argument can be used to choose where to locate those folders.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span> <span class="co"># location of .gt3x files</span>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">gt3xfile</span><span class="op">)</span> <span class="co"># location of .gt3x files</span>
 <span class="va">gt3xfolders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unzip.gt3x.html">unzip.gt3x</a></span><span class="op">(</span><span class="va">datadir</span>, location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Unzipping gt3x data to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpA61xwa</span>
+<span class="co">#&gt; Unzipping gt3x data to /var/folders/tj/jh5ycyrd6r1d1f7nphx_5tnm0000gp/T//RtmpEd9NqZ</span>
 <span class="co">#&gt; 1/1</span>
-<span class="co">#&gt; Unzipping /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpEaoXnd/temp_libpathd9ee53236a80/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
-<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpA61xwa/TAS1H30182785_2019-09-17</span></code></pre></div>
+<span class="co">#&gt; Unzipping /private/var/folders/tj/jh5ycyrd6r1d1f7nphx_5tnm0000gp/T/Rtmp11rrtx/temp_libpath751b498b0d52/read.gt3x/extdata/TAS1H30182785_2019-09-17.gt3x</span>
+<span class="co">#&gt;  === info.txt, log.bin extracted to /var/folders/tj/jh5ycyrd6r1d1f7nphx_5tnm0000gp/T//RtmpEd9NqZ/TAS1H30182785_2019-09-17</span></pre></div>
 <p>The <code><a href="../reference/read.gt3x.html">read.gt3x()</a></code> function accepts a path to an unzipped gt3x folder. It is a bit faster if the unzip step has already been performed.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gt3xfolder</span> <span class="op">&lt;-</span> <span class="va">gt3xfolders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span><span class="op">(</span><span class="va">gt3xfolder</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="va">gt3xfolder</span> <span class="op">&lt;-</span> <span class="va">gt3xfolders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.gt3x.html">read.gt3x</a></span><span class="op">(</span><span class="va">gt3xfolder</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt; Sampling Rate: 100Hz</span>
 <span class="co">#&gt; Firmware Version: 1.7.2</span>
 <span class="co">#&gt; Serial Number Prefix: TAS</span>
@@ -156,22 +155,22 @@
 <span class="co">#&gt; [3,] 0.020 -0.008 1.004</span>
 <span class="co">#&gt; [4,] 0.016 -0.012 1.012</span>
 <span class="co">#&gt; [5,] 0.016 -0.008 1.008</span>
-<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></code></pre></div>
+<span class="co">#&gt; [6,] 0.008 -0.008 1.008</span></pre></div>
 </div>
 </div>
 <div id="activity-data-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#activity-data-matrix" class="anchor"></a>Activity data matrix</h2>
 <p>Internally, the data matrix returned by read.gt3x() is a bit smarter than it looks, as it knows all the (relative) timestamps of the observations.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt;  'activity' num [1:33000, 1:3] 0 0.016 0.02 0.016 0.016 0.008 0.016 0.02 0.016 0.012 ...</span>
 <span class="co">#&gt;  - attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   ..$ : NULL</span>
 <span class="co">#&gt;   ..$ : chr [1:3] "X" "Y" "Z"</span>
 <span class="co">#&gt;  - attr(*, "time_index")= num [1:33000] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="co">#&gt;  - attr(*, "missingness")='data.frame':  10 obs. of  2 variables:</span>
-<span class="co">#&gt;   ..$ time     : POSIXct[1:10], format: "2019-09-17 18:40:10" "2019-09-17 18:44:21" ...</span>
+<span class="co">#&gt;   ..$ time     : POSIXct[1:10], format: "2019-09-17 18:40:10" ...</span>
 <span class="co">#&gt;   ..$ n_missing: int [1:10] 400 10500 55400 112600 3300 100 100 500 100 24500</span>
 <span class="co">#&gt;  - attr(*, "total_records")= int 33000</span>
 <span class="co">#&gt;  - attr(*, "start_time_param")= num 1.57e+09</span>
@@ -208,7 +207,7 @@
 <span class="co">#&gt;   ..$ Acceleration Max  : chr "8.0"</span>
 <span class="co">#&gt;   ..$ Subject Name      : chr "suffix_85"</span>
 <span class="co">#&gt;   ..$ Serial Prefix     : chr "TAS"</span>
-<span class="co">#&gt;   ..- attr(*, "class")= chr [1:2] "gt3x_info" "list"</span></code></pre></div>
+<span class="co">#&gt;   ..- attr(*, "class")= chr [1:2] "gt3x_info" "list"</span></pre></div>
 <ul>
 <li>time_index: Time passed since start</li>
 <li>start_time: timestamp of first sample</li>
@@ -219,8 +218,8 @@
 <h2 class="hasAnchor">
 <a href="#converting-to-a-data-frame" class="anchor"></a>Converting to a data.frame</h2>
 <p>the read.gt3x package has an as.data.frame method for the activity matrix, which converts the matrix to a dataframe and adds a “time” column, which gives the timestamp of each sample. The timestamps are stored in R with the GMT timezone but note that this is misleading: in reality the timestamps correspond to the local time of the device!</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 <span class="co">#&gt; Sampling Rate: 100Hz</span>
 <span class="co">#&gt; Firmware Version: 1.7.2</span>
@@ -231,13 +230,13 @@
 <span class="co">#&gt; 3 2019-09-17 18:40:00.01 0.020 -0.008 1.004</span>
 <span class="co">#&gt; 4 2019-09-17 18:40:00.02 0.016 -0.012 1.012</span>
 <span class="co">#&gt; 5 2019-09-17 18:40:00.03 0.016 -0.008 1.008</span>
-<span class="co">#&gt; 6 2019-09-17 18:40:00.04 0.008 -0.008 1.008</span></code></pre></div>
+<span class="co">#&gt; 6 2019-09-17 18:40:00.04 0.008 -0.008 1.008</span></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568292 30.4    1222740 65.4         NA   843196 45.1
-#&gt; Vcells 1043090  8.0    8388608 64.0      65536  2446497 18.7
+#&gt; Ncells  558994 29.9    1213190 64.8         NA   820227 43.9
+#&gt; Vcells 1033982  7.9    8388608 64.0      16384  2327434 17.8
 #&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  568286 30.4    1222740 65.4         NA   843196 45.1
-#&gt; Vcells 1043137  8.0    8388608 64.0      65536  2446497 18.7</code></pre>
+#&gt; Ncells  558988 29.9    1213190 64.8         NA   820227 43.9
+#&gt; Vcells 1034029  7.9    8388608 64.0      16384  2327434 17.8</code></pre>
 </div>
   </div>
 
