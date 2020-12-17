@@ -25,13 +25,13 @@ reference:
 }
 \examples{
 mystr = "599633592352500000"
-x = read.gt3x:::ticks2datetime(mystr)
+x = read.gt3x::ticks2datetime(mystr)
 x
-out = read.gt3x:::datetime2ticks(as.POSIXct("1901-03-02 08:40:35.25", tz = "UTC"))
+out = read.gt3x::datetime2ticks(as.POSIXct("1901-03-02 08:40:35.25", tz = "UTC"))
 out = as.character(out)
 out
 stopifnot(out == mystr)
-read.gt3x:::datetime2ticks(x = as.POSIXct(Sys.time(), tz = "EST"))
+read.gt3x::datetime2ticks(x = as.POSIXct(Sys.time(), tz = "EST"))
 }
 \seealso{
 Other gt3x-utils: 
