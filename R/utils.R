@@ -142,7 +142,7 @@ have_log <- function(path, verbose = TRUE) {
 #' out = as.character(out)
 #' out
 #' stopifnot(out == mystr)
-#' read.gt3x:::datetime2ticks(x = as.POSIXct(Sys.time(), tz = "EST"))
+#' read.gt3x::datetime2ticks(x = as.POSIXct(Sys.time(), tz = "EST"))
 ticks2datetime <- function(ticks, tz = "GMT") {
   ticks <- as.double(ticks)
   seconds <- ticks / 1e7
