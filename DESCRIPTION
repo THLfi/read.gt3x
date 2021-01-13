@@ -1,6 +1,6 @@
 Package: read.gt3x
 Type: Package
-Title: Parse 'Actigraph' 'GT3X'/'GT3X+' 'Accelerometer' Data
+Title: Parse 'ActiGraph' 'GT3X'/'GT3X+' 'Accelerometer' Data
 Version: 1.0.2
 Authors@R: 
     c(person(given = "Tuomo",
