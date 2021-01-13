@@ -53,9 +53,17 @@ gt3x_download <- function(url, exdir, verbose = TRUE) {
     message("Downloading gt3x sample data from ", url)
   }
   temp <- tempfile()
-  download.file(url, temp, method = "auto", quiet = !verbose, mode = "wb")
+  on.exit(unlink(temp))
+  old <- options()         # code line i
+  on.exit(options(old), add = TRUE)    # code line i+1
+  options(timeout = 300)
+  res = download.file(url, temp, method = "auto",
+                      quiet = !verbose, mode = "wb")
+  if (res != 0) {
+    warning("File download did exit with 0 code, may not fully download")
+  }
   unzip(temp, exdir = exdir)
-  unlink(temp)
+  attr(exdir, "result") = res
   return(exdir)
 }
 
