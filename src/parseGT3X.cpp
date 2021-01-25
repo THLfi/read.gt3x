@@ -104,7 +104,7 @@ double decodeFloatParameterValue(const uint32_t value) {
 
 // saves the start time from log.bin parameters and prints all of the parameters (if verbose = true)
 // ref: https://github.com/actigraph/GT3X-File-Format/blob/master/LogRecords/Parameters.md
-void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool verbose) {
+void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool verbose, uint32_t& features) {
   // The record payload is of variable length consisting of 8-byte key/value pairs.
   int n_params = bytes / 8;
   uint16_t address;
@@ -130,9 +130,15 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
         decoded_value = decodeFloatParameterValue(value);
         if(verbose)
           Rcout << " value: " << decoded_value << "\n";
+        // all_params.push_back(Rcpp::as<std::string>(decoded_value));
+
       }
-      else if(verbose)
-        Rcout <<  " value: " << value << "\n";
+      else {
+        if(verbose)
+          Rcout <<  " value: " << value << "\n";
+        // all_params = value;
+      }
+
     }
 
     else if(address == 1) {
@@ -140,9 +146,19 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
         start_time = (uint32_t)value;
         if(verbose)
           Rcout << " (start time) ";
+        // all_params.push_back("start time");
+        // all_params.push_back(Rcpp::as<std::string>(start_time));
+      }
+      if(key == 2) { // start time
+        features = (uint32_t)value;
+        if(verbose)
+          Rcout << " (features) ";
+        // all_params.push_back("start time");
+        // all_params.push_back(Rcpp::as<std::string>(start_time));
       }
       if(verbose)
         Rcout <<  " value: " << value << "\n";
+
     }
   }
   if(verbose)
@@ -335,6 +351,7 @@ NumericMatrix parseGT3X(const char* filename,
   uint16_t size;
   uint32_t payload_start;
   uint32_t param_start_time;
+  uint32_t features;
   uint32_t expected_payload_start = start_time;
   int payload_timediff;
   int total_records = 0;
@@ -378,7 +395,8 @@ NumericMatrix parseGT3X(const char* filename,
       }
 
       if(type == RECORDTYPE_PARAMETERS) {
-        ParseParameters(GT3Xstream, size, param_start_time, verbose);
+        ParseParameters(GT3Xstream, size, param_start_time, verbose, features);
+        // ParseParameters(GT3Xstream, size, param_start_time, verbose);
         if (debug) {
           Rcout << "param_start_time: " << param_start_time << "\n";
         }
@@ -531,6 +549,7 @@ NumericMatrix parseGT3X(const char* filename,
   activityMatrix.attr("total_records") = total_records;
 
   activityMatrix.attr("start_time_param") = param_start_time;
+  activityMatrix.attr("features") = features;
   activityMatrix.attr("start_time_info") = start_time;
   activityMatrix.attr("sample_rate") = sample_rate;
   activityMatrix.attr("impute_zeroes") = impute_zeroes;
