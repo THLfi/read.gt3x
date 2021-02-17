@@ -51,7 +51,9 @@ NULL
 #'
 #' x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
 #' verbose = TRUE)
+#' attr(x, "features")
 #' df2 <- as.data.frame(x, verbose = TRUE)
+#' attr(df2, "features")
 #' head(df2)
 #' rm(x); gc(); gc()
 #' rm(df2); gc()
@@ -175,11 +177,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
     # need reordering for Y X Z ACTIVITY PACKETS
-    tmp_at = attributes(accdata)
-    accdata = accdata[, xyz]
-    tmp_at$dim = dim(accdata)
-    tmp_at$dimnames[[2]] = xyz
-    attributes(accdata) = tmp_at
+    tmp_at <- attributes(accdata)
+    accdata <- accdata[, xyz]
+    tmp_at$dim <- dim(accdata)
+    tmp_at$dimnames[[2]] <- xyz
+    tmp_at$features <- get_features(tmp_at$features)
+    attributes(accdata) <- tmp_at
     rm(tmp_at)
 
     if (verbose > 1) {
@@ -383,6 +386,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   attr(x, "stop_time") <- all_attributes[["stop_time"]]
   attr(x, "total_records") <- all_attributes[["total_records"]]
   attr(x, "bad_samples") <- all_attributes[["bad_samples"]]
+  attr(x, "features") <- all_attributes[["features"]]
 
   x
 }
@@ -497,4 +501,20 @@ parse_lux_data <- function(lux_path, info, samples, verbose = TRUE) {
       verbose = as.logical(verbose))
   }
   luxdata
+}
+
+
+get_features = function(features) {
+  if (is.null(features)) {
+    return(NULL)
+  }
+  feat <- c("heart rate monitor", "data summary", "sleep mode", "proximity tagging",
+           "epoch data", "no raw data")
+  features <- as.integer(intToBits(features))[1:5] > 0
+  if (!any(features)) {
+    features <- "none"
+  } else {
+    features <- paste(feat[features], collapse = ",")
+  }
+  features
 }

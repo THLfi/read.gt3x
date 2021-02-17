@@ -68,7 +68,9 @@ have_log_and_info(gt3xfile, verbose = TRUE)
 
 x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
 verbose = TRUE)
+attr(x, "features")
 df2 <- as.data.frame(x, verbose = TRUE)
+attr(df2, "features")
 head(df2)
 rm(x); gc(); gc()
 rm(df2); gc()
