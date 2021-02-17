@@ -149,12 +149,12 @@ void ParseParameters(ifstream& stream, int bytes, uint32_t& start_time, bool ver
         // all_params.push_back("start time");
         // all_params.push_back(Rcpp::as<std::string>(start_time));
       }
-      if(key == 2) { // start time
+      if(key == 2) { // features
         features = (uint32_t)value;
         if(verbose)
           Rcout << " (features) ";
-        // all_params.push_back("start time");
-        // all_params.push_back(Rcpp::as<std::string>(start_time));
+        // all_params.push_back("features");
+        // all_params.push_back(Rcpp::as<std::string>(features));
       }
       if(verbose)
         Rcout <<  " value: " << value << "\n";
