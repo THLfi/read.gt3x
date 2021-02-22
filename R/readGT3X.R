@@ -290,7 +290,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
 
   if (flag_idle_sleep) {
-    accdata$idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3
+    if (asDataFrame) {
+      accdata$idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3
+    } else {
+      accdata = cbind(accdata,
+                      idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3)
+    }
   }
 
   accdata
@@ -516,7 +521,7 @@ get_features = function(features) {
     return(NULL)
   }
   feat <- c("heart rate monitor", "data summary", "sleep mode", "proximity tagging",
-           "epoch data", "no raw data")
+            "epoch data", "no raw data")
   features <- as.integer(intToBits(features))[1:5] > 0
   if (!any(features)) {
     features <- "none"
