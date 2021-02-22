@@ -20,6 +20,8 @@ NULL
 #' @param cleanup should any unzipped files be deleted?
 #' @param add_light add light data to the `data.frame` if data exists in the
 #' GT3X
+#' @param flag_idle_sleep flag idle sleep mode.  If \code{imputeZeroes = TRUE},
+#' this finds where all 3 axes are zero.
 #'
 #' @note
 #'
@@ -104,6 +106,7 @@ NULL
 #' @export
 read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       imputeZeroes = FALSE,
+                      flag_idle_sleep = FALSE,
                       cleanup = FALSE,
                       ...,
                       add_light = FALSE) {
@@ -285,6 +288,10 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   if (asDataFrame)
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
+
+  if (flag_idle_sleep) {
+    accdata$idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3
+  }
 
   accdata
 
