@@ -357,6 +357,9 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   x = as.data.frame(x)
   x$time = start_time + time_index/divider;
   x = x[, c("time", setdiff(colnames(x), "time"))]
+  if ("idle" %in% colnames(x)) {
+    x$idle = x$idle > 0
+  }
 
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (add_light) {
