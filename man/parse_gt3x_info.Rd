@@ -2,9 +2,12 @@
 % Please edit documentation in R/gt3x_info.R
 \name{parse_gt3x_info}
 \alias{parse_gt3x_info}
+\alias{extract_gt3x_info}
 \title{Parse GT3X info.txt file}
 \usage{
 parse_gt3x_info(path, tz = "GMT")
+
+extract_gt3x_info(path, tz = "GMT")
 }
 \arguments{
 \item{path}{Path to a .gt3x file or an unzipped gt3x directory}
@@ -13,6 +16,11 @@ parse_gt3x_info(path, tz = "GMT")
 }
 \description{
 Parse GT3X info.txt file
+}
+\note{
+The input for \code{parse_gt3x_info} is a \code{gt3x} file, but
+the \code{path} for \code{extract_gt3x_info} is the \code{info.txt} file,
+which can also pass in a connection
 }
 \examples{
 gt3xfile <-

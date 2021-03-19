@@ -5,6 +5,9 @@
 #' @param path Path to a .gt3x file or an unzipped gt3x directory
 #' @param tz timezone, passed to \code{\link{ticks2datetime}}
 #' @family gt3x-parsers
+#' @note The input for \code{parse_gt3x_info} is a \code{gt3x} file, but
+#' the \code{path} for \code{extract_gt3x_info} is the \code{info.txt} file,
+#' which can also pass in a connection
 #'
 #' @examples
 #' gt3xfile <-
@@ -29,7 +32,13 @@ parse_gt3x_info <- function(path, tz = "GMT") {
       verbose = FALSE)
     on.exit(unlink(path, recursive = TRUE))
   }
-  infotxt <- readLines(file.path(path, "info.txt"))
+  extract_gt3x_info(file.path(path, "info.txt"))
+}
+
+#' @export
+#' @rdname parse_gt3x_info
+extract_gt3x_info <- function(path, tz = "GMT") {
+  infotxt <- readLines(path)
   infotxt <- strsplit(infotxt, split = ": ")
   infomatrix <- do.call("rbind", infotxt)
   values <- infomatrix[, 2]
@@ -74,7 +83,7 @@ parse_gt3x_info <- function(path, tz = "GMT") {
 
   if (length(info$`Acceleration Max`) == 0 ||
       length(info$`Acceleration Min`) == 0
-      ) {
+  ) {
     if (is.null(pref) || length(pref) == 0 || !pref %in% prefs) {
       pref = NA
       scale = NULL
