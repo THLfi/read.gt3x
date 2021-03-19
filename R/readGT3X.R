@@ -20,6 +20,8 @@ NULL
 #' @param cleanup should any unzipped files be deleted?
 #' @param add_light add light data to the `data.frame` if data exists in the
 #' GT3X
+#' @param flag_idle_sleep flag idle sleep mode.  If \code{imputeZeroes = TRUE},
+#' this finds where all 3 axes are zero.
 #'
 #' @note
 #'
@@ -104,6 +106,7 @@ NULL
 #' @export
 read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       imputeZeroes = FALSE,
+                      flag_idle_sleep = FALSE,
                       cleanup = FALSE,
                       ...,
                       add_light = FALSE) {
@@ -286,6 +289,15 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   if (asDataFrame)
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
 
+  if (flag_idle_sleep) {
+    if (asDataFrame) {
+      accdata$idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3
+    } else {
+      accdata = cbind(accdata,
+                      idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3)
+    }
+  }
+
   accdata
 
 }
@@ -345,6 +357,9 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   x = as.data.frame(x)
   x$time = start_time + time_index/divider;
   x = x[, c("time", setdiff(colnames(x), "time"))]
+  if ("idle" %in% colnames(x)) {
+    x$idle = x$idle > 0
+  }
 
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (add_light) {
@@ -509,7 +524,7 @@ get_features = function(features) {
     return(NULL)
   }
   feat <- c("heart rate monitor", "data summary", "sleep mode", "proximity tagging",
-           "epoch data", "no raw data")
+            "epoch data", "no raw data")
   features <- as.integer(intToBits(features))[1:5] > 0
   if (!any(features)) {
     features <- "none"

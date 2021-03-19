@@ -1,3 +1,9 @@
+# read.gt3x 1.1.1
+
+* Added extraction of features.
+* Added `extract_gt3x_info` for allowing of passing of connections for info text files.
+
+
 # read.gt3x 1.0.2
 
 * Added timeout for `gt3x_datapath` downloading.
