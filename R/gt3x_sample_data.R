@@ -9,6 +9,7 @@
 #' \dontrun{
 #' dir <- gt3x_datapath()
 #' gt3x_filename <- gt3x_datapath(1)
+#' stopifnot(!is.na(gt3x_datapath(2)))
 #' }
 #'
 #' @family file manipulations
@@ -24,14 +25,14 @@ gt3x_datapath <- function(index = NULL, verbose = TRUE) {
   for (i in seq_along(filenames)) {
     if (!file.exists(file.path(datadir, filenames[i]))) {
       gt3x_download(
-        url = gt3x_url(i),
+        url = paste0(gt3x_dataurl(), "/", filenames[i], ".zip"),
         exdir = datadir,
         verbose = verbose)
     }
   }
   if (!is.null(index)) {
-    files <- list_gt3x(datadir)
-    return(files[index])
+    files <- file.path(datadir, filenames)
+    return(files)
   }
   datadir
 }
@@ -92,7 +93,7 @@ gt3x_url <- function(index = NULL, filename = NULL) {
 gt3x_dataurl <- function(
   version = "v1.0",
   baseurl = "https://github.com/THLfi/read.gt3x/releases/download") {
-  url <- file.path(baseurl, version)
+  url <- paste(baseurl, version, sep ="/")
   url
 }
 
