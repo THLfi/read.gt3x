@@ -1,8 +1,10 @@
+#define STRICT_R_HEADERS
 #include <Rcpp.h>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <cfloat>
 
 using namespace Rcpp;
 using namespace std;
