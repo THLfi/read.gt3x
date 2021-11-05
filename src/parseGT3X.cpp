@@ -319,6 +319,9 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' @param scale_factor Scale factor for the activity samples.
 //' @param sample_rate sampling rate for activity samples.
 //' @param start_time starting time of the sample recording.
+//' @param use_batching whether to use batching or not (false by default)
+//' @param batch_begin first record to include in this batch
+//' @param batch_end last record to include in this batch
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //' @param impute_zeroes Impute zeros in case there are missingness?
 //' @param debug Print information for every activity second
@@ -334,6 +337,9 @@ NumericMatrix parseGT3X(const char* filename,
                         const double scale_factor,
                         const int sample_rate,
                         const uint32_t start_time,
+                        const bool use_batching = false,
+                        const uint32_t batch_begin = 0,
+                        const uint32_t batch_end = 0,
                         const bool verbose = false,
                         const bool debug = false,
                         const bool impute_zeroes = false) {
@@ -363,9 +369,17 @@ NumericMatrix parseGT3X(const char* filename,
 
   int chksum;
 
-  if (debug)
+  if (debug) {
     Rcout << "Reading Stream...\n";
+  }
+
+  uint32_t batch_counter = 0;
+
   while(GT3Xstream) {
+
+    if (use_batching && batch_counter > batch_end) {
+      break;
+    }
 
     item = GT3Xstream.get();
     if(!GT3Xstream) {
@@ -452,20 +466,47 @@ NumericMatrix parseGT3X(const char* filename,
             Rcout << "First ACTIVTY packet, sample size: " << sample_size << "\n";
             Rcout << "ACTIVTY packet size: " << size << "\n";
           }
-          have_activity = true;
-          num_activity = num_activity + 1;
-          ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-          total_records += sample_size;
+
+          ++batch_counter;
+          if (!use_batching || batch_counter >= batch_begin) {
+            have_activity = true;
+            num_activity = num_activity + 1;
+            ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+            total_records += sample_size;
+          } else {
+            std::streamoff payload_size;
+            if (N_ACTIVITYCOLUMNS == 3) {
+              if (sample_size % 2 == 0) {
+                // 12 * 2 (even sample_size) * 3 = 72, is divisible by 8:
+                payload_size = N_ACTIVITYCOLUMNS * 12 * sample_size / 8;
+              } else {
+                // (12 * 3 * odd number + 4) = (12 * 3 + 4) + (12 * 3 * even number) = 40 + 72, is divisible by 8:
+                payload_size = (N_ACTIVITYCOLUMNS * 12 * sample_size + 4) / 8;
+              }
+            } else {
+              Rf_error("Batch loading not implemented for number of activity columns other than 3, aborting.");
+            }
+            Rcout << "payload_size: " << payload_size << ", size: " << size << "\n";
+            GT3Xstream.seekg(payload_size, std::ios_base::cur);
+          }
         }
 
         else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
           if ( debug & !have_activity2) {
             Rcout << "First ACTIVTY2 packet, sample size: " << sample_size << "\n";
           }
-          have_activity2 = true;
-          num_activity2 = num_activity2 + 1;
-          ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-          total_records += sample_size;
+
+          ++batch_counter;
+          if (!use_batching || batch_counter >= batch_begin) {
+            have_activity2 = true;
+            num_activity2 = num_activity2 + 1;
+            ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+            total_records += sample_size;
+          } else {
+            std::streamoff payload_size = sample_size * N_ACTIVITYCOLUMNS * 2;
+            Rcout << "payload_size: " << payload_size << ", size: " << size << "\n";
+            GT3Xstream.seekg(payload_size, std::ios_base::cur);
+          }
         }
 
       }
