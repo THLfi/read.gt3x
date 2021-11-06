@@ -10,6 +10,9 @@ parseGT3X(
   scale_factor,
   sample_rate,
   start_time,
+  use_batching = FALSE,
+  batch_begin = 0L,
+  batch_end = 0L,
   verbose = FALSE,
   debug = FALSE,
   impute_zeroes = FALSE
@@ -26,6 +29,12 @@ not data is found.}
 \item{sample_rate}{sampling rate for activity samples.}
 
 \item{start_time}{starting time of the sample recording.}
+
+\item{use_batching}{whether to use batching or not (false by default)}
+
+\item{batch_begin}{first record to include in this batch}
+
+\item{batch_end}{last record to include in this batch}
 
 \item{verbose}{Print the parameters from the log.bin file and other messages?}
 
