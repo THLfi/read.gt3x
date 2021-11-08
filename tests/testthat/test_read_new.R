@@ -129,3 +129,13 @@ testthat::test_that("read.gt3x reads a batch at the end of the file correctly", 
 # Also, the batch counter currently only counts non-empty records, so comparing
 # to a dataframe with impute_zeros (like gt3xdata_full) has to be done on a row
 # by row basis, avoiding the zeroed rows.
+# Therefore, for the time being, imputing zeroes is disabled when using
+# batching, as confirmed by the following test:
+
+gt3xdata_batch_impute <- read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes=TRUE,
+                                   use_batching = TRUE, batch_begin=11, batch_end=20)
+
+testthat::test_that("read.gt3x disables imputing zeroes when using batching", {
+  testthat::expect_true(nrow(gt3xdata_batch_impute) == nrow(gt3xdata_bigger_batch))
+  testthat::expect_true(all(gt3xdata_bigger_batch[1:100,] == gt3xdata_batch_impute[1:100,]))
+})

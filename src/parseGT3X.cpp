@@ -431,7 +431,7 @@ NumericMatrix parseGT3X(const char* filename,
           } else {
             Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
-            if(impute_zeroes) {
+            if(impute_zeroes && !use_batching) {
               ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
               total_records += n_missing;
             }
@@ -454,7 +454,7 @@ NumericMatrix parseGT3X(const char* filename,
             Rcout << "max_samples: " << max_samples << "\n";
           }
           Missingness[patch::to_string(payload_start)] = sample_rate;
-          if(impute_zeroes) {
+          if(impute_zeroes && !use_batching) {
             ImputeZeroes(timeStamps, total_records, sample_rate, sample_rate, start_time, payload_start, debug);
             total_records += sample_rate;
           }
@@ -511,7 +511,7 @@ NumericMatrix parseGT3X(const char* filename,
   scaleAndRoundActivity(activityMatrix, scale_factor, total_records);
 
 
-  if(!impute_zeroes) {
+  if(!impute_zeroes || use_batching) {
     if(verbose)
       Rcout << "Removing excess rows \n";
     activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
