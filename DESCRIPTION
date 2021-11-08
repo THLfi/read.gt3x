@@ -11,7 +11,12 @@ Authors@R:
              family = "Muschelli",
              role = "aut",
              email = "muschellij2@gmail.com",
-             comment = c(ORCID = "0000-0001-6469-1750")))
+             comment = c(ORCID = "0000-0001-6469-1750")),
+      person(given = "Patrick",
+             family = "Bos",
+             role = "ctb",
+             email = "egpbos@gmail.com",
+             comment = c(ORCID = "0000-0002-6033-960X")))
 Description: Implements a high performance C++ parser 
     for 'ActiGraph' 'GT3X'/'GT3X+' data format (with extension '.gt3x') 
     for 'accelerometer' samples. Activity samples can be easily read into a
