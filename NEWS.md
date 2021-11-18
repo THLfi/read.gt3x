@@ -5,7 +5,8 @@
 
 # read.gt3x 1.0.0
 
-* Release to CRAN
+* Released to CRAN on 2021-01-07.
+* dev note: release SHA commit f23eda5
 
 # read.gt3x 0.4.2
 
