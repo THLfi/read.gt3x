@@ -9,6 +9,7 @@ read.gt3x(
   verbose = FALSE,
   asDataFrame = FALSE,
   imputeZeroes = FALSE,
+  flag_idle_sleep = FALSE,
   cleanup = FALSE,
   ...,
   add_light = FALSE
@@ -25,6 +26,9 @@ read.gt3x(
 \item{imputeZeroes}{Impute zeros in case there are missingness?
 Default is FALSE, in which case
 the time series will be incomplete in case there is missingness.}
+
+\item{flag_idle_sleep}{flag idle sleep mode.  If \code{imputeZeroes = TRUE},
+this finds where all 3 axes are zero.}
 
 \item{cleanup}{should any unzipped files be deleted?}
 
@@ -68,7 +72,9 @@ have_log_and_info(gt3xfile, verbose = TRUE)
 
 x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
 verbose = TRUE)
+attr(x, "features")
 df2 <- as.data.frame(x, verbose = TRUE)
+attr(df2, "features")
 head(df2)
 rm(x); gc(); gc()
 rm(df2); gc()

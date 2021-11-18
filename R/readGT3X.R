@@ -20,6 +20,8 @@ NULL
 #' @param cleanup should any unzipped files be deleted?
 #' @param add_light add light data to the `data.frame` if data exists in the
 #' GT3X
+#' @param flag_idle_sleep flag idle sleep mode.  If \code{imputeZeroes = TRUE},
+#' this finds where all 3 axes are zero.
 #'
 #' @note
 #'
@@ -51,7 +53,9 @@ NULL
 #'
 #' x <- read.gt3x(gt3xfile, imputeZeroes = FALSE, asDataFrame = FALSE,
 #' verbose = TRUE)
+#' attr(x, "features")
 #' df2 <- as.data.frame(x, verbose = TRUE)
+#' attr(df2, "features")
 #' head(df2)
 #' rm(x); gc(); gc()
 #' rm(df2); gc()
@@ -102,6 +106,7 @@ NULL
 #' @export
 read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       imputeZeroes = FALSE,
+                      flag_idle_sleep = FALSE,
                       cleanup = FALSE,
                       ...,
                       add_light = FALSE) {
@@ -175,11 +180,12 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       verbose = as.logical(verbose),
       impute_zeroes = imputeZeroes, ...)
     # need reordering for Y X Z ACTIVITY PACKETS
-    tmp_at = attributes(accdata)
-    accdata = accdata[, xyz]
-    tmp_at$dim = dim(accdata)
-    tmp_at$dimnames[[2]] = xyz
-    attributes(accdata) = tmp_at
+    tmp_at <- attributes(accdata)
+    accdata <- accdata[, xyz]
+    tmp_at$dim <- dim(accdata)
+    tmp_at$dimnames[[2]] <- xyz
+    tmp_at$features <- get_features(tmp_at$features)
+    attributes(accdata) <- tmp_at
     rm(tmp_at)
 
     if (verbose > 1) {
@@ -283,6 +289,15 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
   if (asDataFrame)
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
 
+  if (flag_idle_sleep) {
+    if (asDataFrame) {
+      accdata$idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3
+    } else {
+      accdata = cbind(accdata,
+                      idle = rowSums(accdata[, c("X", "Y", "Z")] == 0) == 3)
+    }
+  }
+
   accdata
 
 }
@@ -342,6 +357,9 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   x = as.data.frame(x)
   x$time = start_time + time_index/divider;
   x = x[, c("time", setdiff(colnames(x), "time"))]
+  if ("idle" %in% colnames(x)) {
+    x$idle = x$idle > 0
+  }
 
   x$time <- as.POSIXct(x$time, origin = "1970-01-01", tz = tz)
   if (add_light) {
@@ -383,6 +401,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
   attr(x, "stop_time") <- all_attributes[["stop_time"]]
   attr(x, "total_records") <- all_attributes[["total_records"]]
   attr(x, "bad_samples") <- all_attributes[["bad_samples"]]
+  attr(x, "features") <- all_attributes[["features"]]
 
   x
 }
@@ -497,4 +516,20 @@ parse_lux_data <- function(lux_path, info, samples, verbose = TRUE) {
       verbose = as.logical(verbose))
   }
   luxdata
+}
+
+
+get_features = function(features) {
+  if (is.null(features)) {
+    return(NULL)
+  }
+  feat <- c("heart rate monitor", "data summary", "sleep mode", "proximity tagging",
+            "epoch data", "no raw data")
+  features <- as.integer(intToBits(features))[1:5] > 0
+  if (!any(features)) {
+    features <- "none"
+  } else {
+    features <- paste(feat[features], collapse = ",")
+  }
+  features
 }

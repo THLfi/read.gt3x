@@ -9,6 +9,9 @@ print(idf)
 download = function(url, name) {
   destfile = file.path(tempdir(), name)
   if (!file.exists(destfile)) {
+    old <- options()         # code line i
+    on.exit(options(old))    # code line i+1
+    options(timeout = 120)
     download.file(url, destfile, mode = "wb")
   }
   destfile

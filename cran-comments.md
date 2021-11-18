@@ -10,5 +10,4 @@
 * This is a new release.
 
 ---
-* Exported `datetime2ticks` and `ticks2datetime`.
-* Changed options reset `on.exit` order with `readGT3X`.
+* Added a timeout for `gt3x_datapath` to fix issues with timing out on test.
