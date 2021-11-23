@@ -14,8 +14,8 @@ activityAsDataFrame <- function(m, time_index, start_time, divider) {
 #' @param sample_rate sampling rate for activity samples.
 #' @param start_time starting time of the sample recording.
 #' @param use_batching whether to use batching or not (false by default)
-#' @param batch_begin first record to include in this batch
-#' @param batch_end last record to include in this batch
+#' @param batch_begin first second in time relative to start of raw non-imputed recording to include in this batch
+#' @param batch_end last second in time relative to start of raw non-imputed recording to include in this batch
 #' @param verbose Print the parameters from the log.bin file and other messages?
 #' @param impute_zeroes Impute zeros in case there are missingness?
 #' @param debug Print information for every activity second

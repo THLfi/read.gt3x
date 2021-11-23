@@ -32,9 +32,9 @@ not data is found.}
 
 \item{use_batching}{whether to use batching or not (false by default)}
 
-\item{batch_begin}{first record to include in this batch}
+\item{batch_begin}{first second in time relative to start of raw non-imputed recording to include in this batch}
 
-\item{batch_end}{last record to include in this batch}
+\item{batch_end}{last second in time relative to start of raw non-imputed recording to include in this batch}
 
 \item{verbose}{Print the parameters from the log.bin file and other messages?}
 
