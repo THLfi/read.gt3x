@@ -13,7 +13,6 @@ activityAsDataFrame <- function(m, time_index, start_time, divider) {
 #' @param scale_factor Scale factor for the activity samples.
 #' @param sample_rate sampling rate for activity samples.
 #' @param start_time starting time of the sample recording.
-#' @param use_batching whether to use batching or not (false by default)
 #' @param batch_begin first second in time relative to start of raw non-imputed recording to include in this batch
 #' @param batch_end last second in time relative to start of raw non-imputed recording to include in this batch
 #' @param verbose Print the parameters from the log.bin file and other messages?
@@ -25,8 +24,8 @@ activityAsDataFrame <- function(m, time_index, start_time, divider) {
 #' The matrix has attributes
 #' "time_index", "missingness", "start_time_log", "sample_rate", "impute_zeroes".
 #'
-parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_time, use_batching = FALSE, batch_begin = 0L, batch_end = 0L, verbose = FALSE, debug = FALSE, impute_zeroes = FALSE) {
-    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, start_time, use_batching, batch_begin, batch_end, verbose, debug, impute_zeroes)
+parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_time, batch_begin = 0L, batch_end = 0L, verbose = FALSE, debug = FALSE, impute_zeroes = FALSE) {
+    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, start_time, batch_begin, batch_end, verbose, debug, impute_zeroes)
 }
 
 #' Parse activity samples from a NHANES-GT3X file

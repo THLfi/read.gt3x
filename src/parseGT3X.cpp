@@ -319,7 +319,6 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' @param scale_factor Scale factor for the activity samples.
 //' @param sample_rate sampling rate for activity samples.
 //' @param start_time starting time of the sample recording.
-//' @param use_batching whether to use batching or not (false by default)
 //' @param batch_begin first second in time relative to start of raw non-imputed recording to include in this batch
 //' @param batch_end last second in time relative to start of raw non-imputed recording to include in this batch
 //' @param verbose Print the parameters from the log.bin file and other messages?
@@ -337,7 +336,6 @@ NumericMatrix parseGT3X(const char* filename,
                         const double scale_factor,
                         const int sample_rate,
                         const uint32_t start_time,
-                        const bool use_batching = false,
                         const uint32_t batch_begin = 0,
                         const uint32_t batch_end = 0,
                         const bool verbose = false,
@@ -366,7 +364,7 @@ NumericMatrix parseGT3X(const char* filename,
   bool have_activity2 = false;
   int num_activity = 0;
   int num_activity2 = 0;
-
+  bool use_batching = false;
   int chksum;
 
   if (debug) {
@@ -374,6 +372,10 @@ NumericMatrix parseGT3X(const char* filename,
   }
 
   uint32_t batch_counter = 0;
+
+  if (batch_begin != 0 || batch_end != 0) {
+    use_batching = true;
+  }
 
   while(GT3Xstream) {
 
