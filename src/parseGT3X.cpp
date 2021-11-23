@@ -373,7 +373,7 @@ NumericMatrix parseGT3X(const char* filename,
 
   uint32_t batch_counter = 0;
 
-  if (batch_begin != 0 || batch_end != 0) {
+  if (batch_end != 0) {
     use_batching = true;
   }
 
