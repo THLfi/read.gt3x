@@ -375,6 +375,9 @@ NumericMatrix parseGT3X(const char* filename,
 
   if (batch_end > 0) {
     use_batching = true;
+    if (batch_end < batch_begin) {
+      Rcout << "batch_begin is higher than batch_end, please check input arguments\n";
+    }
   }
 
   while(GT3Xstream) {
