@@ -28,6 +28,7 @@ Path to read.gt3x package sample data
 \dontrun{
 dir <- gt3x_datapath()
 gt3x_filename <- gt3x_datapath(1)
+stopifnot(!is.na(gt3x_datapath(2)))
 }
 
 testthat::expect_error(gt3x_filename(100))
