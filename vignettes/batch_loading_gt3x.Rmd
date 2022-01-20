@@ -1,0 +1,78 @@
+---
+title: "Batch loading a gt3x file"
+author: "Vincent van Hees"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Batch loading a gt3x file}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document describes how the **read.gt3x** package can be used to read the newer .gt3x format files (firmware version above 2.5.0) in batches. For a general introduction about the read.gt3x package please see the [Getting started vignette](https://cran.rstudio.com/web/packages/read.gt3x/vignettes/read_gt3x.html). 
+
+## Purpose of batch-loading
+
+By batch-loading we mean the loading of a specific time segment from a file. Batch-loadings becomes relevant when working with your data poses memory problems for your machine (computer). For example, if you want to process a 7 days of 100 Hertz recording on a 8GB memory machine and apply a memory hungry algorithm to it then your machine may run out of memory. 
+
+## How to use batch-loading?
+
+In line with the [Getting started vignette](https://cran.rstudio.com/web/packages/read.gt3x/vignettes/read_gt3x.html) we start by loading the read.gt3x library and obtain the long example file:
+  
+```{r, eval = FALSE}
+library(read.gt3x)
+gt3xfile <- gt3x_datapath(1) # this downloads a long recording
+```
+
+To read a batch from this file we need to add two arguments to the read.gt3x function call:
+  
+- **batch_begin** First second in time relative to start of raw non-imputed recording to include in this batch
+- **batch_end** Last second in time relative to start of raw non-imputed recording to include in this batch
+
+The following example demonstrates how to use this functionality to iteratively read 24 hour batches from the recording we just downloaded.
+
+```{r, eval = FALSE}
+  N = 24 * 3600 # batch size in seconds (24 hours x 3600 seconds per hour)
+  i = 1
+  while (i > 0) {
+    cat("\nload batch #", i)
+    try(expr = {
+      batch_data = read.gt3x(gt3xfile,
+                             batch_begin = 1 + ((i - 1) * N),
+                             batch_end = i * N)
+    }, silent = TRUE)
+    if (exists("batch_data")) {
+      # <= Insert your memory hungry algorithm
+      # <= Do not forget to store the output of the algorithm somewhere
+      rm(batch_data) # <= remote the batch_data object to free up memory for the next batch
+    } else {
+      break() # end while loop when no more batches can be extracted
+    }
+    i = i + 1
+  }
+}
+```
+
+## Some notes on expected behaviour
+
+When argument batch_begin or batch_end are used argument **imputeZeroes** is currently automatically set to FALSE. This means that you as user will be responsible for imputing potential time gaps if idle sleep mode was turned on.
+
+batch_begin | batch_end | behaviour
+----------- | --------- | ---------------
+not provided | not provided | default behaviour, read.gt3x attempts to read the entire file
+not provided | second (in time) in the recording and higher than batch_begin | batch is read from beginning of the recording to batch_end
+second (in time) in the recording | second in the recording and higher than batch_begin | batch is read from batch_begin to batch_end
+second in the recording | second in the recording and less than batch_begin | no output and error message "batch_begin is higher than batch_end, please check input arguments"
+second in the recording | second after the end of the recording | batch is read from batch_begin until the end of the recording
+negative value | second in the recording | no output and error message "batch_begin is higher than batch_end, please check input arguments" this is because the code assumes a positive number and treats it as an unsigned 32 bit integer.
+
+## Where in the code can I find the batch-loading implementation?
+
+The batch-loading functionality is implemented in a C++ function called **parseGT3X**, which is used by function **read.gt3x**. The two arguments related to the batch-loading are forwarded by read.gt3x to parseGT3X. In this way the documentation function read.gt3x remains simple and applicable to all read.gt3x users. The specific functionality described in this vignette should be seen as an advanced option only relevant for those who work with modern .gt3x data.

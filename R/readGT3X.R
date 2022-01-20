@@ -15,7 +15,7 @@ NULL
 #' @param imputeZeroes Impute zeros in case there are missingness?
 #' Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
-#' @param ... additional arguments to pass to \code{parseGT3X} C++ code
+#' @param ... additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"
 #' @param verbose print diagnostic messages
 #' @param cleanup should any unzipped files be deleted?
 #' @param add_light add light data to the `data.frame` if data exists in the
