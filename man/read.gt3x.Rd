@@ -32,7 +32,7 @@ this finds where all 3 axes are zero.}
 
 \item{cleanup}{should any unzipped files be deleted?}
 
-\item{...}{additional arguments to pass to \code{parseGT3X} C++ code}
+\item{...}{additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"}
 
 \item{add_light}{add light data to the \code{data.frame} if data exists in the
 GT3X}

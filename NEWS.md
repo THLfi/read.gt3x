@@ -1,3 +1,7 @@
+# read.gt3x 1.1.2
+
+* Added batch-reading functionality, see #40
+
 # read.gt3x 1.1.1
 
 * Added extraction of features.

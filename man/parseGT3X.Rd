@@ -10,6 +10,8 @@ parseGT3X(
   scale_factor,
   sample_rate,
   start_time,
+  batch_begin = 0L,
+  batch_end = 0L,
   verbose = FALSE,
   debug = FALSE,
   impute_zeroes = FALSE
@@ -26,6 +28,10 @@ not data is found.}
 \item{sample_rate}{sampling rate for activity samples.}
 
 \item{start_time}{starting time of the sample recording.}
+
+\item{batch_begin}{first second in time relative to start of raw non-imputed recording to include in this batch}
+
+\item{batch_end}{last second in time relative to start of raw non-imputed recording to include in this batch}
 
 \item{verbose}{Print the parameters from the log.bin file and other messages?}
 

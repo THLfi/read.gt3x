@@ -321,6 +321,8 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' @param scale_factor Scale factor for the activity samples.
 //' @param sample_rate sampling rate for activity samples.
 //' @param start_time starting time of the sample recording.
+//' @param batch_begin first second in time relative to start of raw non-imputed recording to include in this batch
+//' @param batch_end last second in time relative to start of raw non-imputed recording to include in this batch
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //' @param impute_zeroes Impute zeros in case there are missingness?
 //' @param debug Print information for every activity second
@@ -336,6 +338,8 @@ NumericMatrix parseGT3X(const char* filename,
                         const double scale_factor,
                         const int sample_rate,
                         const uint32_t start_time,
+                        const uint32_t batch_begin = 0,
+                        const uint32_t batch_end = 0,
                         const bool verbose = false,
                         const bool debug = false,
                         const bool impute_zeroes = false) {
@@ -362,12 +366,27 @@ NumericMatrix parseGT3X(const char* filename,
   bool have_activity2 = false;
   int num_activity = 0;
   int num_activity2 = 0;
-
+  bool use_batching = false;
   int chksum;
 
-  if (debug)
+  if (debug) {
     Rcout << "Reading Stream...\n";
+  }
+
+  uint32_t batch_counter = 0;
+
+  if (batch_end > 0) {
+    use_batching = true;
+    if (batch_end < batch_begin) {
+      Rcout << "batch_begin is higher than batch_end, please check input arguments\n";
+    }
+  }
+
   while(GT3Xstream) {
+
+    if (use_batching && batch_counter >= batch_end) {
+      break;
+    }
 
     item = GT3Xstream.get();
     if(!GT3Xstream) {
@@ -419,7 +438,7 @@ NumericMatrix parseGT3X(const char* filename,
           } else {
             Missingness[patch::to_string(expected_payload_start)] = n_missing;
 
-            if(impute_zeroes) {
+            if(impute_zeroes && !use_batching) {
               ImputeZeroes(timeStamps, total_records, n_missing, sample_rate, start_time, expected_payload_start, debug);
               total_records += n_missing;
             }
@@ -442,37 +461,43 @@ NumericMatrix parseGT3X(const char* filename,
             Rcout << "max_samples: " << max_samples << "\n";
           }
           Missingness[patch::to_string(payload_start)] = sample_rate;
-          if(impute_zeroes) {
+          if(impute_zeroes && !use_batching) {
             ImputeZeroes(timeStamps, total_records, sample_rate, sample_rate, start_time, payload_start, debug);
             total_records += sample_rate;
           }
         }
 
+        if (sample_size > 0) {
 
-        if ( (type == RECORDTYPE_ACTIVITY) & (sample_size > 0) ) {
-          if ( debug & !have_activity) {
-            Rcout << "First ACTIVTY packet, sample size: " << sample_size << "\n";
-            Rcout << "ACTIVTY packet size: " << size << "\n";
+          ++batch_counter;
+          if (!use_batching || batch_counter >= batch_begin) {
+
+            if (type == RECORDTYPE_ACTIVITY) {
+              if ( debug & !have_activity) {
+                Rcout << "First ACTIVTY packet, sample size: " << sample_size << "\n";
+                Rcout << "ACTIVTY packet size: " << size << "\n";
+              }
+
+              have_activity = true;
+              num_activity = num_activity + 1;
+              ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+              total_records += sample_size;
+            } else if (type == RECORDTYPE_ACTIVITY2) {
+              if ( debug & !have_activity2) {
+                Rcout << "First ACTIVTY2 packet, sample size: " << sample_size << "\n";
+              }
+
+              have_activity2 = true;
+              num_activity2 = num_activity2 + 1;
+              ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
+              total_records += sample_size;
+            }
+          } else {
+            GT3Xstream.seekg(size, std::ios_base::cur);
           }
-          have_activity = true;
-          num_activity = num_activity + 1;
-          ParseActivity(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-          total_records += sample_size;
+
         }
-
-        else if ( (type == RECORDTYPE_ACTIVITY2) & (sample_size > 0) ) {
-          if ( debug & !have_activity2) {
-            Rcout << "First ACTIVTY2 packet, sample size: " << sample_size << "\n";
-          }
-          have_activity2 = true;
-          num_activity2 = num_activity2 + 1;
-          ParseActivity2(GT3Xstream, activityMatrix, timeStamps, total_records, sample_size, payload_start, sample_rate, start_time, debug);
-          total_records += sample_size;
-        }
-
-      }
-
-      else {
+      } else {
         GT3Xstream.seekg(size, std::ios::cur);
       }
 
@@ -493,7 +518,7 @@ NumericMatrix parseGT3X(const char* filename,
   scaleAndRoundActivity(activityMatrix, scale_factor, total_records);
 
 
-  if(!impute_zeroes) {
+  if(!impute_zeroes || use_batching) {
     if(verbose)
       Rcout << "Removing excess rows \n";
     activityMatrix =  activityMatrix(Range(0, total_records - 1), Range(0, N_ACTIVITYCOLUMNS - 1));
