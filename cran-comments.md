@@ -9,7 +9,7 @@
 windows and mac
 0 errors | 0 warnings | 0 note
 
-On local ubuntu installation, 1 warning:
+On local ubuntu installation, 0 errors, 0 notes, 1 warning:
 
 > checking top-level files ... WARNING
   A complete check needs the 'checkbashisms' script.
