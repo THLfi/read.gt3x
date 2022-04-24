@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This document describes how the **read.gt3x** package can be used to read the newer .gt3x format files (firmware version above 2.5.0) in batches. For a general introduction about the read.gt3x package please see the [Getting started vignette](cran.rstudio.com/web/packages/read.gt3x/vignettes/read_gt3x.html). 
+This document describes how the **read.gt3x** package can be used to read the newer .gt3x format files (firmware version above 2.5.0) in batches. For a general introduction about the read.gt3x package please see the [Getting started vignette](https://cran.r-project.org/package=read.gt3x/vignettes/read_gt3x.html). 
 
 ## Purpose of batch-loading
 
