@@ -28,7 +28,6 @@ Description: Implements a high performance C++ parser
     samples in the original binary format to reserve space.
 License: EUPL
 Encoding: UTF-8
-LazyData: true
 LinkingTo: Rcpp
 Imports: 
     Rcpp,
