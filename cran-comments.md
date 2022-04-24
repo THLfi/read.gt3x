@@ -1,4 +1,7 @@
+* Resubmission, fixed vignette URL
+
 ## Test environments
+
 * ubuntu 16.4 local R installation, R 4.0.3
 * macOS latest (release)
 * windows-latest (release)
