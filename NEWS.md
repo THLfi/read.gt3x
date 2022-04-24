@@ -1,4 +1,4 @@
-# read.gt3x 1.1.2
+# read.gt3x 1.2.0
 
 * Added batch-reading functionality, see #40
 
