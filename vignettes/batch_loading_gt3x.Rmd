@@ -58,7 +58,6 @@ The following example demonstrates how to use this functionality to iteratively 
     }
     i = i + 1
   }
-}
 ```
 
 ## Some notes on expected behaviour
