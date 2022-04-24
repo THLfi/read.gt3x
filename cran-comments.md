@@ -1,13 +1,17 @@
 ## Test environments
-* local R installation, R 4.0.2
-* ubuntu 16.04 (on travis-ci), R 4.0.2
-* win-builder (devel)
+* ubuntu 16.4 local R installation, R 4.0.3
+* macOS latest (release)
+* windows-latest (release)
+* windows-latest (3.6)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+windows and mac
+0 errors | 0 warnings | 0 note
 
-* This is a new release.
+On local ubuntu installation, 1 warning:
 
----
-* Added a timeout for `gt3x_datapath` to fix issues with timing out on test.
+> checking top-level files ... WARNING
+  A complete check needs the 'checkbashisms' script.
+  See section ‘Configure and cleanup’ in the ‘Writing R Extensions’
+  manual.
