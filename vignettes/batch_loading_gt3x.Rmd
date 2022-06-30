@@ -24,7 +24,7 @@ By batch-loading we mean the loading of a specific time segment from a file. Bat
 
 ## How to use batch-loading?
 
-In line with the [Getting started vignette](https://cran.rstudio.com/web/packages/read.gt3x/vignettes/read_gt3x.html) we start by loading the read.gt3x library and obtain the long example file:
+In line with the [Getting started vignette](https://cran.r-project.org/package=read.gt3x/vignettes/read_gt3x.html) we start by loading the read.gt3x library and obtain the long example file:
   
 ```{r, eval = FALSE}
 library(read.gt3x)

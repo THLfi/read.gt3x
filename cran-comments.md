@@ -1,4 +1,4 @@
-* Resubmission, fixed vignette URL
+* Resubmission, fixed vignette URLs
 
 ## Test environments
 
