@@ -152,3 +152,44 @@ testthat::test_that("read.gt3x disables imputing zeroes when using batching", {
   testthat::expect_true(nrow(gt3xdata_batch_impute) == nrow(gt3xdata_bigger_batch))
   testthat::expect_true(all(gt3xdata_bigger_batch[1:100,] == gt3xdata_batch_impute[1:100,]))
 })
+
+testthat::test_that("read.gt3x - timezone default", {
+  testthat::expect_true(inherits(gt3xdata_full$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_full$time[1], as.POSIXct("2019-09-17 18:40:00", tz = "GMT"))
+})
+
+tzHel = "Europe/Helsinki"
+tzLon = "Europe/London"
+
+testthat::test_that("read.gt3x - timezone configuration == timezone worn (Europe/London)", {
+  gt3xdata_tz_equal <- read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                 batch_begin = 1, batch_end = 1, desiredtz = tzLon, configtz = tzLon)
+  testthat::expect_true(inherits(gt3xdata_tz_equal$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_tz_equal$time[1], as.POSIXct("2019-09-17 18:40:00", tz = tzLon))
+})
+
+testthat::test_that("read.gt3x - timezone configuration (Europe/Helsinki) > timezone worn (Europe/London)", {
+  gt3xdata_confidHel_wornLon <- read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                          batch_begin = 1, batch_end = 1, desiredtz = tzLon, configtz = tzHel)
+  testthat::expect_true(inherits(gt3xdata_confidHel_wornLon$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_confidHel_wornLon$time[1], as.POSIXct("2019-09-17 16:40:00", tz = tzLon))
+})
+
+
+testthat::test_that("read.gt3x - timezone configuration (Europe/London) < timezone worn (Europe/Helsinki)", {
+  gt3xdata_confidLon_wornHel <- read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                          batch_begin = 1, batch_end = 1, desiredtz = tzHel, configtz = tzLon)
+  testthat::expect_true(inherits(gt3xdata_confidLon_wornHel$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_confidLon_wornHel$time[1], as.POSIXct("2019-09-17 20:40:00", tz = tzHel))
+})
+
+old <- options(warn = 1)
+testthat::test_that("read.gt3x - timezone handling produces expected errors and warnings", {
+  expect_error(read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                          batch_begin = 1, batch_end = 1, desiredtz = "invalidname", configtz = tzLon), "invalidname is not a valid timezone database name")
+
+  expect_warning(read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                         batch_begin = 1, batch_end = 1, desiredtz = tzHel, configtz = NULL), "configtz not specified, now assumed to equal desiredtz")
+
+})
+options(old)

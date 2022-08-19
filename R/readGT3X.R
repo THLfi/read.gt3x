@@ -15,6 +15,8 @@ NULL
 #' @param imputeZeroes Impute zeros in case there are missingness?
 #' Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
+#' @param desiredtz Timezone where accelerometer was worn, see note for details.
+#' @param configtz Timezone where accelerometer was configured, see note for details.
 #' @param ... additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"
 #' @param verbose print diagnostic messages
 #' @param cleanup should any unzipped files be deleted?
@@ -31,6 +33,14 @@ NULL
 #' therefore represented as \code{POSIXct} format with the
 #' 'GMT' timezone attribute, which is false; the datetime actually
 #' represents local time.
+#'
+#' To interpret the timestamps based on known location of device configuration
+#' and known location of device wear, specify arguments: desiredtz and configtz.
+#' These take Olson timezone database names as character input. For example, "Europe/Helsinki"
+#' See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#'  or use command OlsonNames() in R for a list of possible timezone names.
+#' Note: You can specify "" to indicate that the timezone of your system
+#' should be used.
 #'
 #' @return A numeric matrix with 3 columns (X, Y, Z) and the following
 #' attributes:
@@ -108,6 +118,8 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       imputeZeroes = FALSE,
                       flag_idle_sleep = FALSE,
                       cleanup = FALSE,
+                      desiredtz = NULL,
+                      configtz = NULL,
                       ...,
                       add_light = FALSE) {
 
@@ -288,6 +300,30 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
   if (asDataFrame)
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
+
+  # Only adjust timezone if user specified desiredtz and/or configtz
+  # In this way default functionality remains unaffected
+  if (!is.null(desiredtz) | !is.null(configtz)) {
+    # Set equal if one of the two is NULL
+    if (is.null(configtz) & !is.null(desiredtz)) {
+      configtz = desiredtz
+      warning("\nconfigtz not specified, now assumed to equal desiredtz")
+    }
+    if (!is.null(configtz) & is.null(desiredtz)) {
+      desiredtz = configtz
+      warning("\ndesiredtz not specified, now assumed to equal configtz")
+    }
+    # Check that timezone names are valid names
+    if (desiredtz %in% OlsonNames() == FALSE) {
+      stop(paste0("\n", desiredtz, " is not a valid timezone database name"))
+    }
+    if (configtz != desiredtz & configtz %in% OlsonNames() == FALSE) {
+      stop(paste0("\n", configtz, " is not a valid timezone database name"))
+    }
+    # Change timezone
+    accdata$time <- lubridate::force_tz(accdata$time, tzone = configtz)
+    attr(accdata$time, "tzone") <- desiredtz
+  }
 
   if (flag_idle_sleep) {
     if (asDataFrame) {

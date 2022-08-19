@@ -1,3 +1,7 @@
+# read.gt3x 1.2.1
+
+* Added timezone handling functionality, see #43
+
 # read.gt3x 1.2.0
 
 * Added batch-reading functionality, see #40

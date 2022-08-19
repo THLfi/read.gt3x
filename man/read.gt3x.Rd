@@ -11,6 +11,8 @@ read.gt3x(
   imputeZeroes = FALSE,
   flag_idle_sleep = FALSE,
   cleanup = FALSE,
+  desiredtz = NULL,
+  configtz = NULL,
   ...,
   add_light = FALSE
 )
@@ -31,6 +33,10 @@ the time series will be incomplete in case there is missingness.}
 this finds where all 3 axes are zero.}
 
 \item{cleanup}{should any unzipped files be deleted?}
+
+\item{desiredtz}{Timezone where accelerometer was worn, see note for details.}
+
+\item{configtz}{Timezone where accelerometer was configured, see note for details.}
 
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"}
 
@@ -60,6 +66,14 @@ This is a bit tricky to parse into an R datetime format. DateTimes are
 therefore represented as \code{POSIXct} format with the
 'GMT' timezone attribute, which is false; the datetime actually
 represents local time.
+
+To interpret the timestamps based on known location of device configuration
+and known location of device wear, specify arguments: desiredtz and configtz.
+These take Olson timezone database names as character input. For example, "Europe/Helsinki"
+See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+or use command OlsonNames() in R for a list of possible timezone names.
+Note: You can specify "" to indicate that the timezone of your system
+should be used.
 }
 \examples{
 
