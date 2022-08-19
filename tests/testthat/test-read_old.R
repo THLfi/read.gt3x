@@ -77,3 +77,29 @@ testthat::test_that("Converting Old with .gz file", {
   rm(res)
   rm(df2)
 })
+
+
+tzHel = "Europe/Helsinki"
+tzLon = "Europe/London"
+
+testthat::test_that("read.gt3x old format - timezone configuration == timezone worn (Europe/London)", {
+  gt3xdata_tz_equal <- read.gt3x(path, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                 desiredtz = tzLon, configtz = tzLon)
+  testthat::expect_true(inherits(gt3xdata_tz_equal$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_tz_equal$time[1], as.POSIXct("2012-06-27 10:54:00", tz = tzLon))
+})
+
+testthat::test_that("read.gt3x old format - timezone configuration (Europe/Helsinki) > timezone worn (Europe/London)", {
+  gt3xdata_confidHel_wornLon <- read.gt3x(path, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                         desiredtz = tzLon, configtz = tzHel)
+  testthat::expect_true(inherits(gt3xdata_confidHel_wornLon$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_confidHel_wornLon$time[1], as.POSIXct("2012-06-27 08:54:00", tz = tzLon))
+})
+
+
+testthat::test_that("read.gt3x old format - timezone configuration (Europe/London) < timezone worn (Europe/Helsinki)", {
+  gt3xdata_confidLon_wornHel <- read.gt3x(path, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                          desiredtz = tzHel, configtz = tzLon)
+  testthat::expect_true(inherits(gt3xdata_confidLon_wornHel$time[1], "POSIXct"))
+  testthat::expect_equal(gt3xdata_confidLon_wornHel$time[1], as.POSIXct("2012-06-27 12:54:00", tz = tzHel))
+})
