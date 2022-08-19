@@ -182,3 +182,14 @@ testthat::test_that("read.gt3x - timezone configuration (Europe/London) < timezo
   testthat::expect_true(inherits(gt3xdata_confidLon_wornHel$time[1], "POSIXct"))
   testthat::expect_equal(gt3xdata_confidLon_wornHel$time[1], as.POSIXct("2019-09-17 20:40:00", tz = tzHel))
 })
+
+old <- options(warn = 1)
+testthat::test_that("read.gt3x - timezone handling produces expected errors and warnings", {
+  expect_error(read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                                          batch_begin = 1, batch_end = 1, desiredtz = "invalidname", configtz = tzLon), "invalidname is not a valid timezone database name")
+
+  expect_warning(read.gt3x(gt3xfile, asDataFrame = TRUE, imputeZeroes = FALSE,
+                         batch_begin = 1, batch_end = 1, desiredtz = tzHel, configtz = NULL), "configtz not specified, now assumed to equal desiredtz")
+
+})
+options(old)
