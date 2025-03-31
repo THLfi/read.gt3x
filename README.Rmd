@@ -93,6 +93,12 @@ head(df)
 attributes(df)[setdiff(names(attributes(df)), c("names", "row.names"))]
 ```
 
+Alternatively, you can have it return a data.frame directly:
+```{r read_in_df}
+X <- read.gt3x(gt3xfile, asDataFrame = TRUE)
+head(X)
+```
+
 ## Documentation
 
 [Documentation](https://thlfi.github.io/read.gt3x/), hosted by GitHub pages.
