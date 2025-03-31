@@ -1,7 +1,7 @@
 Package: read.gt3x
 Type: Package
 Title: Parse 'ActiGraph' 'GT3X'/'GT3X+' 'Accelerometer' Data
-Version: 1.2.0
+Version: 1.3.0
 Authors@R: 
     c(person(given = "Tuomo",
              family = "Nieminen",
@@ -33,9 +33,10 @@ Imports:
     Rcpp,
     utils,
     R.utils,
-    tools
+    tools,
+    vctrs
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
