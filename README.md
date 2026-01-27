@@ -75,6 +75,7 @@ to demonstrate reading the data.
 
 ``` r
 library(read.gt3x)
+options(digit.secs = 3L)
 ```
 
 First we need the path to a single gt3x file. We have one file included
