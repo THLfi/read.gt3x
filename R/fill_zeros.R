@@ -16,6 +16,11 @@ fill_zeros = function(x) {
   x$Y = vctrs::vec_fill_missing(x$Y, direction = "down")
   x$Z = vctrs::vec_fill_missing(x$Z, direction = "down")
 
+
+  x$X[is.na(x$X)] = 0
+  x$Y[is.na(x$Y)] = 0
+  x$Z[is.na(x$Z)] = 0
+
   x
 }
 
