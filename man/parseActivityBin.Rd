@@ -10,7 +10,8 @@ parseActivityBin(
   scale_factor,
   sample_rate,
   verbose = FALSE,
-  debug = FALSE
+  debug = FALSE,
+  digits = 3L
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ not data is found.}
 \item{verbose}{Print the parameters from the activity.bin file and other messages?}
 
 \item{debug}{Print information for every activity second}
+
+\item{digits}{Number of significant digits to round the activity samples to.}
 }
 \value{
 Returns a matrix with max_samples rows and 3 columns, where the first 3
