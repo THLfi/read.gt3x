@@ -5,6 +5,16 @@
 #' @returns A similar object passed in, where rows with `X == 0 & Y == 0 & Z == 0`
 #' have their XYZ values replaced by the last non-zero observation carried forward
 #'
+#' @examples
+#' df <- data.frame(
+#'   X = c(0, 1, 0, 2),
+#'   Y = c(0, 3, 0, 4),
+#'   Z = c(0, 5, 0, 6)
+#' )
+#' 
+#' # Fill runs of all-zero rows using the last non-zero observation
+#' fill_zeros(df)
+#'
 #' @export
 fill_zeros = function(x) {
   x$all_zero = x$X == 0 & x$Y == 0 & x$Z == 0
