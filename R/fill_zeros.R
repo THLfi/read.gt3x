@@ -17,6 +17,18 @@
 #'
 #' @export
 fill_zeros = function(x) {
+  required_cols <- c("X", "Y", "Z")
+  missing_cols <- setdiff(required_cols, names(x))
+  if (length(missing_cols) > 0) {
+    stop(
+      sprintf(
+        "fill_zeros(): input must contain columns %s; missing: %s",
+        paste(required_cols, collapse = ", "),
+        paste(missing_cols, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
   x$all_zero = x$X == 0 & x$Y == 0 & x$Z == 0
   x$X = ifelse(x$all_zero, NA_real_, x$X)
   x$Y = ifelse(x$all_zero, NA_real_, x$Y)
