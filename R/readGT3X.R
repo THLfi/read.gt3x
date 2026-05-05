@@ -415,7 +415,6 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
 #' @export
 #' @rdname print
 print.activity_df <- function(x, ...) {
-
   old <- options(digits = 15L, digits.secs = 3L)     # code line i
   on.exit(options(old))                              # code line i+1
 
@@ -428,7 +427,8 @@ print.activity_df <- function(x, ...) {
   cat(paste0("Firmware Version: ", attr(x, "firmware"), "\n"))
   cat(paste0("Serial Number Prefix: ", attr(x, "serial_prefix"), "\n"))
   class(x) <- "data.frame"
-  print(do.call(head, c(list(x), arglist)))
+  res = print(do.call(head, c(list(x), arglist)))
+  res
 }
 
 

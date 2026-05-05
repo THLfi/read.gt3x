@@ -15,10 +15,9 @@ knitr::opts_chunk$set(
 # read.gt3x
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/THLfi/read.gt3x/workflows/R-CMD-check/badge.svg)](https://github.com/THLfi/read.gt3x/actions)
+[![R-CMD-check](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/read.gt3x)](https://CRAN.R-project.org/package=read.gt3x)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/read.gt3x?color=blue)](https://r-pkg.org/pkg/read.gt3x)
-[![R-CMD-check](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for ActiGraph's `.gt3x` data format. Read the binary accelerometer data (.gt3x) into an R data frame in a few seconds.
@@ -60,6 +59,7 @@ The read.gt3x package includes two sample .gt3x files which can be used to demon
 
 ```{r}
 library(read.gt3x)
+options(digit.secs = 3L)
 ```
 
 First we need the path to a single gt3x file.  We have one file included in the package:
@@ -91,6 +91,12 @@ You can also convert the matrix to a data.frame with 4 columns: X,Y,Z,time
 df <- as.data.frame(X)
 head(df)
 attributes(df)[setdiff(names(attributes(df)), c("names", "row.names"))]
+```
+
+Alternatively, you can have it return a data.frame directly:
+```{r read_in_df}
+X <- read.gt3x(gt3xfile, asDataFrame = TRUE)
+head(X)
 ```
 
 ## Documentation

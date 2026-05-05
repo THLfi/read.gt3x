@@ -33,7 +33,8 @@ Imports:
     Rcpp,
     utils,
     R.utils,
-    tools
+    tools,
+    vctrs
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Suggests: 

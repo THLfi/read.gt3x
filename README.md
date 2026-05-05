@@ -5,12 +5,11 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/THLfi/read.gt3x/workflows/R-CMD-check/badge.svg)](https://github.com/THLfi/read.gt3x/actions)
+[![R-CMD-check](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/read.gt3x)](https://CRAN.R-project.org/package=read.gt3x)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/last-month/read.gt3x?color=blue)](https://r-pkg.org/pkg/read.gt3x)
-[![R-CMD-check](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for
@@ -75,6 +74,7 @@ to demonstrate reading the data.
 
 ``` r
 library(read.gt3x)
+options(digit.secs = 3L)
 ```
 
 First we need the path to a single gt3x file. We have one file included
@@ -110,14 +110,8 @@ head(X)
 #> [4,] 0.016 -0.012 1.012
 #> [5,] 0.016 -0.008 1.008
 #> [6,] 0.008 -0.008 1.008
-```
-
-``` r
 head(attributes(X)$time_index)
 #> [1] 0 1 2 3 4 5
-```
-
-``` r
 attributes(X)[setdiff(names(attributes(X)), c("dim", "dimnames", "time_index"))]
 #> $missingness
 #>                           time n_missing
@@ -226,9 +220,6 @@ head(df)
 #> 4 2019-09-17 18:40:00 0.016 -0.012 1.012
 #> 5 2019-09-17 18:40:00 0.016 -0.008 1.008
 #> 6 2019-09-17 18:40:00 0.008 -0.008 1.008
-```
-
-``` r
 attributes(df)[setdiff(names(attributes(df)), c("names", "row.names"))]
 #> $class
 #> [1] "activity_df" "data.frame" 
@@ -307,6 +298,23 @@ attributes(df)[setdiff(names(attributes(df)), c("names", "row.names"))]
 #> 
 #> $features
 #> [1] "sleep mode"
+```
+
+Alternatively, you can have it return a data.frame directly:
+
+``` r
+X <- read.gt3x(gt3xfile, asDataFrame = TRUE)
+head(X)
+#> Sampling Rate: 100Hz
+#> Firmware Version: 1.7.2
+#> Serial Number Prefix: TAS
+#>                  time     X      Y     Z
+#> 1 2019-09-17 18:40:00 0.000  0.008 0.996
+#> 2 2019-09-17 18:40:00 0.016  0.000 1.008
+#> 3 2019-09-17 18:40:00 0.020 -0.008 1.004
+#> 4 2019-09-17 18:40:00 0.016 -0.012 1.012
+#> 5 2019-09-17 18:40:00 0.016 -0.008 1.008
+#> 6 2019-09-17 18:40:00 0.008 -0.008 1.008
 ```
 
 ## Documentation
