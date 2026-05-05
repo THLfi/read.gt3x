@@ -5,7 +5,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/THLfi/read.gt3x/workflows/R-CMD-check/badge.svg)](https://github.com/THLfi/read.gt3x/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/read.gt3x)](https://CRAN.R-project.org/package=read.gt3x)
 [![CRAN RStudio mirror
