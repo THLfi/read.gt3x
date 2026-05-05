@@ -284,7 +284,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
 
 
   accdata <- structure(accdata,
-                       class = c("activity", class(accdata)))
+                       class = unique(c("activity", class(accdata))))
 
   if (asDataFrame)
     accdata <- as.data.frame(accdata, verbose = verbose > 1)
@@ -383,7 +383,7 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
     message("Done")
   }
   x <- structure(x,
-                 class = c("activity_df", class(x)),
+                 class = unique(c("activity_df", class(x))),
                  subject_name = all_attributes[["subject_name"]],
                  time_zone = all_attributes[["time_zone"]],
                  missingness = all_attributes[["missingness"]])
@@ -416,9 +416,8 @@ as.data.frame.activity <- function(x, ..., verbose = FALSE,
 #' @rdname print
 print.activity_df <- function(x, ...) {
 
-  old <- options()         # code line i
-  on.exit(options(old))    # code line i+1
-  options(digits = 15L, digits.secs = 3L)
+  old <- options(digits = 15L, digits.secs = 3L)     # code line i
+  on.exit(options(old))                              # code line i+1
 
   arglist <- list(...)
   if(! "n" %in% names(arglist)) {
@@ -436,6 +435,8 @@ print.activity_df <- function(x, ...) {
 #' @rdname print
 #' @export
 head.activity_df <- function(x, ...) {
+  old <- options(digits = 15L, digits.secs = 3L)     # code line i
+  on.exit(options(old))                              # code line i+1
   all_attr <- attributes(x)
   nattr <- names(all_attr)
   nattr <- setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
@@ -444,7 +445,7 @@ head.activity_df <- function(x, ...) {
   for (iattr in nattr) {
     attr(x, iattr) <-  all_attr[[iattr]]
   }
-  class(x) <- c("activity_df", class(x))
+  class(x) <- unique(c("activity_df", class(x)))
 
   attr(x, "n_head") <- get_n_head(...)
   x
@@ -453,6 +454,8 @@ head.activity_df <- function(x, ...) {
 #' @rdname print
 #' @export
 print.activity <- function(x, ...) {
+  old <- options(digits = 15L, digits.secs = 3L)     # code line i
+  on.exit(options(old))                              # code line i+1
 
   arglist <- list(...)
   if(! "n" %in% names(arglist)) {
@@ -471,6 +474,9 @@ print.activity <- function(x, ...) {
 #' @importFrom utils head
 #' @export
 head.activity <- function(x, ...) {
+  old <- options(digits = 15L, digits.secs = 3L)     # code line i
+  on.exit(options(old))                              # code line i+1
+
   all_attr <- attributes(x)
   nattr <- names(all_attr)
   nattr <- setdiff(nattr, c("dim", "dimnames", "names", "rownames"))
@@ -479,7 +485,7 @@ head.activity <- function(x, ...) {
   for (iattr in nattr) {
     attr(x, iattr) <-  all_attr[[iattr]]
   }
-  class(x) <- c("activity", class(x))
+  class(x) <- unique(c("activity", class(x)))
 
   attr(x, "n_head") <- get_n_head(...)
 

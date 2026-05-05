@@ -25,8 +25,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // parseGT3X
-NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const uint32_t start_time, const uint32_t batch_begin, const uint32_t batch_end, const bool verbose, const bool debug, const bool impute_zeroes);
-RcppExport SEXP _read_gt3x_parseGT3X(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP start_timeSEXP, SEXP batch_beginSEXP, SEXP batch_endSEXP, SEXP verboseSEXP, SEXP debugSEXP, SEXP impute_zeroesSEXP) {
+NumericMatrix parseGT3X(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const uint32_t start_time, const uint32_t batch_begin, const uint32_t batch_end, const bool verbose, const bool debug, const bool impute_zeroes, const int digits);
+RcppExport SEXP _read_gt3x_parseGT3X(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP start_timeSEXP, SEXP batch_beginSEXP, SEXP batch_endSEXP, SEXP verboseSEXP, SEXP debugSEXP, SEXP impute_zeroesSEXP, SEXP digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -40,13 +40,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< const bool >::type debug(debugSEXP);
     Rcpp::traits::input_parameter< const bool >::type impute_zeroes(impute_zeroesSEXP);
-    rcpp_result_gen = Rcpp::wrap(parseGT3X(filename, max_samples, scale_factor, sample_rate, start_time, batch_begin, batch_end, verbose, debug, impute_zeroes));
+    Rcpp::traits::input_parameter< const int >::type digits(digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(parseGT3X(filename, max_samples, scale_factor, sample_rate, start_time, batch_begin, batch_end, verbose, debug, impute_zeroes, digits));
     return rcpp_result_gen;
 END_RCPP
 }
 // parseActivityBin
-NumericMatrix parseActivityBin(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose, const bool debug);
-RcppExport SEXP _read_gt3x_parseActivityBin(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP verboseSEXP, SEXP debugSEXP) {
+NumericMatrix parseActivityBin(const char* filename, const int max_samples, const double scale_factor, const int sample_rate, const bool verbose, const bool debug, const int digits);
+RcppExport SEXP _read_gt3x_parseActivityBin(SEXP filenameSEXP, SEXP max_samplesSEXP, SEXP scale_factorSEXP, SEXP sample_rateSEXP, SEXP verboseSEXP, SEXP debugSEXP, SEXP digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -56,7 +57,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int >::type sample_rate(sample_rateSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< const bool >::type debug(debugSEXP);
-    rcpp_result_gen = Rcpp::wrap(parseActivityBin(filename, max_samples, scale_factor, sample_rate, verbose, debug));
+    Rcpp::traits::input_parameter< const int >::type digits(digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(parseActivityBin(filename, max_samples, scale_factor, sample_rate, verbose, debug, digits));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -78,8 +80,8 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_read_gt3x_activityAsDataFrame", (DL_FUNC) &_read_gt3x_activityAsDataFrame, 4},
-    {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 10},
-    {"_read_gt3x_parseActivityBin", (DL_FUNC) &_read_gt3x_parseActivityBin, 6},
+    {"_read_gt3x_parseGT3X", (DL_FUNC) &_read_gt3x_parseGT3X, 11},
+    {"_read_gt3x_parseActivityBin", (DL_FUNC) &_read_gt3x_parseActivityBin, 7},
     {"_read_gt3x_parseLuxBin", (DL_FUNC) &_read_gt3x_parseLuxBin, 5},
     {NULL, NULL, 0}
 };

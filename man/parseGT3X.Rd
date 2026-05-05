@@ -14,7 +14,8 @@ parseGT3X(
   batch_end = 0L,
   verbose = FALSE,
   debug = FALSE,
-  impute_zeroes = FALSE
+  impute_zeroes = FALSE,
+  digits = 3L
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ not data is found.}
 \item{debug}{Print information for every activity second}
 
 \item{impute_zeroes}{Impute zeros in case there are missingness?}
+
+\item{digits}{Number of significant digits to round the activity samples to.}
 }
 \value{
 Returns a matrix with max_samples rows and 3 columns with the acceleration samples.

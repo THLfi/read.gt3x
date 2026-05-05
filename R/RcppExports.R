@@ -18,14 +18,15 @@ activityAsDataFrame <- function(m, time_index, start_time, divider) {
 #' @param verbose Print the parameters from the log.bin file and other messages?
 #' @param impute_zeroes Impute zeros in case there are missingness?
 #' @param debug Print information for every activity second
+#' @param digits Number of significant digits to round the activity samples to.
 #'
 #' @return
 #' Returns a matrix with max_samples rows and 3 columns with the acceleration samples.
 #' The matrix has attributes
 #' "time_index", "missingness", "start_time_log", "sample_rate", "impute_zeroes".
 #'
-parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_time, batch_begin = 0L, batch_end = 0L, verbose = FALSE, debug = FALSE, impute_zeroes = FALSE) {
-    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, start_time, batch_begin, batch_end, verbose, debug, impute_zeroes)
+parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_time, batch_begin = 0L, batch_end = 0L, verbose = FALSE, debug = FALSE, impute_zeroes = FALSE, digits = 3L) {
+    .Call('_read_gt3x_parseGT3X', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, start_time, batch_begin, batch_end, verbose, debug, impute_zeroes, digits)
 }
 
 #' Parse activity samples from a NHANES-GT3X file
@@ -39,6 +40,7 @@ parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_ti
 #' @param sample_rate sampling rate for activity samples.
 #' @param verbose Print the parameters from the activity.bin file and other messages?
 #' @param debug Print information for every activity second
+#' @param digits Number of significant digits to round the activity samples to.
 #'
 #' @return
 #' Returns a matrix with max_samples rows and 3 columns, where the first 3
@@ -46,8 +48,8 @@ parseGT3X <- function(filename, max_samples, scale_factor, sample_rate, start_ti
 #' the last column is timestamps in seconds (including hundredth of seconds)
 #' starting from 00:00:00 1970-01-01 UTC (UNIX time)
 #'
-parseActivityBin <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE) {
-    .Call('_read_gt3x_parseActivityBin', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug)
+parseActivityBin <- function(filename, max_samples, scale_factor, sample_rate, verbose = FALSE, debug = FALSE, digits = 3L) {
+    .Call('_read_gt3x_parseActivityBin', PACKAGE = 'read.gt3x', filename, max_samples, scale_factor, sample_rate, verbose, debug, digits)
 }
 
 #' Parse activity samples from a GT3X file
