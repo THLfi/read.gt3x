@@ -1,8 +1,9 @@
-#' Fill Zeroes to Last Observation Carried Forward
+#' Replace all-zero XYZ values with last non-zero observation
 #'
 #' @param x Object of class `activity`/`activity_df` or a `data.frame`,
 #' with columns `X`/`Y`/`Z`
-#' @returns A similar object passed in with XYZ filled in with last observation
+#' @returns A similar object passed in, where rows with `X == 0 & Y == 0 & Z == 0`
+#' have their XYZ values replaced by the last non-zero observation carried forward
 #'
 #' @export
 fill_zeros = function(x) {
