@@ -1,3 +1,8 @@
+# read.gt3x 1.2.1
+
+* Added filling in zeroes function.
+* Added ability to give non-rounded data back in `read.gt3x`.
+
 # read.gt3x 1.2.0
 
 * Added batch-reading functionality, see #40
