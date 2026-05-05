@@ -32,7 +32,7 @@ parse_gt3x_info <- function(path, tz = "GMT") {
       verbose = FALSE)
     on.exit(unlink(path, recursive = TRUE))
   }
-  extract_gt3x_info(file.path(path, "info.txt"))
+  extract_gt3x_info(file.path(path, "info.txt"), tz = tz)
 }
 
 #' @export
