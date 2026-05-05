@@ -5,11 +5,11 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/read.gt3x)](https://CRAN.R-project.org/package=read.gt3x)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/last-month/read.gt3x?color=blue)](https://r-pkg.org/pkg/read.gt3x)
-[![R-CMD-check](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/THLfi/read.gt3x/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for
