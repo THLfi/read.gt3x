@@ -326,6 +326,7 @@ int bytes2samplesize(uint8_t& type, uint16_t& bytes) {
 //' @param verbose Print the parameters from the log.bin file and other messages?
 //' @param impute_zeroes Impute zeros in case there are missingness?
 //' @param debug Print information for every activity second
+//' @param digits Number of significant digits to round the activity samples to.
 //'
 //' @return
 //' Returns a matrix with max_samples rows and 3 columns with the acceleration samples.
@@ -342,7 +343,8 @@ NumericMatrix parseGT3X(const char* filename,
                         const uint32_t batch_end = 0,
                         const bool verbose = false,
                         const bool debug = false,
-                        const bool impute_zeroes = false) {
+                        const bool impute_zeroes = false,
+                        const int digits = 3) {
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
   // Rcpp::NumericMatrix activityMatrix = Rcpp::no_init(max_samples, N_ACTIVITYCOLUMNS);
@@ -515,7 +517,7 @@ NumericMatrix parseGT3X(const char* filename,
 
   if(verbose)
     Rcout << "Scaling...\n";
-  scaleAndRoundActivity(activityMatrix, scale_factor, total_records);
+  scaleAndRoundActivity(activityMatrix, scale_factor, total_records, digits);
 
 
   if(!impute_zeroes || use_batching) {
@@ -601,6 +603,7 @@ NumericMatrix parseGT3X(const char* filename,
 //' @param sample_rate sampling rate for activity samples.
 //' @param verbose Print the parameters from the activity.bin file and other messages?
 //' @param debug Print information for every activity second
+//' @param digits Number of significant digits to round the activity samples to.
 //'
 //' @return
 //' Returns a matrix with max_samples rows and 3 columns, where the first 3
@@ -614,7 +617,8 @@ NumericMatrix parseActivityBin(const char* filename,
                                const double scale_factor,
                                const int sample_rate,
                                const bool verbose = false,
-                               const bool debug = false) {
+                               const bool debug = false,
+                               const int digits = 3) {
   ifstream GT3Xstream;
   GT3Xstream.open(filename,  std::ios_base::binary);
   NumericMatrix activityMatrix(max_samples, N_ACTIVITYCOLUMNS);
@@ -633,7 +637,7 @@ NumericMatrix parseActivityBin(const char* filename,
 
   if(verbose)
     Rcout << "Scaling...\n";
-  scaleAndRoundActivity(activityMatrix, scale_factor, sample_size);
+  scaleAndRoundActivity(activityMatrix, scale_factor, sample_size, digits);
 
   // Changed as indicated that it's Y, X, Z as in :
   // https://github.com/actigraph/NHANES-GT3X-File-Format/blob/master/fileformats/activity.bin.md
