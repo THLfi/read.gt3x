@@ -1,3 +1,9 @@
+# read.gt3x 1.3.0
+
+* Fixed CRAN checks by removing test-time network dependencies.
+* Added tests for `fill_zeros()` and `fill_zeroes()`.
+* Updated package metadata for CRAN submission.
+
 # read.gt3x 1.2.1
 
 * Added filling in zeroes function.
@@ -44,4 +50,3 @@
 * Checked and ensured that imputation worked in specific cases.
 * Reads in old (NHANES) and newer versions of `gt3x` files.
 * First CRAN release candidate.
-

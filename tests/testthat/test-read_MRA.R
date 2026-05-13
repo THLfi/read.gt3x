@@ -1,7 +1,7 @@
 
 url <- paste0("https://ndownloader.figshare.com/files/25557302")
 path <- tempfile(fileext = ".gt3x.gz")
-dl <- utils::download.file(url, destfile = path, mode = "wb")
+download_or_skip(url, path)
 
 destroy_field = function(path, field = "Acceleration Scale",
                          replace_field = list()) {
@@ -91,5 +91,4 @@ testthat::test_that("Reading in Old MRA LUX", {
   }, regexp = NA)
 
 })
-
 

@@ -1,5 +1,8 @@
 testthat::test_that("Getting datapath", {
-  gt3x_datapath()
+  datapath <- tryCatch(gt3x_datapath(), error = function(e) NULL)
+  if (is.null(datapath)) {
+    testthat::skip("Sample data unavailable without network access")
+  }
   gt3x_datapath(1)
   testthat::expect_error(gt3x_filename(0))
   testthat::expect_error(gt3x_filename(100))

@@ -42,3 +42,17 @@ destroy_field = function(path, field = "Acceleration Scale",
   }
   return(new_gt3x_file)
 }
+
+download_or_skip = function(url, destfile, timeout = 300, ...) {
+  old <- options(timeout = timeout)
+  on.exit(options(old), add = TRUE)
+  res <- tryCatch(
+    utils::download.file(url, destfile = destfile, mode = "wb", ...),
+    error = function(e) e
+  )
+  if (inherits(res, "error") || !identical(res, 0L) ||
+      !file.exists(destfile) || file.size(destfile) == 0) {
+    testthat::skip("Test fixture unavailable without network access")
+  }
+  destfile
+}
