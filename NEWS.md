@@ -3,6 +3,7 @@
 * Fixed CRAN checks by removing test-time network dependencies.
 * Added tests for `fill_zeros()` and `fill_zeroes()`.
 * Updated package metadata for CRAN submission.
+* Option of `digits` to read in the number of digits for acceleration.
 
 # read.gt3x 1.2.1
 
