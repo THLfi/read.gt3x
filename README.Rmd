@@ -100,7 +100,32 @@ X <- read.gt3x(gt3xfile, asDataFrame = TRUE)
 head(X)
 ```
 
+## FAQ
+
+**Why are timestamps shown in GMT when the data were collected locally?**
+
+The `.gt3x` format stores timestamps in local device time, but the package
+represents them as `POSIXct` with a GMT timezone attribute to keep parsing
+consistent. The clock time is still the local device time.
+
+**Why do I sometimes see zeroes in the data?**
+
+Some files have missing samples that are imputed as zeroes when
+`imputeZeroes = TRUE`. If you want the raw incomplete series instead, leave
+`imputeZeroes = FALSE`.
+
+**Why does a file fail to read or unzip?**
+
+The file may be incomplete, malformed, or not actually a `.gt3x` archive.
+Check that `is_gt3x()` returns `TRUE` and that the archive contains both
+`info.txt` and `log.bin`.
+
+**Which output should I use, matrix or data frame?**
+
+Use the matrix if you want the fastest path for numeric analysis.
+Use `asDataFrame = TRUE` when you want timestamps attached directly to the
+result.
+
 ## Documentation
 
 [Documentation](https://thlfi.github.io/read.gt3x/), hosted by GitHub pages.
-
