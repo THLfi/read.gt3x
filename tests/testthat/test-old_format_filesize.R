@@ -1,7 +1,8 @@
+testthat::skip_on_cran()
 url <- paste0("https://ndownloader.figshare.com/files/21855801")
 path <- tempfile(fileext = ".gt3x.gz")
 # file is PU2_NEO1B41100255_2016-04-21.gt3x.gz
-dl <- utils::download.file(url, destfile = path, mode = "wb")
+download_or_skip(url, path)
 
 
 testthat::test_that("Old format file_size determines nrow", {
@@ -14,4 +15,3 @@ testthat::test_that("Old format file_size determines nrow", {
   testthat::expect_equal(nrow(res), 18144012L)
   rm(res)
 })
-

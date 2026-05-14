@@ -1,20 +1,18 @@
-* Resubmission, fixed vignette URLs
+* Release prep for `read.gt3x` 1.3.0.
+* Fixed test-time network dependencies and refreshed CRAN-facing metadata.
 
 ## Test environments
 
-* ubuntu 16.4 local R installation, R 4.0.3
-* macOS latest (release)
-* windows-latest (release)
-* windows-latest (3.6)
+* macOS 15.4.1, R 4.4.0
 
 ## R CMD check results
 
-windows and mac
-0 errors | 0 warnings | 0 note
+`R CMD check --as-cran read.gt3x_1.3.0.tar.gz`
 
-On local ubuntu installation, 0 errors, 0 notes, 1 warning:
+0 errors | 0 warnings | 3 notes
 
-> checking top-level files ... WARNING
-  A complete check needs the 'checkbashisms' script.
-  See section ‘Configure and cleanup’ in the ‘Writing R Extensions’
-  manual.
+Notes were limited to the local environment:
+
+* CRAN incoming checks could not be queried because this sandbox has no network access.
+* The check could not verify external URLs due lack of network access.
+* `xcrun_db` was present in the macOS temp directory during check cleanup.

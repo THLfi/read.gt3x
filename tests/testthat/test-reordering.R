@@ -1,4 +1,6 @@
 
+testthat::skip_on_cran()
+
 idf = list(
   name_gt3x = "PU3_CLE2B21130054_2017-03-16.gt3x.gz",
   download_url_gt3x = "https://ndownloader.figshare.com/files/21855807",
@@ -9,10 +11,7 @@ print(idf)
 download = function(url, name) {
   destfile = file.path(tempdir(), name)
   if (!file.exists(destfile)) {
-    old <- options()         # code line i
-    on.exit(options(old))    # code line i+1
-    options(timeout = 120)
-    download.file(url, destfile, mode = "wb")
+    download_or_skip(url, destfile, timeout = 120)
   }
   destfile
 }
@@ -117,4 +116,3 @@ testthat::test_that("Reordering columns is right", {
   })
   testthat::expect_equal(result$`Acceleration Scale`, 341L)
 })
-

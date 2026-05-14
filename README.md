@@ -10,6 +10,8 @@
 status](https://www.r-pkg.org/badges/version/read.gt3x)](https://CRAN.R-project.org/package=read.gt3x)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/last-month/read.gt3x?color=blue)](https://r-pkg.org/pkg/read.gt3x)
+[![Codecov test
+coverage](https://codecov.io/gh/THLfi/read.gt3x/graph/badge.svg)](https://app.codecov.io/gh/THLfi/read.gt3x)
 <!-- badges: end -->
 
 The `read.gt3x` R package implements a high performance C++ parser for
@@ -316,6 +318,33 @@ head(X)
 #> 5 2019-09-17 18:40:00 0.016 -0.008 1.008
 #> 6 2019-09-17 18:40:00 0.008 -0.008 1.008
 ```
+
+## FAQ
+
+**Why are timestamps shown in GMT when the data were collected
+locally?**
+
+The `.gt3x` format stores timestamps in local device time, but the
+package represents them as `POSIXct` with a GMT timezone attribute to
+keep parsing consistent. The clock time is still the local device time.
+
+**Why do I sometimes see zeroes in the data?**
+
+Some files have missing samples that are imputed as zeroes when
+`imputeZeroes = TRUE`. If you want the raw incomplete series instead,
+leave `imputeZeroes = FALSE`.
+
+**Why does a file fail to read or unzip?**
+
+The file may be incomplete, malformed, or not actually a `.gt3x`
+archive. Check that `is_gt3x()` returns `TRUE` and that the archive
+contains both `info.txt` and `log.bin`.
+
+**Which output should I use, matrix or data frame?**
+
+Use the matrix if you want the fastest path for numeric analysis. Use
+`asDataFrame = TRUE` when you want timestamps attached directly to the
+result.
 
 ## Documentation
 
