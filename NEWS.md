@@ -1,4 +1,4 @@
-# read.gt3x (development version)
+# read.gt3x 1.4.0
 
 * Fixed `get_features()` using 5 feature bits for 6 feature names, which
   recycled the logical index (so the heart rate monitor bit also reported

@@ -1,26 +1,15 @@
 Package: read.gt3x
 Type: Package
 Title: Parse 'ActiGraph' 'GT3X'/'GT3X+' 'Accelerometer' Data
-Version: 1.3.0
-Authors@R: 
-    c(person(given = "Tuomo",
-             family = "Nieminen",
-             role = c("aut", "cre"),
-             email = "tuomo.a.nieminen@gmail.com"),
-      person(given = "John",
-             family = "Muschelli",
-             role = "aut",
-             email = "muschellij2@gmail.com",
-             comment = c(ORCID = "0000-0001-6469-1750")),
-      person(given = "Patrick",
-             family = "Bos",
-             role = "ctb",
-             email = "egpbos@gmail.com",
-             comment = c(ORCID = "0000-0002-6033-960X")),
-      person(given = "Vincent",
-             family = "van Hees",
-             role = "ctb",
-             email = "v.vanhees@accelting.com"))
+Version: 1.4.0
+Authors@R: c(
+    person("Tuomo", "Nieminen", , "tuomo.a.nieminen@gmail.com", role = c("aut", "cre")),
+    person("John", "Muschelli", , "muschellij2@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0001-6469-1750")),
+    person("Patrick", "Bos", , "egpbos@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0002-6033-960X")),
+    person("Vincent", "van Hees", , "v.vanhees@accelting.com", role = "ctb")
+  )
 Description: Implements a high performance C++ parser 
     for 'ActiGraph' 'GT3X'/'GT3X+' data format (with extension '.gt3x') 
     for 'accelerometer' samples. Activity samples can be easily read into a
