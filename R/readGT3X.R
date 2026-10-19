@@ -15,7 +15,7 @@ NULL
 #' @param imputeZeroes Impute zeros in case there are missingness?
 #' Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
-#' @param digits Number of significant digits to round the activity samples to.
+#' @param digits Number of decimal places to round the activity samples to.
 #' Recommended to put higher (e.g. 5) if wanting to run activity counts to match
 #' ActiLife software
 #' @param ... additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"

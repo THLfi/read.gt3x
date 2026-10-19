@@ -35,7 +35,7 @@ this finds where all 3 axes are zero.}
 
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"}
 
-\item{digits}{Number of significant digits to round the activity samples to.
+\item{digits}{Number of decimal places to round the activity samples to.
 Recommended to put higher (e.g. 5) if wanting to run activity counts to match
 ActiLife software}
 
