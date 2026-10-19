@@ -1,18 +1,13 @@
-* Release prep for `read.gt3x` 1.3.0.
-* Fixed test-time network dependencies and refreshed CRAN-facing metadata.
-
-## Test environments
-
-* macOS 15.4.1, R 4.4.0
-
 ## R CMD check results
 
-`R CMD check --as-cran read.gt3x_1.3.0.tar.gz`
+0 errors | 0 warnings | 1 note
 
-0 errors | 0 warnings | 3 notes
+* This is a new release.
+---
+Maintainer email change:
 
-Notes were limited to the local environment:
+old: tuomo.a.nieminen@gmail.com
+new: tuomo.a.susi@gmail.com
 
-* CRAN incoming checks could not be queried because this sandbox has no network access.
-* The check could not verify external URLs due lack of network access.
-* `xcrun_db` was present in the macOS temp directory during check cleanup.
+The reason for the change is that my last name has changed from Nieminen to Susi and my primary email has changed accordingly.
+
