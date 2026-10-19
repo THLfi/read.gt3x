@@ -538,7 +538,7 @@ get_features = function(features) {
   }
   feat <- c("heart rate monitor", "data summary", "sleep mode", "proximity tagging",
             "epoch data", "no raw data")
-  features <- as.integer(intToBits(features))[1:5] > 0
+  features <- as.integer(intToBits(features))[seq_along(feat)] > 0
   if (!any(features)) {
     features <- "none"
   } else {
