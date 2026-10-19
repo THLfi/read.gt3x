@@ -1,3 +1,9 @@
+# read.gt3x 1.4.0
+
+* Fixed `get_features()` using 5 feature bits for 6 feature names, which
+  recycled the logical index (so the heart rate monitor bit also reported
+  "no raw data") and warns on R >= 4.7.0.
+
 # read.gt3x 1.3.0
 
 * Fixed CRAN checks by removing test-time network dependencies.

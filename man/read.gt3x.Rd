@@ -12,6 +12,7 @@ read.gt3x(
   flag_idle_sleep = FALSE,
   cleanup = FALSE,
   ...,
+  digits = 3L,
   add_light = FALSE
 )
 }
@@ -33,6 +34,10 @@ this finds where all 3 axes are zero.}
 \item{cleanup}{should any unzipped files be deleted?}
 
 \item{...}{additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"}
+
+\item{digits}{Number of decimal places to round the activity samples to.
+Recommended to put higher (e.g. 5) if wanting to run activity counts to match
+ActiLife software}
 
 \item{add_light}{add light data to the \code{data.frame} if data exists in the
 GT3X}

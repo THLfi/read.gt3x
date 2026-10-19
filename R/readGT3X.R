@@ -15,6 +15,9 @@ NULL
 #' @param imputeZeroes Impute zeros in case there are missingness?
 #' Default is FALSE, in which case
 #' the time series will be incomplete in case there is missingness.
+#' @param digits Number of decimal places to round the activity samples to.
+#' Recommended to put higher (e.g. 5) if wanting to run activity counts to match
+#' ActiLife software
 #' @param ... additional arguments to pass to \code{parseGT3X} C++ code, e.g. batch-loading options as now documented in vignette "Batch loading a gt3x file"
 #' @param verbose print diagnostic messages
 #' @param cleanup should any unzipped files be deleted?
@@ -109,6 +112,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
                       flag_idle_sleep = FALSE,
                       cleanup = FALSE,
                       ...,
+                      digits = 3L,
                       add_light = FALSE) {
 
   verbose_message <- function(..., verbose = verbose) {
@@ -178,7 +182,9 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       sample_rate = info[["Sample Rate"]],
       start_time = as.numeric(info[["Start Date"]]),
       verbose = as.logical(verbose),
-      impute_zeroes = imputeZeroes, ...)
+      impute_zeroes = imputeZeroes,
+      digits = as.integer(digits),
+      ...)
     # need reordering for Y X Z ACTIVITY PACKETS
     tmp_at <- attributes(accdata)
     accdata <- accdata[, xyz]
@@ -208,6 +214,7 @@ read.gt3x <- function(path, verbose = FALSE, asDataFrame = FALSE,
       scale_factor = info$`Acceleration Scale`,
       sample_rate = info$`Sample Rate`,
       verbose = as.logical(verbose),
+      digits = as.integer(digits),
       ...)
     tmp_at = attributes(accdata)
     index = min(est_n_samples, nrow(accdata))
@@ -531,7 +538,7 @@ get_features = function(features) {
   }
   feat <- c("heart rate monitor", "data summary", "sleep mode", "proximity tagging",
             "epoch data", "no raw data")
-  features <- as.integer(intToBits(features))[1:5] > 0
+  features <- as.integer(intToBits(features))[seq_along(feat)] > 0
   if (!any(features)) {
     features <- "none"
   } else {

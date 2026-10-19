@@ -11,3 +11,4 @@ R/read.old.gt3x.R
 man/read.gt3x.old.Rd
 issues/*
 .positai
+revdep

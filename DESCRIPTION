@@ -1,12 +1,12 @@
 Package: read.gt3x
 Type: Package
 Title: Parse 'ActiGraph' 'GT3X'/'GT3X+' 'Accelerometer' Data
-Version: 1.3.0
+Version: 1.4.0
 Authors@R: 
     c(person(given = "Tuomo",
              family = "Nieminen",
              role = c("aut", "cre"),
-             email = "tuomo.a.nieminen@gmail.com"),
+             email = "tuomo.a.susi@gmail.com"),
       person(given = "John",
              family = "Muschelli",
              role = "aut",
